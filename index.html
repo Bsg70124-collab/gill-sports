@@ -3,267 +3,671 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b1220">
 <title>Gill Sports | Prediction Lab</title>
 <style>
-:root {
-  font-family: system-ui, sans-serif;
-  color-scheme: dark;
-  background: #0b1220;
-  color: #eef2ff;
+:root{color-scheme:dark;font-family:Inter,system-ui,sans-serif;background:#08111f;color:#eff4ff}
+*{box-sizing:border-box}
+body{margin:0}
+header{background:#0d1a2c;border-bottom:1px solid #263854;position:sticky;top:0;z-index:5}
+.wrap{max-width:1380px;padding:20px;margin:auto}
+.head,.rowhead{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.logo{font-size:25px;font-weight:850;letter-spacing:-.7px}
+.logo span{color:#70a6ff}
+.subtitle,.muted{color:#9daec9}
+.subtitle{font-size:12px;margin-top:5px}
+.pill,.badge{display:inline-block;border-radius:20px;padding:5px 10px;font-size:11px;background:#223453;color:#dce7ff}
+.badge{border:1px solid #365274;border-radius:7px}
+button,select,input{background:#1b304f;border:1px solid #375073;border-radius:9px;color:#edf4ff;padding:10px 12px;font:inherit}
+button{background:#397bf0;border-color:#397bf0;font-weight:700;cursor:pointer}
+button.secondary{background:#1b304f;border-color:#375073}
+button:disabled{opacity:.6;cursor:wait}
+input{width:100%;min-width:0}
+.nav{display:flex;gap:8px;overflow:auto;padding-top:13px}
+.nav button{background:transparent;border:1px solid transparent;white-space:nowrap;color:#a8bbd7;font-size:13px}
+.nav button.active{background:#183255;border-color:#31557e;color:#fff}
+main{max-width:1380px;margin:auto;padding:22px 20px 50px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:13px;margin-bottom:18px}
+.metric,.panel{background:#101f33;border:1px solid #283d5b;border-radius:15px;padding:19px}
+.metric small{display:block;color:#99adcb;font-size:12px}
+.metric b{display:block;font-size:29px;margin-top:6px}
+.metric em{display:block;font-style:normal;font-size:11px;color:#819ab9}
+.panel{margin:15px 0;min-width:0}
+.panel h2{font-size:17px;margin:0 0 11px}
+.panel p{font-size:13px;color:#a2b4d0;line-height:1.55}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:9px;margin:13px 0}
+.toolbar input{flex:2 1 225px}
+.toolbar select{flex:1 1 150px}
+.scroll{overflow:auto;max-height:620px}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{text-align:left;color:#9bafd0;background:#15273f;position:sticky;top:0;white-space:nowrap}
+th,td{padding:11px 10px;border-bottom:1px solid #263954}
+td{vertical-align:top}
+tr:hover td{background:#15283f}
+.small{font-size:11px;color:#90a8c6}
+.high,.win{color:#58dfab}
+.mid,.pending{color:#ffd17c}
+.low,.loss{color:#ff8b99}
+.void{color:#a2b5d3}
+.notice{border-left:3px solid #ebb65d;padding:13px 15px;background:#2a2630;border-radius:6px;color:#ffdfac;font-size:13px;line-height:1.5;margin-bottom:16px}
+.oknotice{border-left-color:#5adcb1;background:#12382f;color:#b5f4da}
+.parlay{border:1px solid #355071;background:#142942;border-radius:11px;padding:15px;margin:10px 0}
+.parlay h3{font-size:14px;margin:0 0 8px}
+.leg{border-bottom:1px solid #263954;padding:9px 0}
+.leg:last-child{border:0}
+.info{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+.info div{padding:15px;border-radius:10px;background:#172b45}
+.info strong{display:block;margin-bottom:5px}
+.page{display:none}
+.page.active{display:block}
+.footer{color:#7f97b8;font-size:12px;max-width:1380px;margin:auto;padding:10px 20px 35px}
+a{color:#95bcff}
+@media(max-width:800px){
+.grid{grid-template-columns:1fr}
+.wrap,main{padding:15px}
+.stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+.metric{padding:14px}
+.metric b{font-size:24px}
 }
-* { box-sizing: border-box; }
-body { max-width: 1250px; margin: auto; padding: 20px; }
-header, .toolbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-h1 { font-size: 30px; margin: 0; }
-h2 { font-size: 18px; }
-small, .muted { color: #a8b6d1; }
-button, select {
-  background: #3977e7;
-  color: white;
-  border: 0;
-  border-radius: 9px;
-  padding: 11px 15px;
-  cursor: pointer;
-}
-button:disabled { opacity: .5; }
-.stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 12px;
-  margin: 22px 0;
-}
-.card, .panel {
-  background: #141f32;
-  border: 1px solid #2a3b59;
-  border-radius: 14px;
-  padding: 18px;
-}
-.card b { display: block; font-size: 30px; margin-top: 8px; }
-.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-@media(max-width:850px) { .grid { grid-template-columns: 1fr; } }
-.panel { margin-bottom: 16px; min-width: 0; }
-.scroll { overflow: auto; max-height: 550px; }
-table { border-collapse: collapse; width: 100%; font-size: 13px; }
-th, td {
-  padding: 10px 8px;
-  border-bottom: 1px solid #2a3b59;
-  text-align: left;
-  vertical-align: top;
-}
-th { color: #a8b6d1; }
-td { white-space: nowrap; }
-.win, .high { color: #5fe0aa; }
-.loss, .low { color: #ff8697; }
-.pending, .medium { color: #ffd278; }
-.status { white-space: pre-wrap; }
-.archive-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-}
-.archive-grid strong { display: block; font-size: 25px; }
 </style>
 </head>
-
 <body>
+
 <header>
+<div class="wrap">
+<div class="head">
   <div>
-    <h1>Gill Sports | Prediction Lab</h1>
-    <small>NBA + NFL forecasts • Automated tracking</small>
+    <div class="logo">Gill <span>Sports</span> <small class="pill">Independent Lab</small></div>
+    <div class="subtitle">NBA / NFL · locked forecasts · recovered history · model monitoring</div>
   </div>
-  <button id="refresh">↻ Reload Predictions</button>
+  <button id="refresh">↻ Reload saved data</button>
+</div>
+<nav class="nav">
+  <button class="active" data-tab="overview">Overview</button>
+  <button data-tab="games">Game history</button>
+  <button data-tab="players">Player projections</button>
+  <button data-tab="props">Market props</button>
+  <button data-tab="parlays">Parlays</button>
+  <button data-tab="system">Model &amp; feeds</button>
+</nav>
+</div>
 </header>
 
+<main>
+
+<section class="page active" id="tab-overview">
 <div class="stats">
-  <div class="card"><small>Locked Forecasts</small><b id="total">—</b></div>
-  <div class="card"><small>Pending</small><b id="pending">—</b></div>
-  <div class="card"><small>Wins / Losses</small><b id="record">—</b></div>
-  <div class="card"><small>Hit Rate</small><b id="rate">—</b></div>
-  <div class="card"><small>Brier Score</small><b id="brier">—</b></div>
+ <div class="metric"><small>Independent game forecasts</small><b id="n-live">—</b><em>New Elo model</em></div>
+ <div class="metric"><small>Pending games</small><b id="n-pending">—</b><em>Awaiting results</em></div>
+ <div class="metric"><small>Settled wins / losses</small><b id="n-record">—</b><em>Voids excluded</em></div>
+ <div class="metric"><small>Game hit rate</small><b id="n-rate">—</b><em>Settled games</em></div>
+ <div class="metric"><small>Brier score</small><b id="n-brier">—</b><em>Lower is better</em></div>
 </div>
-
-<div class="toolbar">
-  <p id="updated" class="muted">Loading predictions...</p>
-  <label>Sport:
-    <select id="sport">
-      <option value="all">All</option>
-      <option value="nba">NBA</option>
-      <option value="nfl">NFL</option>
-    </select>
-  </label>
-</div>
-
+<div id="overview-notice" class="notice">Loading prediction data...</div>
 <div class="grid">
-  <section class="panel">
-    <h2>Upcoming Projections</h2>
-    <p class="muted">Model probabilities, not verified betting edges.</p>
-    <div class="scroll">
-      <table>
-        <thead>
-          <tr><th>Game</th><th>Pick</th><th>Probability</th></tr>
-        </thead>
-        <tbody id="upcoming"></tbody>
-      </table>
-    </div>
-  </section>
-
-  <section class="panel">
-    <h2>Settled Projections</h2>
-    <div class="scroll">
-      <table>
-        <thead>
-          <tr><th>Game</th><th>Pick</th><th>Result</th></tr>
-        </thead>
-        <tbody id="settled"></tbody>
-      </table>
-    </div>
-  </section>
-</div>
-
-<section class="panel">
-  <h2>Recovered Historical Archive</h2>
-  <div class="archive-grid">
-    <div><strong id="old-games">—</strong><small>Game Forecasts</small></div>
-    <div><strong id="old-players">—</strong><small>Player Records</small></div>
-    <div><strong id="old-parlays">—</strong><small>Paper Parlays</small></div>
+ <div class="panel">
+  <div class="rowhead"><h2>Upcoming locked forecasts</h2><span class="badge">Independent model</span></div>
+  <div class="scroll">
+   <table><thead><tr><th>Matchup / tipoff</th><th>Winner pick</th><th>Probability</th></tr></thead><tbody id="upcoming"></tbody></table>
   </div>
-  <p id="archive-status" class="muted"></p>
+ </div>
+ <div class="panel">
+  <h2>Latest settled results</h2>
+  <div class="scroll">
+   <table><thead><tr><th>Matchup</th><th>Pick</th><th>Final</th><th>Result</th></tr></thead><tbody id="settled"></tbody></table>
+  </div>
+ </div>
+</div>
+<div class="panel">
+ <h2>Recovered Gill Sports archive</h2>
+ <div class="stats">
+  <div class="metric"><small>Historical game forecasts</small><b id="archive-games">—</b></div>
+  <div class="metric"><small>Player projection rows</small><b id="archive-players">—</b></div>
+  <div class="metric"><small>Saved paper parlays</small><b id="archive-parlays">—</b></div>
+ </div>
+ <p>Historical records are kept separate from the new independent model.</p>
+</div>
 </section>
 
-<section class="panel">
-  <h2>Update Status</h2>
-  <p id="message" class="status muted">Loading...</p>
-  <p class="muted">
-    GitHub Actions runs the prediction model on its schedule.
-    Reload Predictions fetches the latest saved data.
-  </p>
+<section class="page" id="tab-games">
+<div class="panel">
+ <h2>Independent NBA/NFL game predictions</h2>
+ <div class="toolbar">
+  <input id="game-search" placeholder="Find a team or matchup...">
+  <select id="game-sport">
+   <option value="all">Both sports</option><option value="nba">NBA</option><option value="nfl">NFL</option>
+  </select>
+  <select id="game-status">
+   <option value="all">All results</option><option value="pending">Pending</option><option value="win">Wins</option><option value="loss">Losses</option><option value="void">Voids</option>
+  </select>
+  <button class="secondary" id="game-export">Export CSV</button>
+ </div>
+ <div class="scroll">
+  <table><thead><tr><th>Sport</th><th>Start</th><th>Matchup</th><th>Pick</th><th>Probability</th><th>Result</th><th>Final</th></tr></thead><tbody id="game-table"></tbody></table>
+ </div>
+</div>
+<div class="panel">
+ <h2>Historical game archive — original site</h2>
+ <div class="toolbar">
+  <input id="history-search" placeholder="Search archived teams, markets, picks...">
+  <select id="history-status">
+   <option value="all">All results</option><option value="win">Wins</option><option value="loss">Losses</option><option value="pending">Pending</option>
+  </select>
+  <button class="secondary" id="history-export">Export CSV</button>
+ </div>
+ <div class="scroll">
+  <table><thead><tr><th>Date</th><th>Sport</th><th>Matchup</th><th>Market</th><th>Selection</th><th>Probability</th><th>Result</th></tr></thead><tbody id="history-table"></tbody></table>
+ </div>
+</div>
 </section>
+
+<section class="page" id="tab-players">
+<div class="notice">
+ Archived player predictions from the original Gill Sports site.
+ The trained player models have not yet been installed in this GitHub workflow.
+ These are historical projections, not fresh live predictions.
+</div>
+<div class="panel">
+ <div class="rowhead"><h2>Player projections vs. actuals</h2><span class="badge">Original archive</span></div>
+ <div class="toolbar">
+  <input id="player-search" placeholder="Search player, team or game...">
+  <select id="player-stat">
+   <option value="pts">Points</option><option value="reb">Rebounds</option><option value="ast">Assists</option><option value="pra">PRA</option><option value="minutes">Minutes</option>
+  </select>
+  <select id="player-view">
+   <option value="all">All rows</option><option value="trackable">Trackable</option><option value="settled">Settled</option><option value="pending">Unsettled</option><option value="suppressed">Suppressed</option>
+  </select>
+  <button class="secondary" id="player-export">Export CSV</button>
+ </div>
+ <p id="player-summary"></p>
+ <div class="scroll">
+  <table><thead><tr><th>Date / player</th><th>Game</th><th>Availability</th><th>Projection</th><th>Actual</th><th>Error</th><th>Status</th></tr></thead><tbody id="player-table"></tbody></table>
+ </div>
+</div>
+</section>
+
+<section class="page" id="tab-props">
+<div class="notice">Archived market prop data only. No live PrizePicks or Kalshi market feed is connected to this dashboard yet. Historical probabilities are not verified betting edges.</div>
+<div class="panel">
+ <h2>Recovered player prop picks</h2>
+ <div class="toolbar">
+  <input id="prop-search" placeholder="Search player, market or pick...">
+  <select id="prop-view">
+   <option value="all">All picks</option><option value="pending">Pending</option><option value="win">Wins</option><option value="loss">Losses</option><option value="void">Voids</option>
+  </select>
+  <button class="secondary" id="prop-export">Export CSV</button>
+ </div>
+ <p id="prop-summary"></p>
+ <div class="scroll">
+  <table><thead><tr><th>Date / player</th><th>Market</th><th>Pick / line</th><th>Probability</th><th>Source</th><th>Actual</th><th>Status</th></tr></thead><tbody id="prop-table"></tbody></table>
+ </div>
+</div>
+</section>
+
+<section class="page" id="tab-parlays">
+<div class="notice">These are saved historical paper parlays, not automatically generated new parlays. Joint probability estimates have not been independently validated.</div>
+<div class="panel">
+ <h2>Parlay tracking and individual legs</h2>
+ <p id="parlay-summary"></p>
+ <div class="toolbar">
+  <select id="parlay-view">
+   <option value="all">All parlays</option><option value="pending">Pending</option><option value="win">Wins</option><option value="loss">Losses</option>
+  </select>
+  <button class="secondary" id="parlay-export">Export CSV</button>
+ </div>
+ <div id="parlay-list"></div>
+</div>
+</section>
+
+<section class="page" id="tab-system">
+<div class="panel">
+ <h2>Model and feed status</h2>
+ <div class="info">
+  <div><strong>Last model run</strong><span id="last-run">—</span></div>
+  <div><strong>Feed errors</strong><span id="feed-errors">—</span></div>
+  <div><strong>Original player model</strong><span id="legacy-model">—</span></div>
+  <div><strong>Player archive captured</strong><span id="player-captured">—</span></div>
+  <div><strong>Market feed</strong>Archive only</div>
+  <div><strong>Automatic retraining</strong>Not independently verified</div>
+ </div>
+</div>
+<div class="panel">
+ <h2>Migration integrity</h2>
+ <div id="file-check" class="muted">Checking data files...</div>
+</div>
+<div class="panel">
+ <h2>Remaining migration work</h2>
+ <p>To fully replace the original site, we still need to connect the trained player models, automatically build NBA player features, fetch injury/availability information, obtain permitted current market lines, and automate player prop and parlay settlement.</p>
+ <p>Do not delete the ChatGPT site until the replacement has been verified.</p>
+ <p><a href="https://github.com/Bsg70124-collab/gill-sports/actions/workflows/daily.yml" target="_blank">GitHub Actions</a> · <a href="https://github.com/Bsg70124-collab/gill-sports" target="_blank">Repository</a></p>
+</div>
+<div class="panel">
+ <h2>Technical diagnostics</h2>
+ <pre id="diagnostics" style="white-space:pre-wrap;font-size:12px"></pre>
+</div>
+</section>
+
+</main>
+<footer class="footer">
+Gill Sports | Independent research dashboard · Experimental forecasts; no guaranteed betting outcomes.
+</footer>
 
 <script>
 'use strict';
 
 const $ = id => document.getElementById(id);
+
 const esc = v => String(v ?? '').replace(/[&<>"']/g,
   c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-let forecasts = [];
+const num = v => v === null || v === undefined || v === '' ? null : Number(v);
+const fmt = (v,d=1) => num(v) !== null && Number.isFinite(num(v)) ? num(v).toFixed(d) : '—';
+const pct = v => num(v) !== null && Number.isFinite(num(v)) ? (num(v)*100).toFixed(1)+'%' : '—';
 
-function dateText(v) {
+const date = v => {
   const t = Date.parse(v || '');
-  return Number.isFinite(t) ? new Date(t).toLocaleString() : 'Unknown';
+  return Number.isFinite(t) ? new Date(t).toLocaleString() : '—';
+};
+
+const status = x => String(x || 'pending').trim().toLowerCase();
+const label = x => {
+  const s = status(x);
+  if(s === 'win') return 'win';
+  if(s === 'loss') return 'loss';
+  if(s === 'void' || s === 'dnp') return 'void';
+  return 'pending';
+};
+
+const badge = v => `<span class="${label(v)}">${esc(v ?? 'Pending')}</span>`;
+const blank = (n,m) => `<tr><td colspan="${n}" class="muted">${esc(m)}</td></tr>`;
+
+let live = {};
+let oldGames = [];
+let players = [];
+let parlays = [];
+let props = [];
+let fileStatus = {};
+
+function tab(name) {
+  document.querySelectorAll('.page').forEach(e =>
+    e.classList.toggle('active', e.id === 'tab-' + name));
+  document.querySelectorAll('[data-tab]').forEach(e =>
+    e.classList.toggle('active', e.dataset.tab === name));
+  window.scrollTo(0,0);
 }
 
-function showRows() {
-  const sport = $('sport').value;
-  const rows = forecasts.filter(f => sport === 'all' || f.sport === sport);
-  const pending = rows.filter(f => f.result === 'pending')
-    .sort((a,b) => String(a.start).localeCompare(String(b.start)));
-  const settled = rows.filter(f => ['win','loss','void'].includes(f.result))
-    .sort((a,b) => String(b.settled_at || b.start)
-      .localeCompare(String(a.settled_at || a.start)));
-  const graded = settled.filter(f => ['win','loss'].includes(f.result));
-  const wins = graded.filter(f => f.result === 'win').length;
+document.querySelectorAll('[data-tab]').forEach(e =>
+  e.addEventListener('click', () => tab(e.dataset.tab)));
 
-  $('total').textContent = rows.length;
-  $('pending').textContent = pending.length;
-  $('record').textContent = `${wins} / ${graded.length - wins}`;
-  $('rate').textContent = graded.length
-    ? (100 * wins / graded.length).toFixed(1) + '%' : '—';
+async function fetchJSON(path) {
+  const r = await fetch(path + '?v=' + Date.now(), {cache:'no-store'});
+  if(!r.ok) throw new Error('HTTP ' + r.status + ' ' + path);
+  return r.json();
+}
 
-  const scored = graded.filter(f => Number.isFinite(f.confidence));
-  const brier = scored.length ? scored.reduce((sum,f) =>
-    sum + Math.pow(f.confidence - (f.result === 'win' ? 1 : 0), 2), 0
-  ) / scored.length : null;
-  $('brier').textContent = brier === null ? '—' : brier.toFixed(3);
+const allLive = () => Object.values(live.forecasts || {});
+const search = (list,q,fn) => list.filter(x =>
+  fn(x).toLowerCase().includes(q.trim().toLowerCase()));
 
-  $('upcoming').innerHTML = pending.slice(0,100).map(f => {
-    const p = f.confidence;
-    const cls = p >= .7 ? 'high' : p >= .55 ? 'medium' : 'low';
+function renderOverview() {
+  const a = allLive();
+  const settled = a.filter(x => ['win','loss'].includes(status(x.result)));
+  const wins = settled.filter(x => status(x.result) === 'win').length;
+  const scored = settled.filter(x => num(x.confidence) !== null);
+
+  const brier = scored.length
+    ? scored.reduce((n,x) =>
+        n + Math.pow(Number(x.confidence) - (status(x.result)==='win'?1:0),2),0) / scored.length
+    : null;
+
+  $('n-live').textContent = a.length;
+  $('n-pending').textContent = a.filter(x => status(x.result)==='pending').length;
+  $('n-record').textContent = wins + ' / ' + (settled.length-wins);
+  $('n-rate').textContent = settled.length ? (100*wins/settled.length).toFixed(1)+'%' : '—';
+  $('n-brier').textContent = brier===null ? '—' : brier.toFixed(3);
+
+  const upcoming = a.filter(x => status(x.result)==='pending')
+    .sort((x,y) => String(x.start).localeCompare(String(y.start)))
+    .slice(0,50);
+
+  $('upcoming').innerHTML = upcoming.map(x => {
+    const c = Number(x.confidence);
+    const color = c>=.7?'high':c>=.55?'mid':'low';
     return `<tr>
-      <td>${esc(f.away)} @ ${esc(f.home)}
-        <br><small>${esc(dateText(f.start))} · ${esc(f.sport.toUpperCase())}</small></td>
-      <td>${esc(f.pick)}</td>
-      <td class="${cls}">${Number.isFinite(p) ? (p*100).toFixed(1)+'%' : '—'}</td>
+      <td>${esc(x.away)} @ ${esc(x.home)}<div class="small">${esc(date(x.start))}</div></td>
+      <td>${esc(x.pick)}</td>
+      <td class="${color}">${pct(x.confidence)}</td>
     </tr>`;
-  }).join('') || '<tr><td colspan="3">No pending projections.</td></tr>';
+  }).join('') || blank(3,'No pending forecasts.');
 
-  $('settled').innerHTML = settled.slice(0,100).map(f => `
-    <tr>
-      <td>${esc(f.away)} @ ${esc(f.home)}</td>
-      <td>${esc(f.pick)}</td>
-      <td class="${esc(f.result)}">${esc(f.result.toUpperCase())}</td>
-    </tr>
-  `).join('') || '<tr><td colspan="3">No settled projections yet.</td></tr>';
+  $('settled').innerHTML = settled
+    .sort((x,y) => String(y.settled_at||'').localeCompare(String(x.settled_at||'')))
+    .slice(0,50).map(x => `<tr>
+      <td>${esc(x.away)} @ ${esc(x.home)}</td>
+      <td>${esc(x.pick)}</td>
+      <td>${esc(x.final_score||'—')}</td>
+      <td>${badge(x.result)}</td>
+    </tr>`).join('') || blank(4,'No settled forecasts yet.');
+
+  $('archive-games').textContent = oldGames.length;
+  $('archive-players').textContent = players.length;
+  $('archive-parlays').textContent = parlays.length;
+
+  $('overview-notice').textContent =
+    'Game model last updated: ' + date(live.last_refresh) +
+    '. Player and market archives are historical snapshots.';
+  $('overview-notice').classList.add('oknotice');
 }
 
-async function getJSON(path) {
-  const response = await fetch(path + '?t=' + Date.now(), {
-    cache: 'no-store'
-  });
-  if (!response.ok) throw new Error(path + ': HTTP ' + response.status);
-  return response.json();
+function gameRows() {
+  return search(allLive(),$('game-search').value,
+    x => [x.away,x.home,x.pick].join(' '))
+    .filter(x => $('game-sport').value==='all' ||
+      String(x.sport||'').toLowerCase()===$('game-sport').value)
+    .filter(x => $('game-status').value==='all' ||
+      status(x.result)===$('game-status').value)
+    .sort((x,y) => String(y.start).localeCompare(String(x.start)));
 }
 
-async function load() {
-  $('refresh').disabled = true;
-  $('message').textContent = 'Loading latest predictions...';
+function historyRows() {
+  return search(oldGames,$('history-search').value,
+    x => [x.name,x.market,x.side,x.sport].join(' '))
+    .filter(x => $('history-status').value==='all' ||
+      status(x.result)===$('history-status').value)
+    .sort((a,b) => String(b.start||b.created).localeCompare(String(a.start||a.created)));
+}
+
+function renderGames() {
+  $('game-table').innerHTML = gameRows().slice(0,500).map(x => `<tr>
+    <td>${esc(String(x.sport||'').toUpperCase())}</td>
+    <td>${esc(date(x.start))}</td>
+    <td>${esc(x.away)} @ ${esc(x.home)}</td>
+    <td>${esc(x.pick)}</td>
+    <td>${pct(x.confidence)}</td>
+    <td>${badge(x.result)}</td>
+    <td>${esc(x.final_score||'—')}</td>
+  </tr>`).join('') || blank(7,'No matching games.');
+
+  $('history-table').innerHTML = historyRows().slice(0,500).map(x => `<tr>
+    <td>${esc(date(x.start||x.created))}</td>
+    <td>${esc(x.sport)}</td>
+    <td>${esc(x.name)}</td>
+    <td>${esc(x.market)}</td>
+    <td>${esc(x.side)}</td>
+    <td>${pct(x.p)}</td>
+    <td>${badge(x.result)}</td>
+  </tr>`).join('') || blank(7,'No archived rows.');
+}
+
+function playerRows() {
+  const v = $('player-view').value;
+
+  return search(players,$('player-search').value,
+    x => [x.player,x.team,x.game].join(' '))
+    .filter(x =>
+      v==='all' ||
+      (v==='trackable' && x.trackable) ||
+      (v==='suppressed' && x.suppressed) ||
+      (v==='settled' && x.settlement) ||
+      (v==='pending' && !x.settlement && !x.suppressed))
+    .sort((a,b) => String(b.start||'').localeCompare(String(a.start||'')));
+}
+
+function renderPlayers() {
+  const a = playerRows();
+  const k = $('player-stat').value;
+
+  const graded = a.filter(x =>
+    x.settlement && !x.settlement.dnp &&
+    num(x[k]) !== null && num(x.settlement[k]) !== null);
+
+  const mae = graded.length ? graded.reduce((n,x) =>
+    n + Math.abs(Number(x[k])-Number(x.settlement[k])),0)/graded.length : null;
+
+  $('player-summary').textContent =
+    `${a.length} matching rows · ${graded.length} graded for ${k.toUpperCase()} · MAE: ${mae===null?'—':mae.toFixed(2)}`;
+
+  $('player-table').innerHTML = a.slice(0,500).map(x => {
+    const actual = x.settlement && !x.settlement.dnp ? x.settlement[k] : null;
+    const error = num(actual)!==null && num(x[k])!==null
+      ? Number(x[k])-Number(actual) : null;
+
+    return `<tr>
+      <td>${esc(x.player)}<div class="small">${esc(date(x.start))}</div></td>
+      <td>${esc(x.game||x.team||'')}</td>
+      <td>${esc(x.availability||'Unknown')}${x.suppressed?'<div class="low small">Suppressed</div>':''}</td>
+      <td>${fmt(x[k],2)}</td>
+      <td>${fmt(actual,1)}</td>
+      <td class="${error===null?'muted':Math.abs(error)<3?'high':'mid'}">${error===null?'—':(error>0?'+':'')+error.toFixed(2)}</td>
+      <td>${x.settlement?(x.settlement.dnp?'DNP':'Settled'):'Pending'}</td>
+    </tr>`;
+  }).join('') || blank(7,'No matching player projections.');
+}
+
+function buildProps() {
+  const out = [], ids = new Set();
+
+  for(const r of players) {
+    const picks = Array.isArray(r.pickHistory) && r.pickHistory.length
+      ? r.pickHistory : (r.propPick ? [r.propPick] : []);
+
+    for(const p of picks) {
+      const id = p.id || [r.id,p.marketId,p.side,p.line,p.stat].join('|');
+      if(ids.has(id)) continue;
+      ids.add(id);
+      out.push({
+        ...p, _id:id, player:r.player, game:r.game,
+        start:p.start||r.start,
+        settlement:p.settlement||null,
+        actual:p.actual??null
+      });
+    }
+  }
+
+  return out.sort((x,y) => String(y.start||'').localeCompare(String(x.start||'')));
+}
+
+function propRows() {
+  const v = $('prop-view').value;
+  return search(props,$('prop-search').value,
+    x => [x.player,x.game,x.source,x.stat,x.side].join(' '))
+    .filter(x => v==='all' || status(x.result||x.settlement?.result)===v);
+}
+
+function renderProps() {
+  const a = propRows();
+  $('prop-summary').textContent =
+    `${a.length} matching archived prop records · historical estimates`;
+
+  $('prop-table').innerHTML = a.slice(0,500).map(x => {
+    const result = x.result || x.settlement?.result || 'Pending';
+    return `<tr>
+      <td>${esc(x.player)}<div class="small">${esc(date(x.start))}</div></td>
+      <td>${esc(String(x.stat||'').toUpperCase())}</td>
+      <td>${esc(x.side||'—')} ${esc(x.line??'—')}</td>
+      <td>${pct(x.probability)}</td>
+      <td>${esc(x.source||'—')}</td>
+      <td>${esc(x.actual??x.settlement?.actual??'—')}</td>
+      <td>${badge(result)}</td>
+    </tr>`;
+  }).join('') || blank(7,'No archived prop picks.');
+}
+
+function parlayRows() {
+  const v = $('parlay-view').value;
+  return parlays.filter(x => v==='all' || status(x.result)===v)
+    .sort((a,b) => String(b.day||'').localeCompare(String(a.day||'')));
+}
+
+function renderParlays() {
+  const a = parlayRows();
+
+  $('parlay-summary').textContent =
+    `${parlays.length} saved paper parlays · ` +
+    `${parlays.filter(x=>status(x.result)==='win').length} recorded wins · ` +
+    `${parlays.filter(x=>status(x.result)==='pending').length} pending`;
+
+  $('parlay-list').innerHTML = a.map(x => `
+    <article class="parlay">
+      <div class="rowhead">
+        <h3>${esc(x.day)} · ${esc(x.size||x.legs?.length||0)}-leg paper parlay</h3>
+        <div>${badge(x.result)} <span class="badge">${esc(x.confidence||'Experimental')}</span></div>
+      </div>
+      <div class="small">${esc(x.strategy||'')} · Joint estimate: ${pct(x.independenceEstimate)} (unvalidated)</div>
+      ${(x.legs||[]).map(l => `
+        <div class="leg">
+          <strong>${esc(l.name||'')}</strong>
+          <div class="small">
+            ${esc(l.selection||'')} · ${esc(l.source||'')} ·
+            ${pct(l.probability)} ·
+            ${esc(l.actual===null||l.actual===undefined?'Actual pending':'Actual '+l.actual)} ·
+            ${badge(l.result)}
+          </div>
+        </div>
+      `).join('')}
+    </article>
+  `).join('') || '<p class="muted">No matching parlays.</p>';
+}
+
+function renderSystem() {
+  const errors = Array.isArray(live.errors) ? live.errors : [];
+
+  $('last-run').textContent = date(live.last_refresh);
+  $('feed-errors').textContent = errors.length + ' reported';
+  $('legacy-model').textContent =
+    window._oldModel?.version || window._playerMeta?.version || 'Not transferred';
+  $('player-captured').textContent = date(window._playerCaptured);
+
+  $('file-check').innerHTML = Object.entries(fileStatus).map(([p,v]) =>
+    `<div class="leg">${v.ok?'✅':'❌'} ${esc(p)} — ${v.ok?'loaded':'Error: '+esc(v.error||'unknown')}</div>`
+  ).join('');
+
+  $('diagnostics').textContent = JSON.stringify({
+    last_refresh:live.last_refresh,
+    saved_games:allLive().length,
+    old_game_records:oldGames.length,
+    player_rows:players.length,
+    prop_snapshots:props.length,
+    paper_parlays:parlays.length,
+    feed_errors:errors.slice(0,8),
+    model:window._oldModel||null
+  },null,2);
+}
+
+function csv(name,rows,fields) {
+  const quote = v => '"' + String(v??'').replace(/"/g,'""') + '"';
+  const content = [fields.join(','),
+    ...rows.map(x=>fields.map(k=>quote(x[k])).join(','))].join('\r\n');
+
+  const blob = new Blob([content],{type:'text/csv;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href=url;
+  a.download=name;
+  a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+$('game-export').onclick = () => csv('gill-games.csv',gameRows(),
+  ['sport','start','away','home','pick','confidence','result','final_score']);
+$('history-export').onclick = () => csv('gill-historical-games.csv',historyRows(),
+  ['id','start','sport','name','market','side','p','odds','result']);
+$('player-export').onclick = () => csv('gill-players.csv',playerRows(),
+  ['id','start','player','team','game','availability','pts','reb','ast','pra','minutes','suppressed','trackable']);
+$('prop-export').onclick = () => csv('gill-props.csv',propRows(),
+  ['_id','start','player','game','stat','side','line','probability','source','result','actual']);
+$('parlay-export').onclick = () => csv('gill-parlays.csv',
+  parlayRows().map(x=>({...x,legs:JSON.stringify(x.legs)})),
+  ['id','day','size','confidence','result','legs']);
+
+for(const id of ['game-search','game-sport','game-status','history-search','history-status']) {
+  $(id).addEventListener('input',renderGames);
+}
+for(const id of ['player-search','player-stat','player-view']) {
+  $(id).addEventListener('input',renderPlayers);
+}
+for(const id of ['prop-search','prop-view']) {
+  $(id).addEventListener('input',renderProps);
+}
+$('parlay-view').addEventListener('change',renderParlays);
+
+async function loadAll() {
+  const b=$('refresh');
+  b.disabled=true;
+  b.textContent='Loading...';
 
   try {
-    const data = await getJSON('data/live.json');
-    forecasts = Object.values(data.forecasts || {});
-    showRows();
+    const entries=[
+      ['data/live.json','live'],
+      ['data/forecasts.json','history'],
+      ['data/players.json','players'],
+      ['data/parlays.json','parlays']
+    ];
 
-    $('updated').textContent =
-      'Last model update: ' + dateText(data.last_refresh);
+    const results=await Promise.allSettled(entries.map(([path])=>fetchJSON(path)));
 
-    const errors = Array.isArray(data.errors) ? data.errors : [];
-    $('message').textContent =
-      `Loaded ${forecasts.length} forecasts. ` +
-      (errors.length ? 'Feed warnings: ' + errors.join(' | ')
-        : 'No feed errors reported.');
-  } catch (error) {
-    $('message').textContent = 'Error: ' + error.message +
-      '\nCheck data/live.json in your GitHub repository.';
+    results.forEach((res,i)=>{
+      const [path,key]=entries[i];
+      fileStatus[path]=res.status==='fulfilled'
+        ? {ok:true} : {ok:false,error:res.reason?.message};
+
+      if(res.status!=='fulfilled') return;
+
+      const d=res.value;
+      if(key==='live') live=d||{};
+      if(key==='history') {
+        oldGames=Array.isArray(d.records)?d.records:[];
+        window._oldModel=d.model||null;
+      }
+      if(key==='players') {
+        players=Array.isArray(d.rows)?d.rows:[];
+        window._playerMeta=d.meta;
+        window._playerCaptured=d.capturedAt;
+      }
+      if(key==='parlays') {
+        parlays=Array.isArray(d.rows)?d.rows:[];
+      }
+    });
+
+    props=buildProps();
+    renderOverview();
+    renderGames();
+    renderPlayers();
+    renderProps();
+    renderParlays();
+    renderSystem();
+
+    if(!fileStatus['data/live.json'].ok) {
+      $('overview-notice').textContent =
+        'Live forecasts unavailable. Check data/live.json in GitHub.';
+      $('overview-notice').classList.remove('oknotice');
+    }
+  } catch(e) {
+    $('overview-notice').textContent='Dashboard error: '+e.message;
   } finally {
-    $('refresh').disabled = false;
+    b.disabled=false;
+    b.textContent='↻ Reload saved data';
   }
 }
 
-async function archive() {
-  const files = [
-    ['data/forecasts.json','old-games','records'],
-    ['data/players.json','old-players','rows'],
-    ['data/parlays.json','old-parlays','rows']
-  ];
+$('refresh').addEventListener('click',loadAll);
+loadAll();
 
-  const results = await Promise.allSettled(files.map(async ([path,id,key]) => {
-    const data = await getJSON(path);
-    $(id).textContent = Array.isArray(data[key]) ? data[key].length : 0;
-  }));
+setInterval(async()=>{
+  try {
+    live=await fetchJSON('data/live.json');
+    fileStatus['data/live.json']={ok:true};
+    renderOverview();
+    renderGames();
+    renderSystem();
+  } catch(e) {
+    fileStatus['data/live.json']={ok:false,error:e.message};
+    renderSystem();
+  }
+},60000);
 
-  const failures = results.filter(r => r.status === 'rejected').length;
-  $('archive-status').textContent = failures
-    ? `${failures} archive file(s) could not be loaded.`
-    : 'Historical archive loaded.';
-}
-
-$('refresh').addEventListener('click', () => {
-  load();
-  archive();
-});
-
-$('sport').addEventListener('change', showRows);
-
-load();
-archive();
-setInterval(load, 60000);
 </script>
 </body>
 </html>
