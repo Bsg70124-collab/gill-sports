@@ -23,6 +23,21 @@
 @media(max-width:650px){.metric{padding:12px}.metric b{font-size:24px}th,td{padding:9px 8px}.gs-pill{font-size:10px;padding:3px 7px}}
 </style>
 <!-- GILL_COLOR_V1_END -->
+<!-- GILL_MARKET_STYLE_V1_BEGIN -->
+<style id="gill-market-style-v1">
+#gs-market-alert{padding:11px 13px;border:1px solid #715a35;border-left:4px solid #e4b75a;background:#302b2599;border-radius:9px;color:#ffe2a9;font-size:13px}
+#gs-market-alert.gs-fresh{border-color:#3e856e;border-left-color:#57d7a5;background:#183a3399;color:#98f6c9}
+#gs-market-panel .gs-key{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin:12px 0;font-size:12px}
+#gs-market-panel .gs-pill{display:inline-block;font-size:11px;font-weight:750;padding:4px 9px;border-radius:999px;border:1px solid}
+#gs-market-panel .gs-green{color:#81edba;border-color:#2e8462;background:#15523a66}
+#gs-market-panel .gs-amber{color:#ffdb91;border-color:#997639;background:#60471d66}
+#gs-market-panel .gs-red{color:#ff9dae;border-color:#ac5267;background:#6b293766}
+#gs-market-panel .gs-gray{color:#c5d1e5;border-color:#56677a;background:#35455a66}
+#gs-market-panel td:nth-child(8){font-variant-numeric:tabular-nums}
+#gs-market-panel td{font-variant-numeric:tabular-nums}
+#gs-market-panel td:first-child{font-variant-numeric:normal;font-weight:650}
+</style>
+<!-- GILL_MARKET_STYLE_V1_END -->
 </head><body>
 <header><div class="head"><div><div class="logo">Gill <span>Sports</span> | NBA Player Lab</div><div class="small">Player forecasts · actual results · injury watch</div></div><div><a href="./">Main dashboard</a> <button id="refresh">Refresh data</button></div></div></header>
 <main>
@@ -55,6 +70,19 @@
   <tbody id="availability-rows"><tr><td colspan="5">Loading…</td></tr></tbody></table></div>
 </section>
 <!-- GILL_AVAILABILITY_NEWS_V1_END -->
+<!-- GILL_MARKET_PANEL_V1_BEGIN -->
+<section class="panel" id="gill-market-panel">
+ <h2>Sportsbook Odds &amp; Market Comparison <span class="small">NBA player props</span></h2>
+ <p class="small">Compare our predicted stat totals with actual sportsbook lines. The colored direction is <strong>not</strong> a win probability, betting recommendation, or proven positive expected value.</p>
+ <div class="gs-key" aria-label="Market comparison guide"><b>Projection direction:</b> <span class="gs-pill gs-green">Favors listed side</span><span class="gs-pill gs-red">Opposes listed side</span><span class="gs-pill gs-amber">Small difference / caution</span><span class="gs-pill gs-gray">Unverified / missing</span></div>
+ <div class="toolbar"><input id="gs-market-query" placeholder="Search player, matchup or sportsbook" aria-label="Search market quotes"><select id="gs-market-stat" aria-label="Filter market stat"><option value="all">All markets</option><option value="points">Points</option><option value="rebounds">Rebounds</option><option value="assists">Assists</option><option value="pra">PRA</option></select><select id="gs-market-side" aria-label="Filter side"><option value="all">Over &amp; Under</option><option value="Over">Over</option><option value="Under">Under</option></select><select id="gs-market-book" aria-label="Filter bookmaker"><option value="all">All sportsbooks</option></select><button id="gs-market-refresh" type="button">Refresh market data</button></div>
+ <div id="gs-market-alert" class="gs-market-alert" role="status">Loading published odds snapshot…</div>
+ <div class="metrics" id="gs-market-metrics"><div class="metric"><div class="small">Quoted outcomes</div><b id="gs-market-count">—</b></div><div class="metric"><div class="small">Players covered</div><b id="gs-market-players">—</b></div><div class="metric"><div class="small">Sportsbooks</div><b id="gs-market-books">—</b></div><div class="metric"><div class="small">Validated positive EV</div><b>0</b><div class="small">Not yet calibrated</div></div></div>
+ <p class="small" id="gs-market-summary"></p>
+ <div class="scroll"><table><thead><tr><th>Player</th><th>Stat</th><th>Side</th><th>Model</th><th>Line</th><th>Diff*</th><th>Price</th><th>Market fair %</th><th>Book</th><th>Status</th></tr></thead><tbody id="gs-market-rows"><tr><td colspan="10">Loading…</td></tr></tbody></table></div>
+ <p class="small">* Diff = model projection minus line (positive favors Over). Market fair % is calculated from both sides' sportsbook prices after removing the bookmaker margin; it is <strong>not</strong> our model's probability. Quotes may be stale. No individual player is officially verified active from this data. Props require confirmation before use.</p>
+</section>
+<!-- GILL_MARKET_PANEL_V1_END -->
 </main><footer id="updated">—</footer>
 <script>
 'use strict';
@@ -189,5 +217,59 @@ refresh();
   load();
 })();
 
+</script>
+<script id="gill-market-script-v1">
+(() => {
+'use strict';
+const el=id=>document.getElementById(id);
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt=(v,d=1)=>typeof v==='number'&&Number.isFinite(v)?v.toFixed(d):'—';
+const time=v=>Number.isFinite(Date.parse(v||''))?Date.parse(v):null;
+const dataPath='data/nba_market_comparison.json';
+let items=[],snapshot=null;
+function render(){
+ const q=el('gs-market-query').value.toLowerCase().trim(),stat=el('gs-market-stat').value,side=el('gs-market-side').value,book=el('gs-market-book').value;
+ const now=Date.now(),captured=time(snapshot?.odds_captured_at_utc),tip=time(snapshot?.game?.tipoff_utc);
+ const old=!captured||now-captured>30*60*1000||now<captured-2*60*1000;
+ const started=tip!==null&&now>=tip;
+ let visible=items.filter(r=>(stat==='all'||r.stat===stat)&&(side==='all'||r.side===side)&&(book==='all'||r.bookmaker_key===book)&&[r.player_name,r.matchup,r.bookmaker_title].join(' ').toLowerCase().includes(q));
+ const scored=r=>{const delta=Number(r.projection_minus_line);return Number.isFinite(delta)?(r.side==='Over'?delta:-delta):null};
+ visible=visible.sort((a,b)=>Math.abs(scored(b)??0)-Math.abs(scored(a)??0)||String(a.player_name).localeCompare(String(b.player_name)));
+ const badge=(label,cls)=>'<span class="gs-pill '+cls+'">'+esc(label)+'</span>';
+ el('gs-market-summary').textContent=visible.length+' displayed outcomes from '+items.length+' total · '+(snapshot?.game?.matchup||'Game unknown')+' · Snapshot '+(snapshot?.odds_captured_at_utc||'unknown')+' · model win probability and EV not calibrated';
+ el('gs-market-rows').innerHTML=visible.slice(0,400).map(r=>{
+  const direction=scored(r),uncertain=r.availability_verified!==true||r.quote_stale_at_capture===true;
+  const cls=direction===null?'gs-gray':Math.abs(direction)<0.5?'gs-amber':direction>0?'gs-green':'gs-red';
+  const status=old||started?'EXPIRED':r.quote_stale_at_capture?'QUOTE WARNING':r.availability_verified!==true?'UNVERIFIED':'REVIEW';
+  const statusCls=status==='EXPIRED'||status==='QUOTE WARNING'?'gs-amber':'gs-gray';
+  const price=Number(r.american_price),priceLabel=Number.isFinite(price)?(price>0?'+':'')+price:'—';
+  const fair=typeof r.no_vig_market_probability==='number'&&Number.isFinite(r.no_vig_market_probability)?(r.no_vig_market_probability*100).toFixed(1)+'%':'—';
+  return '<tr><td>'+esc(r.player_name)+'</td><td>'+esc(String(r.stat).toUpperCase())+'</td><td>'+badge(r.side,cls)+'</td><td>'+fmt(r.model_projection)+'</td><td>'+fmt(r.line)+'</td><td>'+badge(direction===null?'—':(Number(r.projection_minus_line)>0?'+':'')+fmt(r.projection_minus_line,2),cls)+'</td><td>'+esc(priceLabel)+'</td><td>'+fair+'</td><td>'+esc(r.bookmaker_title)+'</td><td>'+badge(status,statusCls)+'</td></tr>';
+ }).join('')||'<tr><td colspan="10">No matching quotes</td></tr>';
+}
+async function refresh(){
+ const b=el('gs-market-refresh');b.disabled=true;
+ try{
+  const r=await fetch(dataPath+'?v='+Date.now(),{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);
+  const d=await r.json();if(!Array.isArray(d.rows))throw Error('Missing rows');snapshot=d;items=d.rows;
+  const books=[...new Map(items.map(r=>[r.bookmaker_key,r.bookmaker_title])).entries()].filter(([k,v])=>k&&v).sort((a,b)=>String(a[1]).localeCompare(String(b[1])));
+  const selected=el('gs-market-book').value;
+  el('gs-market-book').innerHTML='<option value="all">All sportsbooks</option>'+books.map(([k,v])=>'<option value="'+esc(k)+'">'+esc(v)+'</option>').join('');
+  if(books.some(([k])=>k===selected))el('gs-market-book').value=selected;
+  el('gs-market-count').textContent=items.length;el('gs-market-players').textContent=new Set(items.map(x=>String(x.player_id))).size;el('gs-market-books').textContent=books.length;
+  const t=time(d.odds_captured_at_utc),tip=time(d.game?.tipoff_utc),age=t?(Date.now()-t)/60000:null;
+  const invalid=age===null||age< -2;const expired=invalid||age>30||(tip!==null&&Date.now()>=tip);
+  const text=invalid?'Snapshot timestamp invalid':expired?'Historical / expired odds snapshot — NOT live market prices':'Recent pregame odds snapshot — player availability still unverified';
+  el('gs-market-alert').textContent=text+' · Captured '+(d.odds_captured_at_utc||'unknown');
+  el('gs-market-alert').classList.toggle('gs-fresh',!expired);
+  render();
+ }catch(e){el('gs-market-alert').textContent='Odds dashboard unavailable: '+e.message+' · No private API key is used in this page.';el('gs-market-rows').innerHTML='<tr><td colspan="10">No published market data yet. Run private Market Edge Audit and Odds Publisher workflows.</td></tr>';}
+ finally{b.disabled=false;}
+}
+for(const id of ['gs-market-query','gs-market-stat','gs-market-side','gs-market-book'])el(id).addEventListener(id==='gs-market-query'?'input':'change',render);
+el('gs-market-refresh').addEventListener('click',refresh);
+el('refresh')?.addEventListener('click',refresh);
+refresh();
+})();
 </script>
 </body></html>
