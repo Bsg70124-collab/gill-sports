@@ -1,0 +1,113 @@
+name: Gill Sports - NBA Injury Watch V1
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '43 */3 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: gill-sports-injury-watch
+  cancel-in-progress: false
+jobs:
+  injury-watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Retrieve ESPN injuries and match published candidate names
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, re, unicodedata, urllib.request
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          SOURCE = 'https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries'
+          raw = Path('data/player_live.json')
+          if not raw.exists():
+              raise SystemExit('Missing published data/player_live.json; refusing to publish empty watch')
+          data = json.loads(raw.read_text(encoding='utf-8'))
+          rows = data.get('rows', [])
+          if not isinstance(rows, list) or not rows:
+              raise SystemExit('No player rows in public feed; refusing to publish empty watch')
+
+          req = urllib.request.Request(SOURCE, headers={'User-Agent':'Mozilla/5.0 (Gill Sports research; injury availability watch)','Accept':'application/json'})
+          with urllib.request.urlopen(req, timeout=35) as resp:
+              injury_json = json.load(resp)
+
+          def norm(value):
+              value = unicodedata.normalize('NFKD', str(value or ''))
+              value = ''.join(c for c in value if not unicodedata.combining(c))
+              return re.sub(r'[^a-z0-9]', '', value.lower())
+
+          # ESPN reports may have different nested structures. Extract only
+          # entries that contain an identifiable athlete and a status.
+          found = []
+          def walk(obj):
+              if isinstance(obj, dict):
+                  athlete = obj.get('athlete')
+                  if isinstance(athlete, dict):
+                      player = athlete.get('displayName') or athlete.get('fullName') or athlete.get('name')
+                      st = obj.get('status')
+                      if isinstance(st, dict):
+                          st = st.get('displayName') or st.get('name') or st.get('type')
+                      st = st or obj.get('type')
+                      if isinstance(st, dict):
+                          st = st.get('displayName') or st.get('name')
+                      if isinstance(st, str) and player:
+                          details = obj.get('details')
+                          note = details.get('detail') or details.get('type') if isinstance(details, dict) else None
+                          found.append({'name':str(player),'status':str(st),'note':str(note or '')[:300]})
+                  for v in obj.values():
+                      if isinstance(v, (dict,list)): walk(v)
+              elif isinstance(obj, list):
+                  for v in obj: walk(v)
+          walk(injury_json)
+          # A silent response-shape change is an error, not evidence everyone is healthy.
+          if not found:
+              raise SystemExit('No identifiable injury entries; ESPN schema may have changed; existing watch preserved')
+          by_name = {}
+          for rec in found:
+              k = norm(rec['name'])
+              if k: by_name[k] = rec
+          watch = []
+          for row in rows:
+              name = row.get('player_name')
+              hit = by_name.get(norm(name))
+              watch.append({
+                  'game_date':row.get('game_date'), 'game_id':row.get('game_id'),
+                  'player_name':name, 'matchup':row.get('matchup'),
+                  'injury_status':hit['status'] if hit else 'NOT_LISTED_IN_ESPN_FEED',
+                  'injury_note':hit['note'] if hit else '',
+                  'reported_injury':bool(hit),
+                  'availability_verified':False,
+                  'source':'ESPN unofficial injury feed',
+              })
+          result = {'updated_at_utc':datetime.now(timezone.utc).isoformat(),
+                    'source_url':SOURCE, 'warning':'Not listed does not mean healthy or available; not the official NBA injury report. Name-only matches must be verified.',
+                    'feed_injury_entries':len(found), 'candidate_rows':len(watch),
+                    'flagged_rows':sum(x['reported_injury'] for x in watch), 'rows':watch}
+          out = Path('data/injury_watch.json')
+          out.parent.mkdir(parents=True,exist_ok=True)
+          out.write_text(json.dumps(result,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
+          print('=== GILL SPORTS NBA INJURY WATCH ===')
+          print('Feed entries:',len(found),'Candidate rows:',len(watch),'Flagged:',result['flagged_rows'])
+          print('No forecasts modified; no sportsbook availability verified.')
+          PY
+      - name: Commit public injury status feed
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/injury_watch.json
+          if git diff --cached --quiet; then echo 'No changes'; exit 0; fi
+          git commit -m 'Update Gill Sports NBA injury watch'
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
