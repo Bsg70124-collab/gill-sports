@@ -1,0 +1,76 @@
+name: Gill Sports - Publish NBA Odds Comparison V1
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows:
+      - Gill Sports - NBA Market Edge Audit V1
+    types: [completed]
+permissions:
+  contents: read
+concurrency:
+  group: gill-sports-odds-website-publisher
+  cancel-in-progress: false
+jobs:
+  publish-odds:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Publish sanitized market comparison from private audit
+        shell: bash
+        env:
+          GILL_SITE_PUBLISH_TOKEN: ${{ secrets.GILL_SITE_PUBLISH_TOKEN }}
+        run: |
+          python - <<'PYCODE'
+          import base64,json,os,math
+          from pathlib import Path
+          from datetime import datetime,timezone
+          from urllib.request import Request,urlopen
+          from urllib.error import HTTPError
+          src=Path('data/odds/nba_prop_edge_audit_latest.json')
+          if not src.is_file(): raise SystemExit('AUDIT_FILE_MISSING: run NBA Market Edge Audit V1 first')
+          audit=json.loads(src.read_text(encoding='utf-8'))
+          rows=audit.get('rows',[])
+          if not isinstance(rows,list) or not rows: raise SystemExit('AUDIT_HAS_NO_ROWS')
+          permitted=('game_date','matchup','game_id','player_id','player_name','stat','side','line','american_price','bookmaker_key','bookmaker_title','market_last_update','model_projection','projection_minus_line','break_even_probability','no_vig_market_probability','market_vig','quote_stale_at_capture','quote_age_minutes_at_capture','availability_verified')
+          def oknum(v):return isinstance(v,(int,float)) and not isinstance(v,bool) and math.isfinite(v)
+          clean=[]
+          for r in rows:
+              if not isinstance(r,dict):continue
+              if r.get('stat') not in ('points','rebounds','assists','pra') or r.get('side') not in ('Over','Under'):continue
+              if not oknum(r.get('line')) or not oknum(r.get('american_price')):continue
+              item={k:r[k] for k in permitted if k in r and (r[k] is None or isinstance(r[k],(str,int,float,bool)))}
+              item['validated_edge']=False
+              item['model_probability']=None
+              item['estimated_ev']=None
+              clean.append(item)
+          if not clean:raise SystemExit('NO_VALID_OUTCOMES: refusing empty public overwrite')
+          now=datetime.now(timezone.utc)
+          feed={'schema_version':1,'published_at_utc':now.isoformat(), 'odds_captured_at_utc':audit.get('odds_captured_at_utc'), 'game':audit.get('game'), 'source':'Gill Sports private engine / market probability audit V1', 'summary':{'published_outcomes':len(clean),'unique_players':len({str(r.get('player_id')) for r in clean}),'sportsbooks':len({str(r.get('bookmaker_key')) for r in clean}),'validated_positive_edges':0,'calibrated_model_probabilities':False}, 'rows':clean,'notice':'Historical snapshot, not necessarily live odds. Projection-vs-line comparison only. Market no-vig probability is NOT model probability. Availability unverified; no verified positive EV.'}
+          token=os.getenv('GILL_SITE_PUBLISH_TOKEN','').strip()
+          if not token:raise SystemExit('MISSING_GILL_SITE_PUBLISH_TOKEN: configured private Actions secret required')
+          url='https://api.github.com/repos/Bsg70124-collab/gill-sports/contents/data/nba_market_comparison.json'
+          headers={'Authorization':'Bearer '+token,'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28','User-Agent':'GillSportsOddsPublisher/1'}
+          def api(method,payload=None):
+              data=None if payload is None else json.dumps(payload).encode('utf-8')
+              req=Request(url,data=data,method=method,headers=headers)
+              try:
+                  with urlopen(req,timeout=45) as resp:return json.load(resp)
+              except HTTPError as e:
+                  if method=='GET' and e.code==404:return None
+                  raise RuntimeError('GitHub '+method+' failed HTTP '+str(e.code)+': '+e.read().decode('utf-8','replace')[:250]) from e
+          old=api('GET')
+          body={'message':'Publish sanitized NBA market comparison snapshot','branch':'main','content':base64.b64encode((json.dumps(feed,ensure_ascii=False,indent=2)+'\n').encode()).decode()}
+          if old:body['sha']=old['sha']
+          api('PUT',body)
+          print('PUBLIC_MARKET_COMPARISON_PUBLISHED: data/nba_market_comparison.json')
+          print('PUBLISHED_OUTCOMES:',len(clean))
+          print('UNIQUE_PLAYERS:',feed['summary']['unique_players'])
+          print('SPORTSBOOKS:',feed['summary']['sportsbooks'])
+          print('MODEL_PROBABILITIES_READY: False; VALIDATED_EDGES: 0')
+          print('ODDS_API_CREDITS_SPENT: 0')
+          PYCODE
