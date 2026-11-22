@@ -1,0 +1,149 @@
+name: Gill Sports - NBA News Watch V1
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '57 */3 * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gill-sports-nba-news-watch
+  cancel-in-progress: false
+
+jobs:
+  news-watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Check out the public Gill Sports repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: true
+
+      - name: Retrieve Yahoo Sports NBA headlines and match forecast players
+        shell: bash
+        run: |
+          python - <<'PY'
+          import email.utils
+          import html
+          import json
+          import re
+          import urllib.request
+          import xml.etree.ElementTree as ET
+          from datetime import datetime, timezone, timedelta
+          from pathlib import Path
+
+          DATA = Path('data')
+          SOURCE = 'https://sports.yahoo.com/nba/rss/'
+          forecast_path = DATA / 'player_live.json'
+          if not forecast_path.is_file():
+              raise SystemExit('No data/player_live.json: refusing to publish ungrounded player alerts')
+          forecast = json.loads(forecast_path.read_text(encoding='utf-8'))
+          candidates = forecast.get('rows', [])
+          if not isinstance(candidates, list) or not candidates:
+              raise SystemExit('No forecast candidates; skipping news alert update')
+
+          now = datetime.now(timezone.utc)
+          # Match exact full player names, not just surnames or rumor keywords.
+          names = sorted({str(r.get('player_name') or '').strip()
+                          for r in candidates if str(r.get('player_name') or '').strip()})
+          # Avoid making claims about players without a verifiable matching headline.
+          def pattern_for(name):
+              words = re.findall(r'[A-Za-z0-9]+', name)
+              if len(words) < 2:
+                  return None
+              return re.compile(r'(?<!\w)' + r'\W+'.join(map(re.escape, words)) + r'(?!\w)', re.I)
+          patterns = {name: pattern_for(name) for name in names}
+
+          articles = []
+          fetch_error = None
+          try:
+              req = urllib.request.Request(SOURCE, headers={
+                  'User-Agent':'GillSportsNewsWatch/1.0 (+https://github.com/Bsg70124-collab/gill-sports)',
+                  'Accept':'application/rss+xml, application/xml, text/xml; q=0.9'
+              })
+              with urllib.request.urlopen(req, timeout=30) as resp:
+                  payload = resp.read(3_000_001)
+              if len(payload) > 3_000_000:
+                  raise ValueError('RSS feed exceeds 3 MB safety cap')
+              root = ET.fromstring(payload)
+              for item in root.findall('.//item')[:150]:
+                  def field(k):
+                      el = item.find(k)
+                      return html.unescape(' '.join(el.itertext()).strip()) if el is not None else ''
+                  title = field('title')[:350]
+                  link = field('link')[:1000]
+                  published = field('pubDate')
+                  if not title or not link.startswith(('https://','http://')):
+                      continue
+                  try:
+                      dt = email.utils.parsedate_to_datetime(published)
+                      if dt.tzinfo is None: dt = dt.replace(tzinfo=timezone.utc)
+                      dt = dt.astimezone(timezone.utc)
+                  except (TypeError, ValueError, IndexError):
+                      dt = None
+                  # Headlines may still appear for multiple days; ignore older news.
+                  if dt and (now - dt > timedelta(hours=48) or dt > now + timedelta(hours=2)):
+                      continue
+                  matched = [name for name,p in patterns.items() if p and p.search(title)]
+                  articles.append({'title':title,'url':link,'published_at_utc':dt.isoformat() if dt else None,
+                                   'matched_players':matched,'source':'Yahoo Sports NBA RSS'})
+          except Exception as exc:
+              fetch_error = f'{type(exc).__name__}: {str(exc)[:250]}'
+
+          # Fail closed on source failure: leave the last successful file in place.
+          if fetch_error:
+              print('YAHOO NEWS SOURCE UNAVAILABLE:', fetch_error)
+              print('Existing news file preserved; no news-based player status changes')
+              raise SystemExit(0)
+
+          alerts = [a for a in articles if a['matched_players']]
+          # A headline is a review signal, not an injury diagnosis or proof of activity.
+          result = {
+              'updated_at_utc':now.isoformat(),
+              'source':'Yahoo Sports NBA RSS',
+              'source_url':SOURCE,
+              'status':'OK',
+              'headline_count':len(articles),
+              'matched_headline_count':len(alerts),
+              'forecast_rows':len(candidates),
+              'covered_forecast_dates':sorted({str(r.get('game_date')) for r in candidates}),
+              'warnings':['Headlines are not official injury or starting-lineup confirmations.',
+                          'Exact-name headline matching can miss relevant news.',
+                          'RotoWire automated use is not enabled; separate license/permission required.'],
+              'rotowire_reference_url':'https://www.rotowire.com/rss/',
+              'matched_headlines':alerts[:100],
+              'recent_headlines':articles[:25],
+          }
+          target = DATA / 'nba_news_watch.json'
+          target.write_text(json.dumps(result,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
+          print('GILL SPORTS NBA NEWS WATCH')
+          print('Forecast rows:',len(candidates))
+          print('Yahoo headlines:',len(articles))
+          print('Player-matching headlines:',len(alerts))
+          print('Source status:',result['status'])
+          print('No models, injury statuses, locked forecasts, or results modified')
+          PY
+
+      - name: Publish the new news signals
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ ! -f data/nba_news_watch.json ]; then
+            echo 'News source unavailable; no new news JSON to publish.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/nba_news_watch.json
+          if git diff --cached --quiet; then
+            echo 'No changes to NBA news watch.'
+            exit 0
+          fi
+          git commit -m 'Publish Gill Sports NBA news watch signals'
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
