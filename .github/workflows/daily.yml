@@ -1,10 +1,11 @@
-
 name: Gill Sports Daily Automation
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 16 * * *'
+    # UTC: every four hours; GitHub's scheduler can delay executions.
+    # The game model locks new predictions only before the scheduled tipoff.
+    - cron: '17 */4 * * *'
 
 permissions:
   contents: write
@@ -16,33 +17,55 @@ concurrency:
 jobs:
   update-predictions:
     runs-on: ubuntu-latest
-
+    timeout-minutes: 25
     steps:
       - name: Download repository
         uses: actions/checkout@v4
         with:
           ref: main
+          persist-credentials: true
 
       - name: Install Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
 
-      - name: Run prediction model
+      - name: Run game prediction and settlement model
         run: python workflow.py --lookback 75
+
+      - name: Validate stored game data
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from datetime import datetime, timezone
+          data=json.loads(Path('data/live.json').read_text(encoding='utf-8'))
+          forecasts=data.get('forecasts', {})
+          if not isinstance(forecasts,dict):
+              raise SystemExit('Invalid forecasts format')
+          updated=data.get('last_refresh')
+          if not updated: raise SystemExit('Missing last_refresh')
+          timestamp=datetime.fromisoformat(updated.replace('Z','+00:00'))
+          age=(datetime.now(timezone.utc)-timestamp).total_seconds()
+          if age<0 or age>1800: raise SystemExit('Game data refresh is not recent')
+          counts={key:sum(1 for x in forecasts.values() if x.get('result')==key)
+                  for key in ('pending','win','loss','void')}
+          print('GAME MODEL AUDIT:',counts,'feed_errors:',len(data.get('errors',[])),
+                'last_refresh:',updated)
+          PY
 
       - name: Save updated predictions
         shell: bash
         run: |
-          set -e
+          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/
+          git add data/live.json
           if git diff --cached --quiet; then
-            echo "No prediction data changes."
+            echo "No game prediction data changes."
             exit 0
           fi
-          git commit -m "Automatic Gill Sports prediction update"
+          git commit -m "Automatic Gill Sports game prediction and settlement update"
           git fetch origin main
           git rebase origin/main
           git push origin HEAD:main
