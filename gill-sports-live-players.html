@@ -6,16 +6,33 @@
 <style>
 :root{font-family:system-ui,-apple-system,Segoe UI,sans-serif;color-scheme:dark;background:#08111f;color:#f0f5ff}*{box-sizing:border-box}body{margin:0}header{background:#0d1a2c;border-bottom:1px solid #263854}.head,main,footer{max-width:1350px;margin:auto;padding:18px}.head{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}.logo{font-weight:800;font-size:23px}.logo span{color:#70a6ff}a{color:#a7c5ff}.small,.muted{color:#a9b9d1;font-size:13px}.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:18px 0}.metric,.panel{background:#101f33;border:1px solid #283d5b;border-radius:14px;padding:18px;margin-bottom:14px}.metric b{display:block;font-size:30px;margin-top:7px}.toolbar{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}button,input,select{background:#1b304f;color:#eef4ff;border:1px solid #375073;border-radius:8px;font:inherit;padding:9px 11px}button{cursor:pointer;background:#397bf0}input{flex:2 1 180px}select{flex:1 1 150px}.scroll{overflow:auto;max-height:66vh}table{border-collapse:collapse;width:100%;font-size:13px}th,td{padding:10px;border-bottom:1px solid #263954;text-align:left;white-space:nowrap}th{position:sticky;top:0;background:#15273f;color:#b9c9e5}.good{color:#58dfab}.warn{color:#ffd17c}.bad{color:#ff8b99}.notice{border-left:4px solid #ebb65d;background:#2a2630;border-radius:7px;padding:13px}#injury-note{margin:12px 0}footer{font-size:12px;color:#9eafc9}@media(max-width:650px){.head,main,footer{padding:12px}}
 </style>
+<!-- GILL_COLOR_V1_BEGIN -->
+<style id="gill-color-v1">
+:root{--good:#62e4ad;--warning:#ffd27a;--danger:#ff91a2;--muted:#b2c3df}
+.metric{border-top:3px solid #7ab6ff;box-shadow:0 5px 22px #0002}
+.metric:nth-child(2){border-top-color:#53df9f}.metric:nth-child(3){border-top-color:#ffcb73}.metric:nth-child(4){border-top-color:#ae9dff}.metric:nth-child(5){border-top-color:#ff8f9d}
+.panel{box-shadow:0 6px 24px #0002}tr:nth-child(even){background:#ffffff05}tbody tr:hover{background:#75b6ff13}
+.gs-pill{display:inline-block;font-size:11px;letter-spacing:.01em;font-weight:750;line-height:1.4;padding:3px 9px;border:1px solid;border-radius:999px;white-space:nowrap}
+.gs-green{color:#75eab4;background:#164c3755;border-color:#327e60}
+.gs-amber{color:#ffdb91;background:#5f481f55;border-color:#9b7739}
+.gs-red{color:#ff9dae;background:#6b293755;border-color:#ac5267}
+.gs-gray{color:#bccae0;background:#35455a66;border-color:#56677a}
+.gs-key{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin:9px 0 15px;font-size:12px;color:#becfe5}
+.gs-error{font-weight:750;font-variant-numeric:tabular-nums}.gs-row-settled{box-shadow:inset 3px 0 #48d19a}.gs-row-pending{box-shadow:inset 3px 0 #c6a15b}.gs-row-error{box-shadow:inset 3px 0 #ee7187}
+#availability-news-panel td:last-child{white-space:normal;min-width:200px;max-width:520px}#availability-news-panel a{overflow-wrap:anywhere}
+@media(max-width:650px){.metric{padding:12px}.metric b{font-size:24px}th,td{padding:9px 8px}.gs-pill{font-size:10px;padding:3px 7px}}
+</style>
+<!-- GILL_COLOR_V1_END -->
 </head><body>
 <header><div class="head"><div><div class="logo">Gill <span>Sports</span> | NBA Player Lab</div><div class="small">Player forecasts · actual results · injury watch</div></div><div><a href="./">Main dashboard</a> <button id="refresh">Refresh data</button></div></div></header>
 <main>
 <div class="notice" id="notice">Loading published data…</div>
 <div class="metrics"><div class="metric"><div class="small">Archived forecasts</div><b id="total">—</b></div><div class="metric"><div class="small">Settled player-games</div><b id="settled">—</b></div><div class="metric"><div class="small">Pending player-games</div><b id="pending">—</b></div><div class="metric"><div class="small">Mean absolute error</div><b id="mae">—</b><div class="small">Selected stat, settled only</div></div><div class="metric"><div class="small">Injury-feed warnings</div><b id="injury-count">—</b></div></div>
-<section class="panel"><h2>Player projections vs. actual results</h2>
+<section class="panel"><h2>Player projections vs. actual results</h2><div class="gs-key" aria-label="Color legend"><b>Color guide:</b><span class="gs-pill gs-green">Settled / small error</span><span class="gs-pill gs-amber">Pending / injury / medium error</span><span class="gs-pill gs-red">Data problem / large error</span><span class="gs-pill gs-gray">Unverified</span></div>
 <div class="toolbar"><input id="search" aria-label="Search players" placeholder="Search player or matchup"><select id="stat" aria-label="Statistic"><option value="points">Points</option><option value="rebounds">Rebounds</option><option value="assists">Assists</option><option value="pra">PRA</option><option value="minutes">Minutes</option></select><select id="view" aria-label="Result filter"><option value="all">All results</option><option value="SETTLED">Settled</option><option value="PENDING">Pending</option><option value="DNP_OR_UNMATCHED">DNP / Unmatched</option><option value="DATA_ERROR">Data errors</option></select><select id="day" aria-label="Date filter"><option value="all">All dates</option></select><select id="injury-filter" aria-label="Injury filter"><option value="all">All injury statuses</option><option value="flagged">Reported injuries only</option><option value="unverified">Not listed / unverified</option></select><button id="csv">Export CSV</button></div>
 <p class="small" id="summary"></p><p class="small" id="injury-note"></p>
 <div class="scroll"><table><thead><tr><th>Date</th><th>Player</th><th>Matchup</th><th>Predicted</th><th>Actual</th><th>Error (Pred − Actual)</th><th>Result</th><th>Injury watch</th></tr></thead><tbody id="rows"><tr><td colspan="8">Loading…</td></tr></tbody></table></div>
-</section><section class="panel"><h2>How to interpret this data</h2><p class="small">MAE is the average absolute difference between predicted and actual statistics, calculated on settled player-games only. Error colors represent size of prediction error, not betting confidence. ESPN injury-feed entries are unofficial, may be stale, and match names only. “Not listed” does not verify a player will play. All forecasts remain unverified candidates, not wagering recommendations.</p></section>
+</section><section class="panel"><h2>How to interpret this data</h2><p class="small">MAE is the average absolute difference between predicted and actual statistics, calculated on settled player-games only. Error colors represent size of prediction error, not betting confidence. Green does not establish a profitable betting edge. ESPN injury-feed entries are unofficial, may be stale, and match names only. “Not listed” does not verify a player will play. All forecasts remain unverified candidates, not wagering recommendations.</p></section>
 <!-- GILL_AVAILABILITY_NEWS_V1_BEGIN -->
 <section class="panel" id="availability-news-panel">
   <h2>Player Availability &amp; News <span class="small">ESPN injuries + Yahoo Sports headlines</span></h2>
@@ -60,7 +77,8 @@ function paint(){
  $('rows').innerHTML=visible.slice(0,600).map(r=>{
   const p=numeric(r['pred_'+stat]),a=numeric(r['actual_'+stat]),done=r.status==='SETTLED'&&p!==null&&a!==null,error=done?p-a:null,cls=error===null?'muted':Math.abs(error)<=2?'good':Math.abs(error)<=5?'warn':'bad';
   const it=injuryFor(r),flag=it?.reported_injury===true,label=flag?it.injury_status||'Reported injury':'Not verified';
-  return `<tr><td>${esc(r.game_date)}</td><td>${esc(r.player_name)}</td><td>${esc(r.matchup)}</td><td>${format(p)}</td><td>${done?format(a):'—'}</td><td class="${cls}">${done?(error>0?'+':'')+error.toFixed(1):'—'}</td><td>${esc(r.status||'PENDING')}</td><td class="${flag?'warn':'muted'}" title="${esc(it?.injury_note||'Availability not independently verified')}">${esc(label)}</td></tr>`;
+  const st=r.status||'PENDING',stClass=st==='SETTLED'?'gs-green':st==='PENDING'?'gs-amber':st==='DATA_ERROR'?'gs-red':'gs-gray',rowClass=st==='SETTLED'?'gs-row-settled':st==='PENDING'?'gs-row-pending':'gs-row-error',injClass=flag?(/out|inactive|doubtful/i.test(label)?'gs-red':'gs-amber'):'gs-gray';
+  return `<tr class="${rowClass}"><td>${esc(r.game_date)}</td><td><strong>${esc(r.player_name)}</strong></td><td>${esc(r.matchup)}</td><td>${format(p)}</td><td>${done?format(a):'—'}</td><td class="gs-error ${cls}">${done?(error>0?'+':'')+error.toFixed(1):'—'}</td><td><span class="gs-pill ${stClass}">${esc(st)}</span></td><td title="${esc(it?.injury_note||'Availability not independently verified')}"><span class="gs-pill ${injClass}">${esc(label)}</span></td></tr>`;
  }).join('')||'<tr><td colspan="8">No matching records</td></tr>';
 }
 async function refresh(){
@@ -143,7 +161,8 @@ refresh();
       const injured=x.hasInjury,tag=injured?classify(x.injury.injury_status):'UNVERIFIED';
       const c=injured?(['OUT / INACTIVE','DOUBTFUL'].includes(tag)?'bad':'warn'):'muted';
       const headlines=x.playerArticles.map(a=>{const u=safeUrl(a.url);return u?`<div><a href="${escText(u)}" target="_blank" rel="noopener noreferrer">${escText(a.title)}</a> <span class="small">(${escText(pDate(a.published_at_utc))})</span></div>`:`<div>${escText(a.title)}</div>`}).join('');
-      return `<tr><td>${escText(x.r.game_date)}</td><td>${escText(x.r.player_name)}</td><td>${escText(x.r.matchup)}</td><td class="${c}" title="${escText(x.injury?.injury_note||'Not verified')}">${escText(tag)}</td><td>${headlines||'<span class="muted">No matching headline</span>'}</td></tr>`;
+      const pillColor=c==='bad'?'gs-red':c==='warn'?'gs-amber':'gs-gray';
+      return `<tr><td>${escText(x.r.game_date)}</td><td><strong>${escText(x.r.player_name)}</strong></td><td>${escText(x.r.matchup)}</td><td title="${escText(x.injury?.injury_note||'Not verified')}"><span class="gs-pill ${pillColor}">${escText(tag)}</span></td><td>${headlines||'<span class="muted">No matching headline</span>'}</td></tr>`;
     }).join('')||'<tr><td colspan="5">No matching players</td></tr>';
   }
   async function load() {
