@@ -1,0 +1,68 @@
+name: Gill Sports - Install Color Coded Player Dashboard V1
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install visual badges
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('gill-sports-live-players.html')
+          s=p.read_text(encoding='utf-8')
+          start='<!-- GILL_COLOR_V1_BEGIN -->'
+          end='<!-- GILL_COLOR_V1_END -->'
+          style='''<!-- GILL_COLOR_V1_BEGIN -->
+          <style id="gill-color-v1">
+          :root{--good:#62e4ad;--warning:#ffd27a;--danger:#ff91a2;--muted:#b2c3df}
+          .metric{border-top:3px solid #7ab6ff;box-shadow:0 5px 22px #0002}
+          .metric:nth-child(2){border-top-color:#53df9f}.metric:nth-child(3){border-top-color:#ffcb73}.metric:nth-child(4){border-top-color:#ae9dff}.metric:nth-child(5){border-top-color:#ff8f9d}
+          .panel{box-shadow:0 6px 24px #0002}tr:nth-child(even){background:#ffffff05}tbody tr:hover{background:#75b6ff13}
+          .gs-pill{display:inline-block;font-size:11px;letter-spacing:.01em;font-weight:750;line-height:1.4;padding:3px 9px;border:1px solid;border-radius:999px;white-space:nowrap}
+          .gs-green{color:#75eab4;background:#164c3755;border-color:#327e60}
+          .gs-amber{color:#ffdb91;background:#5f481f55;border-color:#9b7739}
+          .gs-red{color:#ff9dae;background:#6b293755;border-color:#ac5267}
+          .gs-gray{color:#bccae0;background:#35455a66;border-color:#56677a}
+          .gs-key{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin:9px 0 15px;font-size:12px;color:#becfe5}
+          .gs-error{font-weight:750;font-variant-numeric:tabular-nums}.gs-row-settled{box-shadow:inset 3px 0 #48d19a}.gs-row-pending{box-shadow:inset 3px 0 #c6a15b}.gs-row-error{box-shadow:inset 3px 0 #ee7187}
+          #availability-news-panel td:last-child{white-space:normal;min-width:200px;max-width:520px}#availability-news-panel a{overflow-wrap:anywhere}
+          @media(max-width:650px){.metric{padding:12px}.metric b{font-size:24px}th,td{padding:9px 8px}.gs-pill{font-size:10px;padding:3px 7px}}
+          </style>
+          <!-- GILL_COLOR_V1_END -->'''
+          if start in s and end in s:s=s[:s.index(start)]+style+s[s.index(end)+len(end):]
+          eIse=0
+          if start not in s:s=s.replace('</head>',style+'\n</head>',1)
+          legend='<div class="gs-key" aria-label="Color legend"><b>Color guide:</b><span class="gs-pill gs-green">Settled / small error</span><span class="gs-pill gs-amber">Pending / injury / medium error</span><span class="gs-pill gs-red">Data problem / large error</span><span class="gs-pill gs-gray">Unverified</span></div>'
+          if 'aria-label="Color legend"' not in s:s=s.replace('<section class="panel"><h2>Player projections vs. actual results</h2>','<section class="panel"><h2>Player projections vs. actual results</h2>'+legend,1)
+          old='''return `<tr><td>${esc(r.game_date)}</td><td>${esc(r.player_name)}</td><td>${esc(r.matchup)}</td><td>${format(p)}</td><td>${done?format(a):'—'}</td><td class="${cls}">${done?(error>0?'+':'')+error.toFixed(1):'—'}</td><td>${esc(r.status||'PENDING')}</td><td class="${flag?'warn':'muted'}" title="${esc(it?.injury_note||'Availability not independently verified')}">${esc(label)}</td></tr>`;'''
+          new='''const st=r.status||'PENDING',stClass=st==='SETTLED'?'gs-green':st==='PENDING'?'gs-amber':st==='DATA_ERROR'?'gs-red':'gs-gray',rowClass=st==='SETTLED'?'gs-row-settled':st==='PENDING'?'gs-row-pending':'gs-row-error',injClass=flag?(/out|inactive|doubtful/i.test(label)?'gs-red':'gs-amber'):'gs-gray';
+            return `<tr class="${rowClass}"><td>${esc(r.game_date)}</td><td><strong>${esc(r.player_name)}</strong></td><td>${esc(r.matchup)}</td><td>${format(p)}</td><td>${done?format(a):'—'}</td><td class="gs-error ${cls}">${done?(error>0?'+':'')+error.toFixed(1):'—'}</td><td><span class="gs-pill ${stClass}">${esc(st)}</span></td><td title="${esc(it?.injury_note||'Availability not independently verified')}"><span class="gs-pill ${injClass}">${esc(label)}</span></td></tr>`;'''
+          if old in s:s=s.replace(old,new,1)
+          elif 'const st=r.status||' not in s:raise SystemExit('Player renderer changed; aborting')
+          old2='''return `<tr><td>${escText(x.r.game_date)}</td><td>${escText(x.r.player_name)}</td><td>${escText(x.r.matchup)}</td><td class="${c}" title="${escText(x.injury?.injury_note||'Not verified')}">${escText(tag)}</td><td>${headlines||'<span class="muted">No matching headline</span>'}</td></tr>`;'''
+          new2='''const pillColor=c==='bad'?'gs-red':c==='warn'?'gs-amber':'gs-gray';
+                return `<tr><td>${escText(x.r.game_date)}</td><td><strong>${escText(x.r.player_name)}</strong></td><td>${escText(x.r.matchup)}</td><td title="${escText(x.injury?.injury_note||'Not verified')}"><span class="gs-pill ${pillColor}">${escText(tag)}</span></td><td>${headlines||'<span class="muted">No matching headline</span>'}</td></tr>`;'''
+          if old2 in s:s=s.replace(old2,new2,1)
+          elif 'const pillColor=c===' not in s:raise SystemExit('Availability renderer changed; aborting')
+          s=s.replace('Error colors represent size of prediction error, not betting confidence.','Error colors represent size of prediction error, not betting confidence. Green does not establish a profitable betting edge.')
+          p.write_text(s,encoding='utf-8')
+          print('VISUAL_INSTALL_SUCCESS');print('STYLE_MARKER_COUNT:',s.count(start));print('LEGEND_COUNT:',s.count('aria-label="Color legend"'))
+          PY
+      - name: Commit changes if needed
+        shell: bash
+        run: |
+          if git diff --quiet -- gill-sports-live-players.html; then
+            echo 'No changes needed'
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add gill-sports-live-players.html
+            git commit -m "Color code player result and availability dashboard"
+            git push
+          fi
