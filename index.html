@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -164,10 +163,9 @@ a{color:#95bcff}
 </section>
 
 <section class="page" id="tab-players">
-  
 <div class="panel">
   <div class="rowhead">
-    <h2>Live NBA Player Predictions & Accuracy</h2>
+    <h2>Live NBA Player Predictions &amp; Accuracy</h2>
     <span class="badge">Automated Feed</span>
   </div>
   <p>Daily model forecasts, final player statistics,
@@ -179,28 +177,33 @@ a{color:#95bcff}
     style="width:100%;height:950px;border:1px solid #283d5b;border-radius:12px;background:#08111f"
   ></iframe>
 </div>
-<div class="notice">
- Archived player predictions from the original Gill Sports site.
- The trained player models have not yet been installed in this GitHub workflow.
- These are historical projections, not fresh live predictions.
-</div>
-<div class="panel">
- <div class="rowhead"><h2>Player projections vs. actuals</h2><span class="badge">Original archive</span></div>
- <div class="toolbar">
-  <input id="player-search" placeholder="Search player, team or game...">
-  <select id="player-stat">
-   <option value="pts">Points</option><option value="reb">Rebounds</option><option value="ast">Assists</option><option value="pra">PRA</option><option value="minutes">Minutes</option>
-  </select>
-  <select id="player-view">
-   <option value="all">All rows</option><option value="trackable">Trackable</option><option value="settled">Settled</option><option value="pending">Unsettled</option><option value="suppressed">Suppressed</option>
-  </select>
-  <button class="secondary" id="player-export">Export CSV</button>
+<details class="panel" id="historical-player-archive" style="margin-top:18px">
+ <summary style="cursor:pointer;font-weight:700;font-size:16px;padding:4px 0">Historical Archive — older player projections (click to expand)</summary>
+ <div style="margin-top:16px">
+  <div class="notice">
+   Archived player predictions from the original Gill Sports site.
+   The trained player models have not yet been installed in this GitHub workflow.
+   These are historical projections, not fresh live predictions.
+  </div>
+  <div class="panel">
+   <div class="rowhead"><h2>Player projections vs. actuals</h2><span class="badge">Original archive</span></div>
+   <div class="toolbar">
+    <input id="player-search" placeholder="Search player, team or game...">
+    <select id="player-stat">
+     <option value="pts">Points</option><option value="reb">Rebounds</option><option value="ast">Assists</option><option value="pra">PRA</option><option value="minutes">Minutes</option>
+    </select>
+    <select id="player-view">
+     <option value="all">All rows</option><option value="trackable">Trackable</option><option value="settled">Settled</option><option value="pending">Unsettled</option><option value="suppressed">Suppressed</option>
+    </select>
+    <button class="secondary" id="player-export">Export CSV</button>
+   </div>
+   <p id="player-summary"></p>
+   <div class="scroll">
+    <table><thead><tr><th>Date / player</th><th>Game</th><th>Availability</th><th>Projection</th><th>Actual</th><th>Error</th><th>Status</th></tr></thead><tbody id="player-table"></tbody></table>
+   </div>
+  </div>
  </div>
- <p id="player-summary"></p>
- <div class="scroll">
-  <table><thead><tr><th>Date / player</th><th>Game</th><th>Availability</th><th>Projection</th><th>Actual</th><th>Error</th><th>Status</th></tr></thead><tbody id="player-table"></tbody></table>
- </div>
-</div>
+</details>
 </section>
 
 <section class="page" id="tab-props">
