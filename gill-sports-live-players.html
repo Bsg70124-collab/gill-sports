@@ -16,6 +16,28 @@
 <p class="small" id="summary"></p><p class="small" id="injury-note"></p>
 <div class="scroll"><table><thead><tr><th>Date</th><th>Player</th><th>Matchup</th><th>Predicted</th><th>Actual</th><th>Error (Pred − Actual)</th><th>Result</th><th>Injury watch</th></tr></thead><tbody id="rows"><tr><td colspan="8">Loading…</td></tr></tbody></table></div>
 </section><section class="panel"><h2>How to interpret this data</h2><p class="small">MAE is the average absolute difference between predicted and actual statistics, calculated on settled player-games only. Error colors represent size of prediction error, not betting confidence. ESPN injury-feed entries are unofficial, may be stale, and match names only. “Not listed” does not verify a player will play. All forecasts remain unverified candidates, not wagering recommendations.</p></section>
+<!-- GILL_AVAILABILITY_NEWS_V1_BEGIN -->
+<section class="panel" id="availability-news-panel">
+  <h2>Player Availability &amp; News <span class="small">ESPN injuries + Yahoo Sports headlines</span></h2>
+  <p class="small">Injury labels are unofficial reporting signals, not confirmed active/inactive decisions. Headlines are links for review, not verified lineup changes. RotoWire automatic collection is not enabled.</p>
+  <div class="toolbar">
+    <input id="availability-search" aria-label="Search news and availability" placeholder="Search player or matchup">
+    <select id="availability-type" aria-label="Availability filter">
+      <option value="all">All candidates</option>
+      <option value="injury">ESPN injury reports</option>
+      <option value="out">Out / Doubtful reports</option>
+      <option value="news">Yahoo news matches</option>
+      <option value="unclear">No matching report</option>
+    </select>
+    <select id="availability-day" aria-label="Availability date"><option value="all">All forecast dates</option></select>
+    <button id="availability-update" type="button">Refresh availability</button>
+  </div>
+  <p class="small" id="availability-summary">Loading source data…</p>
+  <p class="small" id="availability-freshness"></p>
+  <div class="scroll"><table><thead><tr><th>Date</th><th>Player</th><th>Matchup</th><th>ESPN injury watch</th><th>Yahoo headlines</th></tr></thead>
+  <tbody id="availability-rows"><tr><td colspan="5">Loading…</td></tr></tbody></table></div>
+</section>
+<!-- GILL_AVAILABILITY_NEWS_V1_END -->
 </main><footer id="updated">—</footer>
 <script>
 'use strict';
@@ -63,5 +85,90 @@ $('csv').addEventListener('click',()=>{
  const blob=new Blob([[cols.join(','),...values].join('\n')],{type:'text/csv'}),u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download='gill-sports-player-results.csv';a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);
 });
 refresh();
+</script>
+<script id="gill-availability-news-v1">
+'use strict';
+(() => {
+  const el = id => document.getElementById(id);
+  const escText = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const norm = name => String(name ?? '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/gi,'').toLowerCase();
+  const label = name => String(name ?? '').trim();
+  const pDate = d => Number.isFinite(Date.parse(d || '')) ? new Date(d).toLocaleString() : 'Unknown';
+  const recent = (d, hours) => Number.isFinite(Date.parse(d || '')) && Date.now() - Date.parse(d) <= hours*3600000 && Date.now() - Date.parse(d) >= -3600000;
+  const safeUrl = u => /^https:\/\/[^ "'<>]+$/i.test(String(u ?? '')) ? u : null;
+  const injuryKey = r => [r.game_date, r.game_id, norm(r.player_name)].join('|');
+  let forecast=[], injuryRows=[], articles=[], injUpdated=null, newsUpdated=null, errors=[];
+  const SELECTORS=['availability-search','availability-type','availability-day'];
+  async function jsonFile(path) {
+    const r = await fetch(path + '?v=' + Date.now(), {cache:'no-store'});
+    if(!r.ok) throw Error(path + ' HTTP ' + r.status);
+    return r.json();
+  }
+  function classify(status) {
+    const t=String(status??'').toLowerCase();
+    if(/\bout\b|inactive|suspend|season.end/.test(t))return 'OUT / INACTIVE';
+    if(/doubtful/.test(t))return 'DOUBTFUL';
+    if(/questionable|day.to.day/.test(t))return 'QUESTIONABLE';
+    if(/probable/.test(t))return 'PROBABLE';
+    return 'REPORTED / UNCONFIRMED';
+  }
+  function render() {
+    const im=new Map(injuryRows.map(r=>[injuryKey(r),r]));
+    const am=new Map();
+    for(const a of articles) for(const name of (a.matched_players||[])) {
+      const key=norm(name);
+      if(!am.has(key))am.set(key,[]);
+      if(am.get(key).length<5)am.get(key).push(a);
+    }
+    const search=el('availability-search').value.toLowerCase(),filter=el('availability-type').value,day=el('availability-day').value;
+    const injuryFresh=recent(injUpdated,12),newsFresh=recent(newsUpdated,12);
+    const joined=forecast.map(r=>{
+      // Don't convert headlines into medical status; just display links.
+      const injury=im.get(injuryKey(r)),hasInjury=injury?.reported_injury===true;
+      const playerArticles=(am.get(norm(r.player_name))||[]).filter(a=>{
+        const publish=Date.parse(a.published_at_utc||'');
+        const dayEnd=Date.parse(r.game_date+'T23:59:59Z');
+        return Number.isFinite(publish)&&Number.isFinite(dayEnd)&&publish<=dayEnd+24*3600000&&publish>=dayEnd-96*3600000;
+      });
+      return {r,injury,hasInjury,playerArticles};
+    });
+    const flagged=joined.filter(x=>x.hasInjury).length,withNews=joined.filter(x=>x.playerArticles.length).length;
+    el('availability-summary').textContent=`${forecast.length} player-games · ${flagged} ESPN injury-feed matches · ${withNews} player-games with matching Yahoo headlines. Sources are not official lineup confirmations.`;
+    el('availability-freshness').textContent=`ESPN injury check: ${pDate(injUpdated)}${injuryFresh?'':' (STALE OR UNAVAILABLE)'} · Yahoo news: ${pDate(newsUpdated)}${newsFresh?'':' (STALE OR UNAVAILABLE)'}`+(errors.length?` · Source errors: ${errors.join('; ')}`:'');
+    const visible=joined.filter(x=>(day==='all'||x.r.game_date===day)&&
+      [x.r.player_name,x.r.matchup].join(' ').toLowerCase().includes(search)&&
+      (filter==='all'||(filter==='injury'&&x.hasInjury)||(filter==='news'&&x.playerArticles.length)||(filter==='out'&&x.hasInjury&&['OUT / INACTIVE','DOUBTFUL'].includes(classify(x.injury.injury_status)))||(filter==='unclear'&&!x.hasInjury&&!x.playerArticles.length)))
+      .sort((a,b)=>Number(b.hasInjury)-Number(a.hasInjury)||Number(b.playerArticles.length>0)-Number(a.playerArticles.length>0)||b.r.game_date.localeCompare(a.r.game_date)||a.r.player_name.localeCompare(b.r.player_name));
+    el('availability-rows').innerHTML=visible.slice(0,700).map(x=>{
+      const injured=x.hasInjury,tag=injured?classify(x.injury.injury_status):'UNVERIFIED';
+      const c=injured?(['OUT / INACTIVE','DOUBTFUL'].includes(tag)?'bad':'warn'):'muted';
+      const headlines=x.playerArticles.map(a=>{const u=safeUrl(a.url);return u?`<div><a href="${escText(u)}" target="_blank" rel="noopener noreferrer">${escText(a.title)}</a> <span class="small">(${escText(pDate(a.published_at_utc))})</span></div>`:`<div>${escText(a.title)}</div>`}).join('');
+      return `<tr><td>${escText(x.r.game_date)}</td><td>${escText(x.r.player_name)}</td><td>${escText(x.r.matchup)}</td><td class="${c}" title="${escText(x.injury?.injury_note||'Not verified')}">${escText(tag)}</td><td>${headlines||'<span class="muted">No matching headline</span>'}</td></tr>`;
+    }).join('')||'<tr><td colspan="5">No matching players</td></tr>';
+  }
+  async function load() {
+    el('availability-freshness').textContent='Loading availability and news…';
+    errors=[];
+    const paths=['data/player_live.json','data/injury_watch.json','data/nba_news_watch.json'];
+    const results=await Promise.allSettled(paths.map(jsonFile));
+    if(results[0].status==='fulfilled'&&Array.isArray(results[0].value.rows))forecast=results[0].value.rows;
+    else errors.push('Player projections unavailable');
+    if(results[1].status==='fulfilled'&&Array.isArray(results[1].value.rows)){injuryRows=results[1].value.rows;injUpdated=results[1].value.updated_at_utc;}
+    else {injuryRows=[];injUpdated=null;errors.push('ESPN injury watch unavailable');}
+    if(results[2].status==='fulfilled'&&Array.isArray(results[2].value.matched_headlines)){articles=results[2].value.matched_headlines;newsUpdated=results[2].value.updated_at_utc;}
+    else {articles=[];newsUpdated=null;errors.push('Yahoo news watch unavailable');}
+    const cur=el('availability-day').value;
+    const days=[...new Set(forecast.map(r=>r.game_date).filter(Boolean))].sort().reverse();
+    el('availability-day').innerHTML='<option value="all">All forecast dates</option>'+days.map(d=>`<option value="${escText(d)}">${escText(d)}</option>`).join('');
+    if(days.includes(cur))el('availability-day').value=cur;
+    render();
+  }
+  for(const id of SELECTORS)el(id).addEventListener(id==='availability-search'?'input':'change',render);
+  el('availability-update').addEventListener('click',load);
+  // The main dashboard refresh remains available; refresh this panel with it.
+  el('refresh')?.addEventListener('click',load);
+  load();
+})();
+
 </script>
 </body></html>
