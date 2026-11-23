@@ -1,10 +1,10 @@
 {
-  "updated_at_utc": "2026-11-22T22:30:36.896504+00:00",
+  "updated_at_utc": "2026-11-23T08:20:50.257996+00:00",
   "source": "Yahoo Sports NBA RSS",
   "source_url": "https://sports.yahoo.com/nba/rss/",
   "status": "OK",
   "headline_count": 50,
-  "matched_headline_count": 12,
+  "matched_headline_count": 13,
   "forecast_rows": 602,
   "covered_forecast_dates": [
     "2026-11-22",
@@ -18,122 +18,62 @@
   "rotowire_reference_url": "https://www.rotowire.com/rss/",
   "matched_headlines": [
     {
-      "title": "Shai-Gilgeous Alexander, Giannis Antetokounmpo ruled out of Sunday's Thunder-Heat game",
-      "url": "https://sports.yahoo.com/nba/breaking-news/article/shai-gilgeous-alexander-giannis-antetokounmpo-ruled-out-of-sundays-thunder-heat-game-221215293.html",
-      "published_at_utc": "2026-11-22T22:12:02+00:00",
-      "matched_players": [
-        "Giannis Antetokounmpo",
-        "Shai Gilgeous-Alexander"
-      ],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Lakers share encouraging Austin Reaves injury update ahead of Jazz game",
-      "url": "https://sports.yahoo.com/articles/lakers-share-encouraging-austin-reaves-215544653.html",
-      "published_at_utc": "2026-11-22T21:55:44+00:00",
+      "title": "Austin Reaves progressing, full participant in Lakers practice",
+      "url": "https://sports.yahoo.com/articles/austin-reaves-progressing-full-participant-060319526.html",
+      "published_at_utc": "2026-11-23T06:03:19+00:00",
       "matched_players": [
         "Austin Reaves"
       ],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Week 6 Fantasy Basketball Week Ahead: Nuggets pick up two big wins; Dylan Harper and Jaylen Brown injured",
-      "url": "https://sports.yahoo.com/articles/week-6-look-ahead-nuggets-180000551.html",
-      "published_at_utc": "2026-11-22T18:00:00+00:00",
+      "title": "Jayson Tatum misses game-winner in loss to Warriors as Celtics continue on worst losing skid since 2021",
+      "url": "https://sports.yahoo.com/nba/breaking-news/article/jayson-tatum-misses-game-winner-in-loss-to-warriors-as-celtics-continue-on-worst-losing-skid-since-2021-054733536.html",
+      "published_at_utc": "2026-11-23T05:47:33+00:00",
       "matched_players": [
-        "Dylan Harper",
-        "Jaylen Brown"
+        "Jayson Tatum"
       ],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Inside the Suns: Ryan Dunn, Koa Peat, a wake up call?",
-      "url": "https://sports.yahoo.com/articles/inside-suns-ryan-dunn-koa-160000430.html",
-      "published_at_utc": "2026-11-22T16:00:00+00:00",
+      "title": "Mohamed Diawara and Pacome Dadiet in tight battle for Knicks minutes that could last all season",
+      "url": "https://sports.yahoo.com/articles/mohamed-diawara-pacome-dadiet-tight-054023339.html",
+      "published_at_utc": "2026-11-23T05:40:23+00:00",
       "matched_players": [
-        "Koa Peat",
-        "Ryan Dunn"
+        "Mohamed Diawara"
       ],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Mikal Bridges is finding his groove at the right time",
-      "url": "https://sports.yahoo.com/articles/mikal-bridges-finding-groove-time-121750231.html",
-      "published_at_utc": "2026-11-22T12:17:50+00:00",
-      "matched_players": [
-        "Mikal Bridges"
-      ],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Open Thread: Spurs air “The Blueprint” honoring Harrison Barnes leadership and dedication",
-      "url": "https://sports.yahoo.com/articles/open-thread-spurs-air-blueprint-120000179.html",
-      "published_at_utc": "2026-11-22T12:00:00+00:00",
-      "matched_players": [
-        "Harrison Barnes"
-      ],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Karl-Anthony Towns draws praise from another former coach",
-      "url": "https://sports.yahoo.com/articles/karl-anthony-towns-draws-praise-074230812.html",
-      "published_at_utc": "2026-11-22T07:42:30+00:00",
+      "title": "Karl-Anthony Towns dominates Pacers in return to push Knicks’ win streak to five",
+      "url": "https://sports.yahoo.com/articles/karl-anthony-towns-dominates-pacers-041302920.html",
+      "published_at_utc": "2026-11-23T04:13:02+00:00",
       "matched_players": [
         "Karl-Anthony Towns"
       ],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Lakers desperately need Austin Reaves. When will LA star return?",
-      "url": "https://sports.yahoo.com/articles/lakers-desperately-austin-reaves-la-061305290.html",
-      "published_at_utc": "2026-11-22T06:13:05+00:00",
+      "title": "Lakers get encouraging Austin Reaves update as star nears return",
+      "url": "https://sports.yahoo.com/articles/lakers-encouraging-austin-reaves-star-023132438.html",
+      "published_at_utc": "2026-11-23T02:31:32+00:00",
       "matched_players": [
         "Austin Reaves"
       ],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Mikal Bridges buzzer-beater, Victor Wembanyama monster stats highlight NBA action",
-      "url": "https://sports.yahoo.com/articles/mikal-bridges-buzzer-beater-victor-044035871.html",
-      "published_at_utc": "2026-11-22T04:40:35+00:00",
+      "title": "Lakers make Austin Reaves injury decision ahead of Jazz rematch",
+      "url": "https://sports.yahoo.com/articles/lakers-austin-reaves-injury-decision-014124782.html",
+      "published_at_utc": "2026-11-23T01:41:24+00:00",
       "matched_players": [
-        "Mikal Bridges",
-        "Victor Wembanyama"
+        "Austin Reaves"
       ],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Victor Wembanyama says he was showing off for Selena Gomez while scoring 50 points in win over Pelicans",
-      "url": "https://sports.yahoo.com/nba/breaking-news/article/victor-wembanyama-says-he-was-showing-off-for-selena-gomez-while-scoring-50-points-in-win-over-pelicans-054052269.html",
-      "published_at_utc": "2026-11-22T03:50:47+00:00",
-      "matched_players": [
-        "Victor Wembanyama"
-      ],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Mikal Bridges’ buzzer-beater saves Knicks from brutal choke",
-      "url": "https://sports.yahoo.com/articles/mikal-bridges-buzzer-beater-saves-032033603.html",
-      "published_at_utc": "2026-11-22T03:20:33+00:00",
-      "matched_players": [
-        "Mikal Bridges"
-      ],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Knicks' Mikal Bridges drills buzzer-beating 3-pointer to defeat Trail Blazers",
-      "url": "https://sports.yahoo.com/nba/breaking-news/article/knicks-mikal-bridges-drills-buzzer-beating-3-pointer-to-defeat-trail-blazers-031115344.html",
-      "published_at_utc": "2026-11-22T03:11:15+00:00",
-      "matched_players": [
-        "Mikal Bridges"
-      ],
-      "source": "Yahoo Sports NBA RSS"
-    }
-  ],
-  "recent_headlines": [
-    {
-      "title": "Shai-Gilgeous Alexander, Giannis Antetokounmpo ruled out of Sunday's Thunder-Heat game",
-      "url": "https://sports.yahoo.com/nba/breaking-news/article/shai-gilgeous-alexander-giannis-antetokounmpo-ruled-out-of-sundays-thunder-heat-game-221215293.html",
+      "title": "Shai-Gilgeous Alexander, Giannis Antetokounmpo sit out Heat's victory over Thunder",
+      "url": "https://sports.yahoo.com/nba/breaking-news/article/shai-gilgeous-alexander-giannis-antetokounmpo-sit-out-heats-victory-over-thunder-020641012.html",
       "published_at_utc": "2026-11-22T22:12:02+00:00",
       "matched_players": [
         "Giannis Antetokounmpo",
@@ -151,31 +91,31 @@
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Kings reportedly signing veteran Gabe Vincent to be backup point guard",
-      "url": "https://sports.yahoo.com/articles/kings-reportedly-signing-veteran-gabe-204750775.html",
-      "published_at_utc": "2026-11-22T20:47:50+00:00",
-      "matched_players": [],
+      "title": "Bright Side Debates: Jalen Green or Collin Gillespie?",
+      "url": "https://sports.yahoo.com/articles/bright-side-debates-jalen-green-212546099.html",
+      "published_at_utc": "2026-11-22T21:25:46+00:00",
+      "matched_players": [
+        "Collin Gillespie",
+        "Jalen Green"
+      ],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Game Preview: Knicks vs Pacers, November 22, 2026",
-      "url": "https://sports.yahoo.com/articles/game-preview-knicks-vs-pacers-200000345.html",
-      "published_at_utc": "2026-11-22T20:00:00+00:00",
-      "matched_players": [],
+      "title": "Payton Pritchard has to work through his struggles",
+      "url": "https://sports.yahoo.com/articles/payton-pritchard-struggles-211112928.html",
+      "published_at_utc": "2026-11-22T21:11:12+00:00",
+      "matched_players": [
+        "Payton Pritchard"
+      ],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "ANALYSIS: Does Nets’ closing problem have solution?",
-      "url": "https://sports.yahoo.com/articles/analysis-does-nets-closing-problem-191044440.html",
-      "published_at_utc": "2026-11-22T19:10:44+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Rockets must choose carefully in strange 2027 NBA Draft",
-      "url": "https://sports.yahoo.com/articles/rockets-must-choose-carefully-strange-185252726.html",
-      "published_at_utc": "2026-11-22T18:52:52+00:00",
-      "matched_players": [],
+      "title": "What we learned as Brandin Podziemski, Warriors outlast Celtics to end skid",
+      "url": "https://sports.yahoo.com/articles/learned-brandin-podziemski-warriors-outlast-201836389.html",
+      "published_at_utc": "2026-11-22T20:18:36+00:00",
+      "matched_players": [
+        "Brandin Podziemski"
+      ],
       "source": "Yahoo Sports NBA RSS"
     },
     {
@@ -189,20 +129,6 @@
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Knicks 97, Trail Blazers 96: “We found a way to get a win”",
-      "url": "https://sports.yahoo.com/articles/knicks-97-trail-blazers-96-170000607.html",
-      "published_at_utc": "2026-11-22T17:00:00+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Joe Mazzulla downplays disastrous third straight loss: ‘We played well enough’",
-      "url": "https://sports.yahoo.com/articles/joe-mazzulla-downplays-disastrous-third-162439319.html",
-      "published_at_utc": "2026-11-22T16:24:39+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
       "title": "Inside the Suns: Ryan Dunn, Koa Peat, a wake up call?",
       "url": "https://sports.yahoo.com/articles/inside-suns-ryan-dunn-koa-160000430.html",
       "published_at_utc": "2026-11-22T16:00:00+00:00",
@@ -211,113 +137,193 @@
         "Ryan Dunn"
       ],
       "source": "Yahoo Sports NBA RSS"
-    },
+    }
+  ],
+  "recent_headlines": [
     {
-      "title": "Knicks Bulletin: ‘I like the city of Portland’",
-      "url": "https://sports.yahoo.com/articles/knicks-bulletin-city-portland-152757760.html",
-      "published_at_utc": "2026-11-22T15:27:57+00:00",
+      "title": "Utah Jazz take on the Lakers in LA: Preview, start time, how to watch",
+      "url": "https://sports.yahoo.com/articles/utah-jazz-lakers-la-preview-060354769.html",
+      "published_at_utc": "2026-11-23T06:03:54+00:00",
       "matched_players": [],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "The Wizards have a chance to advance in the NBA Cup",
-      "url": "https://sports.yahoo.com/articles/wizards-chance-advance-nba-cup-145901279.html",
-      "published_at_utc": "2026-11-22T14:59:01+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Preview: Utah Jazz Aim to Tame Kyrie and the Mavericks",
-      "url": "https://sports.yahoo.com/articles/preview-utah-jazz-aim-tame-143607210.html",
-      "published_at_utc": "2026-11-22T14:36:07+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Former All-Star has created NBA’s biggest ‘f–king mess’ — and it just keeps getting worse",
-      "url": "https://sports.yahoo.com/articles/former-star-created-nba-biggest-123000006.html",
-      "published_at_utc": "2026-11-22T12:30:00+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Veteran guard Gabe Vincent reportedly finalizing free-agent contract with Kings",
-      "url": "https://sports.yahoo.com/articles/veteran-guard-gabe-vincent-reportedly-122547051.html",
-      "published_at_utc": "2026-11-22T12:25:47+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Mikal Bridges is finding his groove at the right time",
-      "url": "https://sports.yahoo.com/articles/mikal-bridges-finding-groove-time-121750231.html",
-      "published_at_utc": "2026-11-22T12:17:50+00:00",
+      "title": "Austin Reaves progressing, full participant in Lakers practice",
+      "url": "https://sports.yahoo.com/articles/austin-reaves-progressing-full-participant-060319526.html",
+      "published_at_utc": "2026-11-23T06:03:19+00:00",
       "matched_players": [
-        "Mikal Bridges"
+        "Austin Reaves"
       ],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Wolves 104, Grizzlies 95: Defense Downs the Bear",
-      "url": "https://sports.yahoo.com/articles/wolves-104-grizzlies-99-defense-120000683.html",
-      "published_at_utc": "2026-11-22T12:00:00+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Open Thread: Spurs air “The Blueprint” honoring Harrison Barnes leadership and dedication",
-      "url": "https://sports.yahoo.com/articles/open-thread-spurs-air-blueprint-120000179.html",
-      "published_at_utc": "2026-11-22T12:00:00+00:00",
+      "title": "Jayson Tatum misses game-winner in loss to Warriors as Celtics continue on worst losing skid since 2021",
+      "url": "https://sports.yahoo.com/nba/breaking-news/article/jayson-tatum-misses-game-winner-in-loss-to-warriors-as-celtics-continue-on-worst-losing-skid-since-2021-054733536.html",
+      "published_at_utc": "2026-11-23T05:47:33+00:00",
       "matched_players": [
-        "Harrison Barnes"
+        "Jayson Tatum"
       ],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Steve Kerr, coaching staff tasked with burden of lifting impaired Warriors",
-      "url": "https://sports.yahoo.com/articles/steve-kerr-coaching-staff-tasked-113829177.html",
-      "published_at_utc": "2026-11-22T11:38:29+00:00",
+      "title": "Mohamed Diawara and Pacome Dadiet in tight battle for Knicks minutes that could last all season",
+      "url": "https://sports.yahoo.com/articles/mohamed-diawara-pacome-dadiet-tight-054023339.html",
+      "published_at_utc": "2026-11-23T05:40:23+00:00",
+      "matched_players": [
+        "Mohamed Diawara"
+      ],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Houston Rockets vs. Los Angeles Clippers game preview",
+      "url": "https://sports.yahoo.com/articles/houston-rockets-vs-los-angeles-050000179.html",
+      "published_at_utc": "2026-11-23T05:00:00+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Celtics extend losing streak to 4 games with 88-87 loss to Warriors",
+      "url": "https://sports.yahoo.com/articles/celtics-extend-losing-streak-4-044447148.html",
+      "published_at_utc": "2026-11-23T04:44:47+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Karl-Anthony Towns dominates Pacers in return to push Knicks’ win streak to five",
+      "url": "https://sports.yahoo.com/articles/karl-anthony-towns-dominates-pacers-041302920.html",
+      "published_at_utc": "2026-11-23T04:13:02+00:00",
+      "matched_players": [
+        "Karl-Anthony Towns"
+      ],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Strength in numbers carries Warriors to 88-87 victory over Celtics",
+      "url": "https://sports.yahoo.com/articles/strength-numbers-carries-warriors-88-040738611.html",
+      "published_at_utc": "2026-11-23T04:07:38+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Stats Rundown: 4 numbers from Mavs 116-114 win",
+      "url": "https://sports.yahoo.com/articles/stats-rundown-4-numbers-mavs-040000431.html",
+      "published_at_utc": "2026-11-23T04:00:00+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Jazz vs Mavericks recap: A wild finish in Salt Lake City",
+      "url": "https://sports.yahoo.com/articles/jazz-vs-mavericks-recap-wild-033522297.html",
+      "published_at_utc": "2026-11-23T03:35:22+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Mavericks vs Jazz Recap: 3 things to know from the Mavericks 116-114 win against the Jazz",
+      "url": "https://sports.yahoo.com/articles/mavericks-vs-jazz-recap-3-030541466.html",
+      "published_at_utc": "2026-11-23T03:05:41+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Lakers vs. Jazz Preview: Seeking vengeance",
+      "url": "https://sports.yahoo.com/articles/lakers-vs-jazz-preview-seeking-025404833.html",
+      "published_at_utc": "2026-11-23T02:54:04+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Lakers get encouraging Austin Reaves update as star nears return",
+      "url": "https://sports.yahoo.com/articles/lakers-encouraging-austin-reaves-star-023132438.html",
+      "published_at_utc": "2026-11-23T02:31:32+00:00",
+      "matched_players": [
+        "Austin Reaves"
+      ],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Recap: Wizards take down the Magic, 116-96",
+      "url": "https://sports.yahoo.com/articles/recap-wizards-down-magic-116-022954653.html",
+      "published_at_utc": "2026-11-23T02:29:54+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Thunder are NBA's deepest team, but not even they can weather all these injuries",
+      "url": "https://sports.yahoo.com/articles/thunder-nbas-deepest-team-not-015526529.html",
+      "published_at_utc": "2026-11-23T01:55:26+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Lakers make Austin Reaves injury decision ahead of Jazz rematch",
+      "url": "https://sports.yahoo.com/articles/lakers-austin-reaves-injury-decision-014124782.html",
+      "published_at_utc": "2026-11-23T01:41:24+00:00",
+      "matched_players": [
+        "Austin Reaves"
+      ],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Game Discussion Thread: Knicks vs. Pacers, November 22, 2026",
+      "url": "https://sports.yahoo.com/articles/game-discussion-thread-knicks-vs-003000983.html",
+      "published_at_utc": "2026-11-23T00:30:00+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Lakers to honor beloved announcer with commemorative banner",
+      "url": "https://sports.yahoo.com/articles/lakers-honor-beloved-announcer-commemorative-235621543.html",
+      "published_at_utc": "2026-11-22T23:56:21+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Mavericks vs Jazz Preview and Injury Report: Dallas attempts to break a bad streak while starting a new one",
+      "url": "https://sports.yahoo.com/articles/mavericks-vs-jazz-preview-injury-235227456.html",
+      "published_at_utc": "2026-11-22T23:52:27+00:00",
       "matched_players": [],
       "source": "Yahoo Sports NBA RSS"
     },
     {
       "title": "Observations after Sixers come back for strong shorthanded victory",
       "url": "https://sports.yahoo.com/articles/observations-sixers-come-back-strong-170700167.html",
-      "published_at_utc": "2026-11-22T10:43:23+00:00",
+      "published_at_utc": "2026-11-22T23:27:33+00:00",
       "matched_players": [],
       "source": "Yahoo Sports NBA RSS"
     },
     {
       "title": "The 76ers are fun again, so it's the return of Roob's 76ers Stats!",
       "url": "https://sports.yahoo.com/articles/76ers-fun-again-return-roobs-121311032.html",
-      "published_at_utc": "2026-11-22T10:43:23+00:00",
+      "published_at_utc": "2026-11-22T23:27:33+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Sixers upgrade Brown, Wade and Bona to probable vs. Blazers",
+      "url": "https://sports.yahoo.com/articles/sixers-upgrade-brown-wade-bona-174922900.html",
+      "published_at_utc": "2026-11-22T23:27:33+00:00",
       "matched_players": [],
       "source": "Yahoo Sports NBA RSS"
     },
     {
       "title": "James sees a lot to like — and improve — for East-leading Sixers",
       "url": "https://sports.yahoo.com/articles/james-sees-lot-improve-east-080625995.html",
-      "published_at_utc": "2026-11-22T10:43:23+00:00",
+      "published_at_utc": "2026-11-22T23:27:33+00:00",
       "matched_players": [],
       "source": "Yahoo Sports NBA RSS"
     },
     {
       "title": "Observations after Sixers survive Bucks' late surge, reach 14-3",
       "url": "https://sports.yahoo.com/articles/observations-sixers-survive-bucks-surge-111708192.html",
-      "published_at_utc": "2026-11-22T10:43:23+00:00",
+      "published_at_utc": "2026-11-22T23:27:33+00:00",
       "matched_players": [],
       "source": "Yahoo Sports NBA RSS"
     },
     {
       "title": "‘It worked every time': How Sixers found a clutch answer at shootaround",
       "url": "https://sports.yahoo.com/articles/worked-every-time-sixers-found-135320234.html",
-      "published_at_utc": "2026-11-22T10:43:23+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Observations after Sixers beat Bucks to move to 3-0, Embiid posts triple-double",
-      "url": "https://sports.yahoo.com/articles/observations-sixers-beat-bucks-move-220632710.html",
-      "published_at_utc": "2026-11-22T10:43:23+00:00",
+      "published_at_utc": "2026-11-22T23:27:33+00:00",
       "matched_players": [],
       "source": "Yahoo Sports NBA RSS"
     }
