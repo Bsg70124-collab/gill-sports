@@ -5828,9 +5828,9 @@
       "away_id": "26",
       "home": "Los Angeles Lakers",
       "away": "Utah Jazz",
-      "home_score": null,
-      "away_score": null,
-      "completed": false
+      "home_score": 109.0,
+      "away_score": 94.0,
+      "completed": true
     },
     "nba-401910045": {
       "id": "nba-401910045",
@@ -5840,9 +5840,9 @@
       "away_id": "24",
       "home": "Sacramento Kings",
       "away": "San Antonio Spurs",
-      "home_score": null,
-      "away_score": null,
-      "completed": false
+      "home_score": 107.0,
+      "away_score": 123.0,
+      "completed": true
     },
     "nfl-401873078": {
       "id": "nfl-401873078",
@@ -6714,7 +6714,9 @@
       "model": "elo-v1",
       "k": 22,
       "locked_at": "2026-11-22T21:00:24.437382+00:00",
-      "result": "pending"
+      "result": "win",
+      "settled_at": "2026-11-24T19:31:38.690775+00:00",
+      "final_score": "Utah Jazz 94 – Los Angeles Lakers 109"
     },
     "nba-401910045": {
       "id": "nba-401910045",
@@ -6734,7 +6736,9 @@
       "model": "elo-v1",
       "k": 22,
       "locked_at": "2026-11-22T21:00:24.437382+00:00",
-      "result": "pending"
+      "result": "win",
+      "settled_at": "2026-11-24T19:31:38.690775+00:00",
+      "final_score": "San Antonio Spurs 123 – Sacramento Kings 107"
     },
     "nfl-401873078": {
       "id": "nfl-401873078",
@@ -7020,5 +7024,5 @@
     }
   },
   "errors": [],
-  "last_refresh": "2026-11-24T04:50:28.777648+00:00"
+  "last_refresh": "2026-11-24T19:31:38.690775+00:00"
 }
