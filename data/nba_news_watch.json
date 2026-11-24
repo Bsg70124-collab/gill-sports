@@ -1,10 +1,10 @@
 {
-  "updated_at_utc": "2026-11-24T05:37:26.460525+00:00",
+  "updated_at_utc": "2026-11-24T18:24:42.866210+00:00",
   "source": "Yahoo Sports NBA RSS",
   "source_url": "https://sports.yahoo.com/nba/rss/",
   "status": "OK",
   "headline_count": 50,
-  "matched_headline_count": 13,
+  "matched_headline_count": 11,
   "forecast_rows": 707,
   "covered_forecast_dates": [
     "2026-11-22",
@@ -19,315 +19,291 @@
   "rotowire_reference_url": "https://www.rotowire.com/rss/",
   "matched_headlines": [
     {
-      "title": "Lakers 'optimistic' Austin Reaves will play this week",
-      "url": "https://sports.yahoo.com/articles/lakers-optimistic-austin-reaves-play-035806821.html",
-      "published_at_utc": "2026-11-24T03:58:06+00:00",
+      "title": "Donovan Mitchell on 9-9 Cavs' inconsistent effort: 'I'm trying to figure out how not to end up on ESPN'",
+      "url": "https://sports.yahoo.com/nba/article/donovan-mitchell-on-9-9-cavs-inconsistent-effort-im-trying-to-figure-out-how-not-to-end-up-on-espn-181255277.html",
+      "published_at_utc": "2026-11-24T18:09:26+00:00",
       "matched_players": [
-        "Austin Reaves"
+        "Donovan Mitchell"
       ],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Mikel Brown Jr. impresses in first start during Nets night to forget against Timberwolves",
-      "url": "https://sports.yahoo.com/articles/mikel-brown-jr-impresses-first-032828330.html",
-      "published_at_utc": "2026-11-24T03:28:28+00:00",
+      "title": "T-Wolves' Donte DiVincenzo cleared for basketball activity, 7 months after rupturing his Achilles",
+      "url": "https://sports.yahoo.com/nba/article/t-wolves-donte-divincenzo-cleared-for-basketball-activity-7-months-after-rupturing-his-achilles-174833748.html",
+      "published_at_utc": "2026-11-24T17:48:33+00:00",
       "matched_players": [
-        "Mikel Brown Jr."
+        "Donte DiVincenzo"
       ],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Will Richard receives a postgame flopping fine",
-      "url": "https://sports.yahoo.com/articles/richard-receives-postgame-flopping-fine-030529001.html",
-      "published_at_utc": "2026-11-24T03:05:29+00:00",
+      "title": "Jalen Brunson ‘can’t believe’ he has to try to end Taylor Swift-Knicks controversy",
+      "url": "https://sports.yahoo.com/articles/jalen-brunson-t-believe-try-174604139.html",
+      "published_at_utc": "2026-11-24T17:46:04+00:00",
       "matched_players": [
-        "Will Richard"
+        "Jalen Brunson"
       ],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Lakers optimistic about Austin Reaves’ availability after star guard’s latest step",
-      "url": "https://sports.yahoo.com/articles/lakers-optimistic-austin-reaves-availability-022245376.html",
-      "published_at_utc": "2026-11-24T02:22:45+00:00",
+      "title": "Shai Gilgeous-Alexander lost a trash-talk battle to a Pacers bench warmer",
+      "url": "https://sports.yahoo.com/articles/shai-gilgeous-alexander-lost-trash-151714185.html",
+      "published_at_utc": "2026-11-24T15:17:14+00:00",
       "matched_players": [
-        "Austin Reaves"
+        "Shai Gilgeous-Alexander"
       ],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Spurs roll past Kings despite Victor Wembanyama missing first game of the season, De'Aaron Fox sidelined",
-      "url": "https://sports.yahoo.com/nba/breaking-news/article/spurs-roll-past-kings-despite-victor-wembanyama-missing-first-game-of-the-season-deaaron-fox-sidelined-052828029.html",
-      "published_at_utc": "2026-11-24T02:16:55+00:00",
+      "title": "Karl-Anthony Towns for MVP? Knicks star is making case as the best player in the East",
+      "url": "https://sports.yahoo.com/nba/article/karl-anthony-towns-for-mvp-knicks-star-is-making-case-as-the-best-player-in-the-east-145314572.html",
+      "published_at_utc": "2026-11-24T14:53:14+00:00",
       "matched_players": [
-        "De'Aaron Fox",
-        "Victor Wembanyama"
+        "Karl-Anthony Towns"
       ],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Warriors star clowns on Jayson Tatum with ‘Friday’ spoof after he miss at the buzzer",
-      "url": "https://sports.yahoo.com/articles/warriors-star-clowns-jayson-tatum-005557787.html",
-      "published_at_utc": "2026-11-24T00:55:57+00:00",
+      "title": "Karl-Anthony Towns is so much more than the Knicks’ best player",
+      "url": "https://sports.yahoo.com/articles/karl-anthony-towns-much-more-130000309.html",
+      "published_at_utc": "2026-11-24T13:00:00+00:00",
       "matched_players": [
-        "Jayson Tatum"
+        "Karl-Anthony Towns"
       ],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Cameron Boozer injury update: Grizzlies share status of Rookie of the Year contender",
-      "url": "https://sports.yahoo.com/articles/cameron-boozer-injury-grizzlies-share-003543364.html",
-      "published_at_utc": "2026-11-24T00:35:43+00:00",
-      "matched_players": [
-        "Cameron Boozer"
-      ],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "One of Walker Kessler’s greatest skills? Helping the Lakers build chemistry",
-      "url": "https://sports.yahoo.com/articles/one-walker-kessler-greatest-skills-002235558.html",
-      "published_at_utc": "2026-11-24T00:22:35+00:00",
+      "title": "Walker Kessler thankful for big stage with Lakers after beating former team",
+      "url": "https://sports.yahoo.com/articles/walker-kessler-thankful-big-stage-123708940.html",
+      "published_at_utc": "2026-11-24T12:37:08+00:00",
       "matched_players": [
         "Walker Kessler"
       ],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Joel Embiid OUT (illness) for Monday vs. Trail Blazers",
-      "url": "https://sports.yahoo.com/articles/joel-embiid-questionable-illness-monday-170331674.html",
-      "published_at_utc": "2026-11-23T22:50:00+00:00",
+      "title": "Rebounding may be Dyson Daniels’ best skill after his defense",
+      "url": "https://sports.yahoo.com/articles/rebounding-may-dyson-daniels-best-120000002.html",
+      "published_at_utc": "2026-11-24T12:00:00+00:00",
       "matched_players": [
-        "Joel Embiid"
+        "Dyson Daniels"
       ],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Anthony Davis named Eastern Conference Player of the Week",
-      "url": "https://sports.yahoo.com/articles/anthony-davis-named-eastern-conference-205243845.html",
-      "published_at_utc": "2026-11-23T20:52:43+00:00",
+      "title": "Open Thread: Happy birthday to David Jones Garcia",
+      "url": "https://sports.yahoo.com/articles/open-thread-happy-birthday-david-120000821.html",
+      "published_at_utc": "2026-11-24T12:00:00+00:00",
       "matched_players": [
-        "Anthony Davis"
+        "David Jones Garcia"
       ],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Luka Dončić gave a ‘strong endorsement’ of Quentin Grimes before free agency",
-      "url": "https://sports.yahoo.com/articles/luka-don-gave-strong-endorsement-200915474.html",
-      "published_at_utc": "2026-11-23T20:09:15+00:00",
+      "title": "Julius Randle has no hard feelings towards Timberwolves in return after salary-dump trade to Nets",
+      "url": "https://sports.yahoo.com/articles/julius-randle-no-hard-feelings-054541757.html",
+      "published_at_utc": "2026-11-24T05:45:41+00:00",
       "matched_players": [
-        "Quentin Grimes"
+        "Julius Randle"
       ],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Brooklyn's Nolan Traore out 8-10 weeks with hamstring strain",
-      "url": "https://sports.yahoo.com/articles/brooklyns-nolan-traore-8-10-185148691.html",
-      "published_at_utc": "2026-11-23T18:51:48+00:00",
+      "title": "Lakers 'optimistic' Austin Reaves will play this week",
+      "url": "https://sports.yahoo.com/articles/lakers-optimistic-austin-reaves-play-035806821.html",
+      "published_at_utc": "2026-11-24T03:58:06+00:00",
       "matched_players": [
-        "Nolan Traore"
-      ],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Nets gets crushing injury update on Nolan Traore — with Mikel Brown set for big chance",
-      "url": "https://sports.yahoo.com/articles/nets-gets-crushing-injury-nolan-180410690.html",
-      "published_at_utc": "2026-11-23T18:04:10+00:00",
-      "matched_players": [
-        "Nolan Traore"
+        "Austin Reaves"
       ],
       "source": "Yahoo Sports NBA RSS"
     }
   ],
   "recent_headlines": [
     {
-      "title": "Diving deeper into Cavs 122-108 loss to Bulls: Cleveland’s defense finds a new low",
-      "url": "https://sports.yahoo.com/articles/diving-deeper-cavs-122-108-051259298.html",
-      "published_at_utc": "2026-11-24T05:12:59+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Lakers honor longtime PA announcer Lawrence Tanter",
-      "url": "https://sports.yahoo.com/articles/lakers-honor-longtime-pa-announcer-045422083.html",
-      "published_at_utc": "2026-11-24T04:54:22+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Lakers honor Lawrence Tanter with video tribute, commemorative banner",
-      "url": "https://sports.yahoo.com/articles/lakers-honor-lawrence-tanter-video-042945770.html",
-      "published_at_utc": "2026-11-24T04:29:45+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Josh Kushner and Bob Iger spotted at Lakers-Jazz game",
-      "url": "https://sports.yahoo.com/articles/josh-kushner-bob-iger-spotted-041021166.html",
-      "published_at_utc": "2026-11-24T04:10:21+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Lakers 'optimistic' Austin Reaves will play this week",
-      "url": "https://sports.yahoo.com/articles/lakers-optimistic-austin-reaves-play-035806821.html",
-      "published_at_utc": "2026-11-24T03:58:06+00:00",
+      "title": "Donovan Mitchell on 9-9 Cavs' inconsistent effort: 'I'm trying to figure out how not to end up on ESPN'",
+      "url": "https://sports.yahoo.com/nba/article/donovan-mitchell-on-9-9-cavs-inconsistent-effort-im-trying-to-figure-out-how-not-to-end-up-on-espn-181255277.html",
+      "published_at_utc": "2026-11-24T18:09:26+00:00",
       "matched_players": [
-        "Austin Reaves"
+        "Donovan Mitchell"
       ],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Celtics vs. Wizards predictions: Odds, recent stats, trends and best bets for November 24",
-      "url": "https://sports.yahoo.com/articles/celtics-vs-wizards-predictions-odds-035607935.html",
-      "published_at_utc": "2026-11-24T03:56:07+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Lakers forward turned to Flavor Flav to fix his jump shot",
-      "url": "https://sports.yahoo.com/articles/lakers-forward-turned-flavor-flav-034814456.html",
-      "published_at_utc": "2026-11-24T03:48:14+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Player Grades: Cavs at Bulls – Poor effort results in a rough loss",
-      "url": "https://sports.yahoo.com/articles/player-grades-cavs-bulls-poor-033908183.html",
-      "published_at_utc": "2026-11-24T03:39:08+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Mikel Brown Jr. impresses in first start during Nets night to forget against Timberwolves",
-      "url": "https://sports.yahoo.com/articles/mikel-brown-jr-impresses-first-032828330.html",
-      "published_at_utc": "2026-11-24T03:28:28+00:00",
+      "title": "T-Wolves' Donte DiVincenzo cleared for basketball activity, 7 months after rupturing his Achilles",
+      "url": "https://sports.yahoo.com/nba/article/t-wolves-donte-divincenzo-cleared-for-basketball-activity-7-months-after-rupturing-his-achilles-174833748.html",
+      "published_at_utc": "2026-11-24T17:48:33+00:00",
       "matched_players": [
-        "Mikel Brown Jr."
+        "Donte DiVincenzo"
       ],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Cavs lose 122-108 to Bulls after walloping in first half",
-      "url": "https://sports.yahoo.com/articles/cavs-lose-122-108-bulls-032606188.html",
-      "published_at_utc": "2026-11-24T03:26:06+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Lakers’ incoming owners sit with Jeanie Buss at first game together since deal",
-      "url": "https://sports.yahoo.com/articles/lakers-incoming-owners-sit-jeanie-032346650.html",
-      "published_at_utc": "2026-11-24T03:23:46+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Sixers Bell Ringer: Sixers undone by Portland’s blazing hot shooting",
-      "url": "https://sports.yahoo.com/articles/sixers-bell-ringer-sixers-undone-032118046.html",
-      "published_at_utc": "2026-11-24T03:21:18+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Brooklyn Nets’ defense falls flat in 142-116 loss vs. Timberwolves",
-      "url": "https://sports.yahoo.com/articles/brooklyn-nets-defense-falls-flat-031340831.html",
-      "published_at_utc": "2026-11-24T03:13:40+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Will Richard receives a postgame flopping fine",
-      "url": "https://sports.yahoo.com/articles/richard-receives-postgame-flopping-fine-030529001.html",
-      "published_at_utc": "2026-11-24T03:05:29+00:00",
+      "title": "Jalen Brunson ‘can’t believe’ he has to try to end Taylor Swift-Knicks controversy",
+      "url": "https://sports.yahoo.com/articles/jalen-brunson-t-believe-try-174604139.html",
+      "published_at_utc": "2026-11-24T17:46:04+00:00",
       "matched_players": [
-        "Will Richard"
+        "Jalen Brunson"
       ],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "It’s time for Basketball: San Antonio Spurs vs Sacramento Kings",
-      "url": "https://sports.yahoo.com/articles/time-basketball-san-antonio-spurs-023000816.html",
-      "published_at_utc": "2026-11-24T02:30:00+00:00",
+      "title": "Resurfaced clip reveals Michael Jordan link that changed Kobe Bryant’s entire career",
+      "url": "https://sports.yahoo.com/articles/resurfaced-clip-reveals-michael-jordan-173750607.html",
+      "published_at_utc": "2026-11-24T17:37:50+00:00",
       "matched_players": [],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Blazers shoot the lights out as Embiid-less Sixers fall to 14-4",
-      "url": "https://sports.yahoo.com/articles/blazers-shoot-lights-embiid-less-022435067.html",
-      "published_at_utc": "2026-11-24T02:24:35+00:00",
+      "title": "Lakers hit their top-10 defensive goal — at least for one night",
+      "url": "https://sports.yahoo.com/articles/lakers-hit-top-10-defensive-171047967.html",
+      "published_at_utc": "2026-11-24T17:10:47+00:00",
       "matched_players": [],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Lakers optimistic about Austin Reaves’ availability after star guard’s latest step",
-      "url": "https://sports.yahoo.com/articles/lakers-optimistic-austin-reaves-availability-022245376.html",
-      "published_at_utc": "2026-11-24T02:22:45+00:00",
+      "title": "Lakers avoid another embarrassment to Jazz by turning 4th quarter tables",
+      "url": "https://sports.yahoo.com/articles/lakers-avoid-another-embarrassment-jazz-162315292.html",
+      "published_at_utc": "2026-11-24T16:23:15+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "JJ Redick reveals rarely-seen qualities that separate this Lakers team",
+      "url": "https://sports.yahoo.com/articles/jj-redick-reveals-rarely-seen-161557273.html",
+      "published_at_utc": "2026-11-24T16:15:57+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "NBA Champ blasts Luka Doncic, Lakers ahead of clash with Spurs for best in west",
+      "url": "https://sports.yahoo.com/articles/nba-champion-spurs-analyst-takes-160349797.html",
+      "published_at_utc": "2026-11-24T16:03:49+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Mavericks vs. Nuggets predictions: Odds, recent stats, trends and best bets for November 24",
+      "url": "https://sports.yahoo.com/articles/mavericks-vs-nuggets-predictions-odds-154331652.html",
+      "published_at_utc": "2026-11-24T15:43:31+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Bucks Reacts Survey: Are your vibes still high?",
+      "url": "https://sports.yahoo.com/articles/bucks-reacts-survey-vibes-still-153950428.html",
+      "published_at_utc": "2026-11-24T15:39:50+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "The Wizards move up in the NBA power rankings",
+      "url": "https://sports.yahoo.com/articles/wizards-move-nba-power-rankings-151929878.html",
+      "published_at_utc": "2026-11-24T15:19:29+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Shai Gilgeous-Alexander lost a trash-talk battle to a Pacers bench warmer",
+      "url": "https://sports.yahoo.com/articles/shai-gilgeous-alexander-lost-trash-151714185.html",
+      "published_at_utc": "2026-11-24T15:17:14+00:00",
       "matched_players": [
-        "Austin Reaves"
+        "Shai Gilgeous-Alexander"
       ],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Spurs roll past Kings despite Victor Wembanyama missing first game of the season, De'Aaron Fox sidelined",
-      "url": "https://sports.yahoo.com/nba/breaking-news/article/spurs-roll-past-kings-despite-victor-wembanyama-missing-first-game-of-the-season-deaaron-fox-sidelined-052828029.html",
-      "published_at_utc": "2026-11-24T02:16:55+00:00",
+      "title": "Karl-Anthony Towns for MVP? Knicks star is making case as the best player in the East",
+      "url": "https://sports.yahoo.com/nba/article/karl-anthony-towns-for-mvp-knicks-star-is-making-case-as-the-best-player-in-the-east-145314572.html",
+      "published_at_utc": "2026-11-24T14:53:14+00:00",
       "matched_players": [
-        "De'Aaron Fox",
-        "Victor Wembanyama"
+        "Karl-Anthony Towns"
       ],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Cavs at Bulls game thread",
-      "url": "https://sports.yahoo.com/articles/cavs-bulls-game-thread-010000357.html",
-      "published_at_utc": "2026-11-24T01:00:00+00:00",
+      "title": "Game Preview: Knicks vs. Cavaliers, November 25, 2026",
+      "url": "https://sports.yahoo.com/articles/game-preview-knicks-vs-cavaliers-134629508.html",
+      "published_at_utc": "2026-11-24T13:46:29+00:00",
       "matched_players": [],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Lakers rookie discovers surprising NBA perks he never dreamed of",
-      "url": "https://sports.yahoo.com/articles/lakers-rookie-discovers-surprising-nba-005735308.html",
-      "published_at_utc": "2026-11-24T00:57:35+00:00",
+      "title": "Embiid sidelined for Sixers-Blazers with illness",
+      "url": "https://sports.yahoo.com/articles/embiid-sidelined-sixers-blazers-illness-173500321.html",
+      "published_at_utc": "2026-11-24T13:09:04+00:00",
       "matched_players": [],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Warriors star clowns on Jayson Tatum with ‘Friday’ spoof after he miss at the buzzer",
-      "url": "https://sports.yahoo.com/articles/warriors-star-clowns-jayson-tatum-005557787.html",
-      "published_at_utc": "2026-11-24T00:55:57+00:00",
+      "title": "Sixers upgrade Brown, Wade and Bona to probable vs. Blazers",
+      "url": "https://sports.yahoo.com/articles/sixers-upgrade-brown-wade-bona-174922900.html",
+      "published_at_utc": "2026-11-24T13:09:04+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "James sees a lot to like — and improve — for East-leading Sixers",
+      "url": "https://sports.yahoo.com/articles/james-sees-lot-improve-east-080625995.html",
+      "published_at_utc": "2026-11-24T13:09:04+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "LeBron Log No. 6: A Rocky night, a shooting lesson and a fight over ‘Bron'",
+      "url": "https://sports.yahoo.com/articles/lebron-log-no-6-rocky-023500875.html",
+      "published_at_utc": "2026-11-24T13:09:04+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Observations after Sixers survive Bucks' late surge, reach 14-3",
+      "url": "https://sports.yahoo.com/articles/observations-sixers-survive-bucks-surge-111708192.html",
+      "published_at_utc": "2026-11-24T13:09:04+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Sixers' record-setting wait for the West ends against Trail Blazers",
+      "url": "https://sports.yahoo.com/articles/sixers-record-setting-wait-west-133328159.html",
+      "published_at_utc": "2026-11-24T13:09:04+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Observations after Sixers beat Bucks to move to 3-0, Embiid posts triple-double",
+      "url": "https://sports.yahoo.com/articles/observations-sixers-beat-bucks-move-220632710.html",
+      "published_at_utc": "2026-11-24T13:09:04+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Observations after Sixers' 5-game win streak ends with blowout loss to Blazers",
+      "url": "https://sports.yahoo.com/articles/observations-sixers-5-game-win-173500225.html",
+      "published_at_utc": "2026-11-24T13:09:04+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Bucks vs. Raptors Player Grades: Herro and Turner lead the way in slide-ending victory",
+      "url": "https://sports.yahoo.com/articles/bucks-vs-raptors-player-grades-130000310.html",
+      "published_at_utc": "2026-11-24T13:00:00+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "NBA Cup 2026 Update: Standings, clinching scenarios, with critical Cup games on NBC and Peacock Tuesday",
+      "url": "https://sports.yahoo.com/articles/nba-cup-2026-standings-clinching-130000715.html",
+      "published_at_utc": "2026-11-24T13:00:00+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Karl-Anthony Towns is so much more than the Knicks’ best player",
+      "url": "https://sports.yahoo.com/articles/karl-anthony-towns-much-more-130000309.html",
+      "published_at_utc": "2026-11-24T13:00:00+00:00",
       "matched_players": [
-        "Jayson Tatum"
+        "Karl-Anthony Towns"
       ],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Rockets Return Home To Face Clippers",
-      "url": "https://sports.yahoo.com/articles/rockets-return-home-face-clippers-004714742.html",
-      "published_at_utc": "2026-11-24T00:47:14+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Cameron Boozer injury update: Grizzlies share status of Rookie of the Year contender",
-      "url": "https://sports.yahoo.com/articles/cameron-boozer-injury-grizzlies-share-003543364.html",
-      "published_at_utc": "2026-11-24T00:35:43+00:00",
-      "matched_players": [
-        "Cameron Boozer"
-      ],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "One of Walker Kessler’s greatest skills? Helping the Lakers build chemistry",
-      "url": "https://sports.yahoo.com/articles/one-walker-kessler-greatest-skills-002235558.html",
-      "published_at_utc": "2026-11-24T00:22:35+00:00",
-      "matched_players": [
-        "Walker Kessler"
-      ],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "LIVE DISCUSSION: Brooklyn Nets at Minnesota Timberwolves, 7:30 PM ET",
-      "url": "https://sports.yahoo.com/articles/live-discussion-brooklyn-nets-minnesota-000000831.html",
-      "published_at_utc": "2026-11-24T00:00:00+00:00",
-      "matched_players": [],
       "source": "Yahoo Sports NBA RSS"
     }
   ]
