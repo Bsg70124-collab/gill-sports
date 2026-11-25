@@ -1,10 +1,10 @@
 {
-  "updated_at_utc": "2026-11-25T13:39:55.331831+00:00",
+  "updated_at_utc": "2026-11-25T23:49:06.123790+00:00",
   "source": "Yahoo Sports NBA RSS",
   "source_url": "https://sports.yahoo.com/nba/rss/",
   "status": "OK",
   "headline_count": 50,
-  "matched_headline_count": 15,
+  "matched_headline_count": 13,
   "forecast_rows": 1022,
   "covered_forecast_dates": [
     "2026-11-22",
@@ -20,145 +20,88 @@
   "rotowire_reference_url": "https://www.rotowire.com/rss/",
   "matched_headlines": [
     {
-      "title": "2026-27 NBA Rookies Report Card 2.0, Grades Nov. 25: Two players get an A: Cameron Boozer, Yaxel Landeborg",
-      "url": "https://sports.yahoo.com/nba/articles/2026-27-nba-rookies-report-130000978.html",
-      "published_at_utc": "2026-11-25T13:00:00+00:00",
+      "title": "Austin Reaves talks for first time ahead of Spurs clash: ‘Felt like I broke my foot’",
+      "url": "https://sports.yahoo.com/nba/articles/austin-reaves-talks-first-time-222557101.html",
+      "published_at_utc": "2026-11-25T22:25:57+00:00",
       "matched_players": [
+        "Austin Reaves"
+      ],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Austin Reaves returns to Lakers practice, might play Friday at San Antonio",
+      "url": "https://sports.yahoo.com/nba/articles/austin-reaves-returns-lakers-practice-215314512.html",
+      "published_at_utc": "2026-11-25T21:53:14+00:00",
+      "matched_players": [
+        "Austin Reaves"
+      ],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Lakers star divulges ‘uncomfortable’ reason for success without Austin Reaves",
+      "url": "https://sports.yahoo.com/nba/articles/lakers-star-divulges-uncomfortable-reason-201236065.html",
+      "published_at_utc": "2026-11-25T20:12:36+00:00",
+      "matched_players": [
+        "Austin Reaves"
+      ],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Scottie Barnes just passed this Raptors legend in points scored",
+      "url": "https://sports.yahoo.com/nba/articles/scottie-barnes-just-passed-raptors-173946404.html",
+      "published_at_utc": "2026-11-25T17:39:46+00:00",
+      "matched_players": [
+        "Scottie Barnes"
+      ],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "NBA Week 6 Injury Report: Cameron Boozer to miss at least four weeks; don't panic on Cade Cunningham",
+      "url": "https://sports.yahoo.com/fantasy/articles/nba-week-6-injury-report-163237767.html",
+      "published_at_utc": "2026-11-25T16:32:37+00:00",
+      "matched_players": [
+        "Cade Cunningham",
         "Cameron Boozer"
       ],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Kawhi Leonard is back on the (practice) court: will his return be enough?",
-      "url": "https://sports.yahoo.com/nba/articles/kawhi-leonard-back-practice-court-044905072.html",
-      "published_at_utc": "2026-11-25T04:49:05+00:00",
+      "title": "Landry Shamet has arrived. Why can’t he be Sixth Man of the Year?",
+      "url": "https://sports.yahoo.com/nba/articles/landry-shamet-arrived-why-t-162322437.html",
+      "published_at_utc": "2026-11-25T16:23:22+00:00",
       "matched_players": [
-        "Kawhi Leonard"
+        "Landry Shamet"
       ],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Vintage Paul George drops Kyshawn George to the floor with ankle-breaking crossover in NBA Cup win",
-      "url": "https://sports.yahoo.com/nba/breaking-news/article/vintage-paul-george-drops-kyshawn-george-to-the-floor-with-ankle-breaking-crossover-in-nba-cup-win-040538081.html",
-      "published_at_utc": "2026-11-25T03:08:11+00:00",
+      "title": "2026-27 NBA Minutes Report: Brandon Ingram returns, Cameron Boozer is sidelined, more",
+      "url": "https://sports.yahoo.com/nba/articles/2026-27-nba-minutes-report-161438611.html",
+      "published_at_utc": "2026-11-25T16:14:38+00:00",
       "matched_players": [
-        "Kyshawn George",
-        "Paul George"
+        "Brandon Ingram",
+        "Cameron Boozer"
       ],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Pistons vs Magic final score: Detroit’s dominant defense shows up with Cade Cunningham sidelined",
-      "url": "https://sports.yahoo.com/nba/articles/pistons-vs-magic-final-score-025625807.html",
-      "published_at_utc": "2026-11-25T02:56:25+00:00",
-      "matched_players": [
-        "Cade Cunningham"
-      ],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "NBA Cup 2026: Celtics avert disaster, Mavs roll listless Nuggets, Pistons deny Magic without Cade Cunningham",
-      "url": "https://sports.yahoo.com/nba/breaking-news/article/nba-cup-2026-celtics-avert-disaster-mavs-roll-listless-nuggets-pistons-deny-magic-without-cade-cunningham-054349785.html",
-      "published_at_utc": "2026-11-25T02:20:57+00:00",
-      "matched_players": [
-        "Cade Cunningham"
-      ],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Brandon Williams on Warriors offense without Steph Curry: ‘That s*** was tough’",
-      "url": "https://sports.yahoo.com/nba/articles/brandon-williams-warriors-offense-without-015300149.html",
-      "published_at_utc": "2026-11-25T01:53:00+00:00",
-      "matched_players": [
-        "Brandon Williams"
-      ],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Pistons' Cade Cunningham out for Tuesday's NBA Cup matchup vs. Magic due to right knee soreness",
-      "url": "https://sports.yahoo.com/nba/article/pistons-cade-cunningham-to-miss-tuesdays-nba-cup-matchup-vs-magic-with-right-knee-soreness-234518276.html",
-      "published_at_utc": "2026-11-24T23:45:18+00:00",
-      "matched_players": [
-        "Cade Cunningham"
-      ],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "NBA Injury Update: Latest news on Tyrese Haliburton, Jalen Duren, Donte DiVincenzo",
-      "url": "https://sports.yahoo.com/nba/articles/nba-injury-latest-news-tyrese-230305832.html",
-      "published_at_utc": "2026-11-24T23:03:05+00:00",
-      "matched_players": [
-        "Donte DiVincenzo",
-        "Jalen Duren",
-        "Tyrese Haliburton"
-      ],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Joel Embiid listed as doubtful for 76ers' NBA Cup matchup vs. Miami Heat on Wednesday due to illness",
-      "url": "https://sports.yahoo.com/nba/article/joel-embiid-listed-as-doubtful-for-76ers-nba-cup-matchup-vs-miami-heat-on-wednesday-due-to-illness-225037585.html",
-      "published_at_utc": "2026-11-24T22:50:37+00:00",
-      "matched_players": [
-        "Joel Embiid"
-      ],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "The “Julian Champagnie for Three-Point Contest” campaign begins here",
-      "url": "https://sports.yahoo.com/nba/articles/julian-champagnie-three-point-contest-224406536.html",
-      "published_at_utc": "2026-11-24T22:44:06+00:00",
-      "matched_players": [
-        "Julian Champagnie"
-      ],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Knicks’ Josh Hart is the cover athlete of SLAM 265",
-      "url": "https://sports.yahoo.com/nba/articles/knicks-josh-hart-cover-athlete-224347421.html",
-      "published_at_utc": "2026-11-24T22:43:47+00:00",
-      "matched_players": [
-        "Josh Hart"
-      ],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Joel Embiid doubtful for Sixers’ NBA Cup showdown vs. Miami Heat",
-      "url": "https://sports.yahoo.com/nba/articles/joel-embiid-doubtful-sixers-nba-223421282.html",
-      "published_at_utc": "2026-11-24T22:34:21+00:00",
-      "matched_players": [
-        "Joel Embiid"
-      ],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Sandro Mamukelashvili was in the gym with Flava Flav trying to break out of his slump",
-      "url": "https://sports.yahoo.com/nba/articles/sandro-mamukelashvili-gym-flava-flav-202111486.html",
-      "published_at_utc": "2026-11-24T20:21:11+00:00",
-      "matched_players": [
-        "Sandro Mamukelashvili"
-      ],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Which AJ Dybantsa dunk is your favorite?",
-      "url": "https://sports.yahoo.com/nba/articles/aj-dybantsa-dunk-favorite-193314005.html",
-      "published_at_utc": "2026-11-24T19:33:14+00:00",
+      "title": "‘Definitely a cool moment’: AJ Dybantsa shines in front of his childhood-favorite Celtics",
+      "url": "https://sports.yahoo.com/nba/articles/definitely-cool-moment-aj-dybantsa-153326202.html",
+      "published_at_utc": "2026-11-25T15:33:26+00:00",
       "matched_players": [
         "AJ Dybantsa"
       ],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Dynasty Basketball Stock Watch: Cedric Coward continues to level up",
-      "url": "https://sports.yahoo.com/articles/dynasty-basketball-stock-watch-cedric-185016882.html",
-      "published_at_utc": "2026-11-24T18:50:16+00:00",
+      "title": "30 things to be thankful for in the NBA, including Victor Wembanyama's greatness and the Lakers' chemistry",
+      "url": "https://sports.yahoo.com/nba/article/30-things-to-be-thankful-for-in-the-nba-including-victor-wembanyamas-greatness-and-the-lakers-chemistry-150722138.html",
+      "published_at_utc": "2026-11-25T15:07:22+00:00",
       "matched_players": [
-        "Cedric Coward"
+        "Victor Wembanyama"
       ],
       "source": "Yahoo Sports NBA RSS"
-    }
-  ],
-  "recent_headlines": [
+    },
     {
       "title": "2026-27 NBA Rookies Report Card 2.0, Grades Nov. 25: Two players get an A: Cameron Boozer, Yaxel Landeborg",
       "url": "https://sports.yahoo.com/nba/articles/2026-27-nba-rookies-report-130000978.html",
@@ -169,183 +112,224 @@
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "NBA power rankings: How far will slumping Thunder, Celtics fall?",
-      "url": "https://sports.yahoo.com/nba/articles/nba-power-rankings-far-slumping-110847310.html",
-      "published_at_utc": "2026-11-25T11:08:47+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Game Preview: San Antonio Spurs vs Portland Trail Blazers",
-      "url": "https://sports.yahoo.com/nba/articles/game-preview-san-antonio-spurs-080500027.html",
-      "published_at_utc": "2026-11-25T08:05:00+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "NBA Trade Rumors: Trade coming for the Jazz",
-      "url": "https://sports.yahoo.com/nba/articles/nba-trade-rumors-trade-coming-072818882.html",
-      "published_at_utc": "2026-11-25T07:28:18+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Stats Rundown: 5 numbers to know from the Mavericks 120-101 win over the Nuggets",
-      "url": "https://sports.yahoo.com/nba/articles/stats-rundown-5-numbers-know-063000087.html",
-      "published_at_utc": "2026-11-25T06:30:00+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Mavericks vs Nuggets Recap: 3 things from the Mavericks 120-101 win against the Nuggets",
-      "url": "https://sports.yahoo.com/nba/articles/mavericks-vs-nuggets-recap-3-060100408.html",
-      "published_at_utc": "2026-11-25T06:01:00+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Houston Rockets vs. Phoenix Suns game preview",
-      "url": "https://sports.yahoo.com/nba/articles/houston-rockets-vs-phoenix-suns-050000766.html",
-      "published_at_utc": "2026-11-25T05:00:00+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Kawhi Leonard is back on the (practice) court: will his return be enough?",
-      "url": "https://sports.yahoo.com/nba/articles/kawhi-leonard-back-practice-court-044905072.html",
-      "published_at_utc": "2026-11-25T04:49:05+00:00",
+      "title": "What does life after Kevin Durant look like for the Rockets?",
+      "url": "https://sports.yahoo.com/nba/articles/does-life-kevin-durant-look-123629736.html",
+      "published_at_utc": "2026-11-25T12:36:29+00:00",
       "matched_players": [
-        "Kawhi Leonard"
+        "Kevin Durant"
       ],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Recap: Wizards fall to the Celtics, 131-116",
-      "url": "https://sports.yahoo.com/nba/articles/recap-wizards-fall-celtics-131-035951080.html",
-      "published_at_utc": "2026-11-25T03:59:51+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "When will Steph Curry return? Latest injury update on Warriors star",
-      "url": "https://sports.yahoo.com/nba/articles/steph-curry-return-latest-injury-035156909.html",
-      "published_at_utc": "2026-11-25T03:51:56+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Celtics survive late scare in NBA Cup, beat Wizards 131-116",
-      "url": "https://sports.yahoo.com/nba/articles/celtics-survive-scare-nba-cup-034252604.html",
-      "published_at_utc": "2026-11-25T03:42:52+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Vintage Paul George drops Kyshawn George to the floor with ankle-breaking crossover in NBA Cup win",
-      "url": "https://sports.yahoo.com/nba/breaking-news/article/vintage-paul-george-drops-kyshawn-george-to-the-floor-with-ankle-breaking-crossover-in-nba-cup-win-040538081.html",
-      "published_at_utc": "2026-11-25T03:08:11+00:00",
+      "title": "Rookie Yaxel Lendeborg's maturation with Steph Curry out evaluated by Steve Kerr",
+      "url": "https://sports.yahoo.com/nba/articles/rookie-yaxel-lendeborgs-maturation-steph-112449383.html",
+      "published_at_utc": "2026-11-25T11:24:49+00:00",
       "matched_players": [
-        "Kyshawn George",
-        "Paul George"
+        "Yaxel Lendeborg"
       ],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Pistons vs Magic final score: Detroit’s dominant defense shows up with Cade Cunningham sidelined",
-      "url": "https://sports.yahoo.com/nba/articles/pistons-vs-magic-final-score-025625807.html",
-      "published_at_utc": "2026-11-25T02:56:25+00:00",
+      "title": "One Possession: Baylor Scheierman provides key late-game scoring for Celtics",
+      "url": "https://sports.yahoo.com/nba/articles/one-possession-baylor-scheierman-provides-091205705.html",
+      "published_at_utc": "2026-11-25T09:12:05+00:00",
       "matched_players": [
-        "Cade Cunningham"
+        "Baylor Scheierman"
+      ],
+      "source": "Yahoo Sports NBA RSS"
+    }
+  ],
+  "recent_headlines": [
+    {
+      "title": "Austin Reaves talks for first time ahead of Spurs clash: ‘Felt like I broke my foot’",
+      "url": "https://sports.yahoo.com/nba/articles/austin-reaves-talks-first-time-222557101.html",
+      "published_at_utc": "2026-11-25T22:25:57+00:00",
+      "matched_players": [
+        "Austin Reaves"
       ],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Stephen A. Smith says Black NBA players have thanked him over white Lakers comments",
-      "url": "https://sports.yahoo.com/nba/articles/stephen-smith-says-black-nba-024513539.html",
-      "published_at_utc": "2026-11-25T02:45:13+00:00",
+      "title": "NBA announces $11 billion investment plan to develop, modernize arenas for NBA Europe",
+      "url": "https://sports.yahoo.com/sports-business/articles/nba-announces-11-billion-investment-220935288.html",
+      "published_at_utc": "2026-11-25T22:09:35+00:00",
       "matched_players": [],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "NBA Cup 2026: Celtics avert disaster, Mavs roll listless Nuggets, Pistons deny Magic without Cade Cunningham",
-      "url": "https://sports.yahoo.com/nba/breaking-news/article/nba-cup-2026-celtics-avert-disaster-mavs-roll-listless-nuggets-pistons-deny-magic-without-cade-cunningham-054349785.html",
-      "published_at_utc": "2026-11-25T02:20:57+00:00",
+      "title": "Austin Reaves returns to Lakers practice, might play Friday at San Antonio",
+      "url": "https://sports.yahoo.com/nba/articles/austin-reaves-returns-lakers-practice-215314512.html",
+      "published_at_utc": "2026-11-25T21:53:14+00:00",
       "matched_players": [
-        "Cade Cunningham"
+        "Austin Reaves"
       ],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Mavericks vs Nuggets Preview and Injury Report: For the Cup!",
-      "url": "https://sports.yahoo.com/nba/articles/mavericks-vs-nuggets-preview-injury-020000394.html",
-      "published_at_utc": "2026-11-25T02:00:00+00:00",
+      "title": "Lakers’ red-hot start to season will strike fear in Celtics fans hearts",
+      "url": "https://sports.yahoo.com/nba/articles/lakers-red-hot-start-season-214430798.html",
+      "published_at_utc": "2026-11-25T21:44:30+00:00",
       "matched_players": [],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Knicks’ fading NBA Cup hopes on line against Cavaliers",
-      "url": "https://sports.yahoo.com/nba/articles/knicks-fading-nba-cup-hopes-015458450.html",
-      "published_at_utc": "2026-11-25T01:54:58+00:00",
+      "title": "RJ Luis suing SEC and Greg Sankey after LSU basketball eligibility fight",
+      "url": "https://sports.yahoo.com/mens-college-basketball/articles/rj-luis-suing-sec-greg-211253886.html",
+      "published_at_utc": "2026-11-25T21:12:53+00:00",
       "matched_players": [],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Brandon Williams on Warriors offense without Steph Curry: ‘That s*** was tough’",
-      "url": "https://sports.yahoo.com/nba/articles/brandon-williams-warriors-offense-without-015300149.html",
-      "published_at_utc": "2026-11-25T01:53:00+00:00",
+      "title": "Kevin Porter Jr. reportedly to sign two-year deal with Orlando Magic",
+      "url": "https://sports.yahoo.com/nba/articles/kevin-porter-jr-reportedly-sign-204545897.html",
+      "published_at_utc": "2026-11-25T20:45:45+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Most underrated NBA players, Nuggets-Mavs takeaways & Magic frustrations with Dave DuFour",
+      "url": "https://sports.yahoo.com/nba/article/most-underrated-nba-players-nuggets-mavs-takeaways--magic-frustrations-with-dave-dufour-204016807.html",
+      "published_at_utc": "2026-11-25T20:40:16+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Fantasy Basketball Rankings (9-cat leagues): Risers and fallers through Week 5",
+      "url": "https://sports.yahoo.com/fantasy/article/fantasy-basketball-rankings-9-cat-leagues-risers-and-fallers-through-week-5-201657785.html",
+      "published_at_utc": "2026-11-25T20:16:57+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Lakers star divulges ‘uncomfortable’ reason for success without Austin Reaves",
+      "url": "https://sports.yahoo.com/nba/articles/lakers-star-divulges-uncomfortable-reason-201236065.html",
+      "published_at_utc": "2026-11-25T20:12:36+00:00",
       "matched_players": [
-        "Brandon Williams"
+        "Austin Reaves"
       ],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Nets searching for answers as early defensive collapses fuel losing streak",
-      "url": "https://sports.yahoo.com/nba/articles/nets-searching-answers-early-defensive-013356748.html",
-      "published_at_utc": "2026-11-25T01:33:56+00:00",
+      "title": "NBA plans to invest 10bn euros in European arenas",
+      "url": "https://sports.yahoo.com/sports-business/articles/nba-plans-invest-10bn-euros-195904866.html",
+      "published_at_utc": "2026-11-25T19:59:04+00:00",
       "matched_players": [],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Game Preview #19: Wolves at Thunder Thread",
-      "url": "https://sports.yahoo.com/nba/articles/game-preview-19-wolves-thunder-003000306.html",
-      "published_at_utc": "2026-11-25T00:30:00+00:00",
+      "title": "Game Preview: Surging Suns look to stuff Rockets on Thanksgiving Eve",
+      "url": "https://sports.yahoo.com/nba/articles/game-preview-surging-suns-look-190000091.html",
+      "published_at_utc": "2026-11-25T19:00:00+00:00",
       "matched_players": [],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Injured Warriors guard says ‘s–t been tough’ with offensive struggles",
-      "url": "https://sports.yahoo.com/nba/articles/injured-warriors-guard-says-t-000353520.html",
-      "published_at_utc": "2026-11-25T00:03:53+00:00",
+      "title": "Where the Dallas Mavericks stand in the NBA cup",
+      "url": "https://sports.yahoo.com/nba/articles/where-dallas-mavericks-stand-nba-185311851.html",
+      "published_at_utc": "2026-11-25T18:53:11+00:00",
       "matched_players": [],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Wizards vs Celtics Discussion",
-      "url": "https://sports.yahoo.com/nba/articles/wizards-vs-celtics-discussion-000000935.html",
-      "published_at_utc": "2026-11-25T00:00:00+00:00",
+      "title": "Save 50% on a subscription to DAZN during this Black Friday sale",
+      "url": "https://sports.yahoo.com/nba/article/save-50-on-a-subscription-to-dazn-during-this-black-friday-sale-185033984.html",
+      "published_at_utc": "2026-11-25T18:50:33+00:00",
       "matched_players": [],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Pistons' Cade Cunningham out for Tuesday's NBA Cup matchup vs. Magic due to right knee soreness",
-      "url": "https://sports.yahoo.com/nba/article/pistons-cade-cunningham-to-miss-tuesdays-nba-cup-matchup-vs-magic-with-right-knee-soreness-234518276.html",
-      "published_at_utc": "2026-11-24T23:45:18+00:00",
+      "title": "Kevin Porter Jr. reportedly finalizing 2-year deal with Magic",
+      "url": "https://sports.yahoo.com/nba/breaking-news/article/kevin-porter-jr-reportedly-finalizing-2-year-deal-with-magic-184434930.html",
+      "published_at_utc": "2026-11-25T18:44:34+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Scottie Barnes just passed this Raptors legend in points scored",
+      "url": "https://sports.yahoo.com/nba/articles/scottie-barnes-just-passed-raptors-173946404.html",
+      "published_at_utc": "2026-11-25T17:39:46+00:00",
       "matched_players": [
-        "Cade Cunningham"
+        "Scottie Barnes"
       ],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Pistons vs. Magic Discussion: Game Time, TV, Odds, and More",
-      "url": "https://sports.yahoo.com/nba/articles/pistons-vs-magic-discussion-game-231727461.html",
-      "published_at_utc": "2026-11-24T23:17:27+00:00",
+      "title": "Rob Pelinka believes the Lakers are feeding off Luka Dončić’s leadership",
+      "url": "https://sports.yahoo.com/nba/articles/rob-pelinka-believes-lakers-feeding-173210722.html",
+      "published_at_utc": "2026-11-25T17:32:10+00:00",
       "matched_players": [],
       "source": "Yahoo Sports NBA RSS"
     },
     {
-      "title": "Knicks’ lack of wing depth is rearing ugly head with recent injuries",
-      "url": "https://sports.yahoo.com/nba/articles/knicks-lack-wing-depth-rearing-231500760.html",
-      "published_at_utc": "2026-11-24T23:15:00+00:00",
+      "title": "How I Learned to Stop Worrying and Love the Wolves",
+      "url": "https://sports.yahoo.com/nba/articles/learned-stop-worrying-love-wolves-170000449.html",
+      "published_at_utc": "2026-11-25T17:00:00+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "NBA Week 6 Injury Report: Cameron Boozer to miss at least four weeks; don't panic on Cade Cunningham",
+      "url": "https://sports.yahoo.com/fantasy/articles/nba-week-6-injury-report-163237767.html",
+      "published_at_utc": "2026-11-25T16:32:37+00:00",
+      "matched_players": [
+        "Cade Cunningham",
+        "Cameron Boozer"
+      ],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Cavs at Knicks: How to watch, odds, and injury report",
+      "url": "https://sports.yahoo.com/nba/articles/cavs-knicks-watch-odds-injury-163000025.html",
+      "published_at_utc": "2026-11-25T16:30:00+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Landry Shamet has arrived. Why can’t he be Sixth Man of the Year?",
+      "url": "https://sports.yahoo.com/nba/articles/landry-shamet-arrived-why-t-162322437.html",
+      "published_at_utc": "2026-11-25T16:23:22+00:00",
+      "matched_players": [
+        "Landry Shamet"
+      ],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "2026-27 NBA Minutes Report: Brandon Ingram returns, Cameron Boozer is sidelined, more",
+      "url": "https://sports.yahoo.com/nba/articles/2026-27-nba-minutes-report-161438611.html",
+      "published_at_utc": "2026-11-25T16:14:38+00:00",
+      "matched_players": [
+        "Brandon Ingram",
+        "Cameron Boozer"
+      ],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "NBA announces $11 billion investment to build European arenas for new league",
+      "url": "https://sports.yahoo.com/sports-business/articles/nba-announces-11-billion-investment-160848391.html",
+      "published_at_utc": "2026-11-25T16:08:48+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Putting Phoenix’s four-game winning streak into perspective",
+      "url": "https://sports.yahoo.com/nba/articles/putting-phoenix-four-game-winning-160000365.html",
+      "published_at_utc": "2026-11-25T16:00:00+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "‘Definitely a cool moment’: AJ Dybantsa shines in front of his childhood-favorite Celtics",
+      "url": "https://sports.yahoo.com/nba/articles/definitely-cool-moment-aj-dybantsa-153326202.html",
+      "published_at_utc": "2026-11-25T15:33:26+00:00",
+      "matched_players": [
+        "AJ Dybantsa"
+      ],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "10 Takeaways from another Celtics NBA Cup win over Wizards",
+      "url": "https://sports.yahoo.com/nba/articles/10-takeaways-another-celtics-nba-153241030.html",
+      "published_at_utc": "2026-11-25T15:32:41+00:00",
       "matched_players": [],
       "source": "Yahoo Sports NBA RSS"
     }
