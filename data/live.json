@@ -5876,9 +5876,9 @@
       "away_id": "2",
       "home": "Washington Wizards",
       "away": "Boston Celtics",
-      "home_score": null,
-      "away_score": null,
-      "completed": false
+      "home_score": 116.0,
+      "away_score": 131.0,
+      "completed": true
     },
     "nba-401909316": {
       "id": "nba-401909316",
@@ -5888,9 +5888,9 @@
       "away_id": "6",
       "home": "Denver Nuggets",
       "away": "Dallas Mavericks",
-      "home_score": null,
-      "away_score": null,
-      "completed": false
+      "home_score": 101.0,
+      "away_score": 120.0,
+      "completed": true
     },
     "nba-401909317": {
       "id": "nba-401909317",
@@ -6838,7 +6838,9 @@
       "model": "elo-v1",
       "k": 22,
       "locked_at": "2026-11-23T07:42:56.455756+00:00",
-      "result": "pending"
+      "result": "win",
+      "settled_at": "2026-11-25T14:26:24.816751+00:00",
+      "final_score": "Boston Celtics 131 – Washington Wizards 116"
     },
     "nba-401909316": {
       "id": "nba-401909316",
@@ -6858,7 +6860,9 @@
       "model": "elo-v1",
       "k": 22,
       "locked_at": "2026-11-23T07:42:56.455756+00:00",
-      "result": "pending"
+      "result": "loss",
+      "settled_at": "2026-11-25T14:26:24.816751+00:00",
+      "final_score": "Dallas Mavericks 120 – Denver Nuggets 101"
     },
     "nba-401909317": {
       "id": "nba-401909317",
@@ -7122,5 +7126,5 @@
     }
   },
   "errors": [],
-  "last_refresh": "2026-11-25T03:33:57.435653+00:00"
+  "last_refresh": "2026-11-25T14:26:24.816751+00:00"
 }
