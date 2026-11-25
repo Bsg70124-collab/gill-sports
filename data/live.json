@@ -5864,9 +5864,9 @@
       "away_id": "8",
       "home": "Orlando Magic",
       "away": "Detroit Pistons",
-      "home_score": null,
-      "away_score": null,
-      "completed": false
+      "home_score": 86.0,
+      "away_score": 104.0,
+      "completed": true
     },
     "nba-401909315": {
       "id": "nba-401909315",
@@ -6008,6 +6008,42 @@
       "away_id": "9",
       "home": "Los Angeles Rams",
       "away": "Green Bay Packers",
+      "home_score": null,
+      "away_score": null,
+      "completed": false
+    },
+    "nfl-401873081": {
+      "id": "nfl-401873081",
+      "sport": "nfl",
+      "start": "2026-11-26T18:00Z",
+      "home_id": "8",
+      "away_id": "3",
+      "home": "Detroit Lions",
+      "away": "Chicago Bears",
+      "home_score": null,
+      "away_score": null,
+      "completed": false
+    },
+    "nfl-401873080": {
+      "id": "nfl-401873080",
+      "sport": "nfl",
+      "start": "2026-11-26T21:30Z",
+      "home_id": "6",
+      "away_id": "21",
+      "home": "Dallas Cowboys",
+      "away": "Philadelphia Eagles",
+      "home_score": null,
+      "away_score": null,
+      "completed": false
+    },
+    "nfl-401873082": {
+      "id": "nfl-401873082",
+      "sport": "nfl",
+      "start": "2026-11-27T01:20Z",
+      "home_id": "2",
+      "away_id": "12",
+      "home": "Buffalo Bills",
+      "away": "Kansas City Chiefs",
       "home_score": null,
       "away_score": null,
       "completed": false
@@ -6780,7 +6816,9 @@
       "model": "elo-v1",
       "k": 22,
       "locked_at": "2026-11-23T07:42:56.455756+00:00",
-      "result": "pending"
+      "result": "loss",
+      "settled_at": "2026-11-25T03:33:57.435653+00:00",
+      "final_score": "Detroit Pistons 104 – Orlando Magic 86"
     },
     "nba-401909315": {
       "id": "nba-401909315",
@@ -7021,8 +7059,68 @@
       "k": 28,
       "locked_at": "2026-11-24T04:50:28.777648+00:00",
       "result": "pending"
+    },
+    "nfl-401873081": {
+      "id": "nfl-401873081",
+      "sport": "nfl",
+      "start": "2026-11-26T18:00Z",
+      "home_id": "8",
+      "away_id": "3",
+      "home": "Detroit Lions",
+      "away": "Chicago Bears",
+      "home_score": null,
+      "away_score": null,
+      "completed": false,
+      "home_probability": 0.5798,
+      "away_probability": 0.4202,
+      "pick": "Detroit Lions",
+      "confidence": 0.5798,
+      "model": "elo-v1",
+      "k": 28,
+      "locked_at": "2026-11-25T03:33:57.435653+00:00",
+      "result": "pending"
+    },
+    "nfl-401873080": {
+      "id": "nfl-401873080",
+      "sport": "nfl",
+      "start": "2026-11-26T21:30Z",
+      "home_id": "6",
+      "away_id": "21",
+      "home": "Dallas Cowboys",
+      "away": "Philadelphia Eagles",
+      "home_score": null,
+      "away_score": null,
+      "completed": false,
+      "home_probability": 0.6277,
+      "away_probability": 0.3723,
+      "pick": "Dallas Cowboys",
+      "confidence": 0.6277,
+      "model": "elo-v1",
+      "k": 28,
+      "locked_at": "2026-11-25T03:33:57.435653+00:00",
+      "result": "pending"
+    },
+    "nfl-401873082": {
+      "id": "nfl-401873082",
+      "sport": "nfl",
+      "start": "2026-11-27T01:20Z",
+      "home_id": "2",
+      "away_id": "12",
+      "home": "Buffalo Bills",
+      "away": "Kansas City Chiefs",
+      "home_score": null,
+      "away_score": null,
+      "completed": false,
+      "home_probability": 0.6188,
+      "away_probability": 0.3812,
+      "pick": "Buffalo Bills",
+      "confidence": 0.6188,
+      "model": "elo-v1",
+      "k": 28,
+      "locked_at": "2026-11-25T03:33:57.435653+00:00",
+      "result": "pending"
     }
   },
   "errors": [],
-  "last_refresh": "2026-11-24T19:31:38.690775+00:00"
+  "last_refresh": "2026-11-25T03:33:57.435653+00:00"
 }
