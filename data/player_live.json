@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-11-25T00:59:33.424789+00:00",
+  "updated_at_utc": "2026-11-25T18:49:03.199737+00:00",
   "source": "Gill Sports private NBA engine (sanitized display feed)",
   "notice": "Unverified model candidates. No injury or sportsbook odds verification. Not betting advice.",
   "counts": {
-    "SETTLED": 372,
-    "PENDING": 420,
-    "DNP_OR_UNMATCHED": 230,
+    "SETTLED": 442,
+    "PENDING": 315,
+    "DNP_OR_UNMATCHED": 265,
     "DATA_ERROR": 0
   },
   "rows": [
@@ -13979,7 +13979,17 @@
       "pred_minutes": 31.43,
       "pred_pra": 33.74,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 28.0,
+      "actual_rebounds": 4.0,
+      "actual_assists": 9.0,
+      "actual_minutes": 33.0,
+      "actual_pra": 41.0,
+      "error_points": -4.7,
+      "error_rebounds": 2.27,
+      "error_assists": -4.84,
+      "error_minutes": -1.57,
+      "error_pra": -7.26
     },
     {
       "game_id": "401909315",
@@ -13996,7 +14006,7 @@
       "pred_minutes": 16.58,
       "pred_pra": 12.52,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "DNP_OR_UNMATCHED"
     },
     {
       "game_id": "401909315",
@@ -14013,7 +14023,17 @@
       "pred_minutes": 12.28,
       "pred_pra": 8.05,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 0.0,
+      "actual_rebounds": 2.0,
+      "actual_assists": 0.0,
+      "actual_minutes": 5.0,
+      "actual_pra": 2.0,
+      "error_points": 4.26,
+      "error_rebounds": 1.36,
+      "error_assists": 0.43,
+      "error_minutes": 7.28,
+      "error_pra": 6.05
     },
     {
       "game_id": "401909315",
@@ -14030,7 +14050,17 @@
       "pred_minutes": 25.96,
       "pred_pra": 19.7,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 21.0,
+      "actual_rebounds": 5.0,
+      "actual_assists": 2.0,
+      "actual_minutes": 25.0,
+      "actual_pra": 28.0,
+      "error_points": -10.44,
+      "error_rebounds": 2.08,
+      "error_assists": 0.07,
+      "error_minutes": 0.96,
+      "error_pra": -8.3
     },
     {
       "game_id": "401909314",
@@ -14047,7 +14077,17 @@
       "pred_minutes": 13.06,
       "pred_pra": 7.14,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 0.0,
+      "actual_rebounds": 0.0,
+      "actual_assists": 0.0,
+      "actual_minutes": 1.0,
+      "actual_pra": 0.0,
+      "error_points": 4.38,
+      "error_rebounds": 2.31,
+      "error_assists": 0.45,
+      "error_minutes": 12.06,
+      "error_pra": 7.14
     },
     {
       "game_id": "401909316",
@@ -14064,7 +14104,7 @@
       "pred_minutes": 8.31,
       "pred_pra": 2.49,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "DNP_OR_UNMATCHED"
     },
     {
       "game_id": "401909316",
@@ -14081,7 +14121,17 @@
       "pred_minutes": 32.75,
       "pred_pra": 29.33,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 24.0,
+      "actual_rebounds": 6.0,
+      "actual_assists": 12.0,
+      "actual_minutes": 31.0,
+      "actual_pra": 42.0,
+      "error_points": -5.48,
+      "error_rebounds": -0.65,
+      "error_assists": -6.55,
+      "error_minutes": 1.75,
+      "error_pra": -12.67
     },
     {
       "game_id": "401909315",
@@ -14098,7 +14148,17 @@
       "pred_minutes": 9.5,
       "pred_pra": 3.95,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 0.0,
+      "actual_rebounds": 2.0,
+      "actual_assists": 1.0,
+      "actual_minutes": 6.0,
+      "actual_pra": 3.0,
+      "error_points": 2.17,
+      "error_rebounds": -0.49,
+      "error_assists": -0.72,
+      "error_minutes": 3.5,
+      "error_pra": 0.95
     },
     {
       "game_id": "401909315",
@@ -14115,7 +14175,7 @@
       "pred_minutes": 16.1,
       "pred_pra": 10.41,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "DNP_OR_UNMATCHED"
     },
     {
       "game_id": "401909316",
@@ -14132,7 +14192,17 @@
       "pred_minutes": 13.86,
       "pred_pra": 11.39,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 9.0,
+      "actual_rebounds": 3.0,
+      "actual_assists": 0.0,
+      "actual_minutes": 12.0,
+      "actual_pra": 12.0,
+      "error_points": -2.2,
+      "error_rebounds": 1.25,
+      "error_assists": 0.34,
+      "error_minutes": 1.86,
+      "error_pra": -0.61
     },
     {
       "game_id": "401909316",
@@ -14149,7 +14219,17 @@
       "pred_minutes": 28.19,
       "pred_pra": 20.18,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 14.0,
+      "actual_rebounds": 6.0,
+      "actual_assists": 0.0,
+      "actual_minutes": 25.0,
+      "actual_pra": 20.0,
+      "error_points": -1.04,
+      "error_rebounds": -0.6,
+      "error_assists": 1.82,
+      "error_minutes": 3.19,
+      "error_pra": 0.18
     },
     {
       "game_id": "401909316",
@@ -14166,7 +14246,17 @@
       "pred_minutes": 24.12,
       "pred_pra": 18.24,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 13.0,
+      "actual_rebounds": 6.0,
+      "actual_assists": 3.0,
+      "actual_minutes": 27.0,
+      "actual_pra": 22.0,
+      "error_points": -2.62,
+      "error_rebounds": 0.15,
+      "error_assists": -1.3,
+      "error_minutes": -2.88,
+      "error_pra": -3.76
     },
     {
       "game_id": "401909314",
@@ -14183,7 +14273,7 @@
       "pred_minutes": 18.08,
       "pred_pra": 11.76,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "DNP_OR_UNMATCHED"
     },
     {
       "game_id": "401909314",
@@ -14200,7 +14290,17 @@
       "pred_minutes": 33.46,
       "pred_pra": 20.96,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 5.0,
+      "actual_rebounds": 4.0,
+      "actual_assists": 2.0,
+      "actual_minutes": 28.0,
+      "actual_pra": 11.0,
+      "error_points": 7.9,
+      "error_rebounds": -0.04,
+      "error_assists": 2.09,
+      "error_minutes": 5.46,
+      "error_pra": 9.96
     },
     {
       "game_id": "401909315",
@@ -14217,7 +14317,7 @@
       "pred_minutes": 6.9,
       "pred_pra": 1.72,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "DNP_OR_UNMATCHED"
     },
     {
       "game_id": "401909316",
@@ -14234,7 +14334,7 @@
       "pred_minutes": 7.07,
       "pred_pra": 1.61,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "DNP_OR_UNMATCHED"
     },
     {
       "game_id": "401909315",
@@ -14251,7 +14351,7 @@
       "pred_minutes": 6.41,
       "pred_pra": 0.96,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "DNP_OR_UNMATCHED"
     },
     {
       "game_id": "401909316",
@@ -14268,7 +14368,17 @@
       "pred_minutes": 29.77,
       "pred_pra": 22.68,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 1.0,
+      "actual_rebounds": 3.0,
+      "actual_assists": 3.0,
+      "actual_minutes": 24.0,
+      "actual_pra": 7.0,
+      "error_points": 13.19,
+      "error_rebounds": 2.87,
+      "error_assists": -0.38,
+      "error_minutes": 5.77,
+      "error_pra": 15.68
     },
     {
       "game_id": "401909316",
@@ -14285,7 +14395,17 @@
       "pred_minutes": 12.07,
       "pred_pra": 5.99,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 2.0,
+      "actual_rebounds": 2.0,
+      "actual_assists": 1.0,
+      "actual_minutes": 12.0,
+      "actual_pra": 5.0,
+      "error_points": 0.73,
+      "error_rebounds": -1.08,
+      "error_assists": 1.34,
+      "error_minutes": 0.07,
+      "error_pra": 0.99
     },
     {
       "game_id": "401909316",
@@ -14302,7 +14422,17 @@
       "pred_minutes": 14.59,
       "pred_pra": 8.18,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 3.0,
+      "actual_rebounds": 1.0,
+      "actual_assists": 0.0,
+      "actual_minutes": 10.0,
+      "actual_pra": 4.0,
+      "error_points": 1.43,
+      "error_rebounds": 1.82,
+      "error_assists": 0.93,
+      "error_minutes": 4.59,
+      "error_pra": 4.18
     },
     {
       "game_id": "401909314",
@@ -14319,7 +14449,7 @@
       "pred_minutes": 28.05,
       "pred_pra": 24.05,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "DNP_OR_UNMATCHED"
     },
     {
       "game_id": "401909315",
@@ -14336,7 +14466,7 @@
       "pred_minutes": 10.79,
       "pred_pra": 1.4,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "DNP_OR_UNMATCHED"
     },
     {
       "game_id": "401909316",
@@ -14353,7 +14483,7 @@
       "pred_minutes": 10.33,
       "pred_pra": 3.24,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "DNP_OR_UNMATCHED"
     },
     {
       "game_id": "401909314",
@@ -14370,7 +14500,7 @@
       "pred_minutes": 27.98,
       "pred_pra": 16.65,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "DNP_OR_UNMATCHED"
     },
     {
       "game_id": "401909316",
@@ -14387,7 +14517,17 @@
       "pred_minutes": 30.14,
       "pred_pra": 21.26,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 17.0,
+      "actual_rebounds": 5.0,
+      "actual_assists": 3.0,
+      "actual_minutes": 34.0,
+      "actual_pra": 25.0,
+      "error_points": -2.81,
+      "error_rebounds": -0.57,
+      "error_assists": -0.37,
+      "error_minutes": -3.86,
+      "error_pra": -3.74
     },
     {
       "game_id": "401909314",
@@ -14404,7 +14544,17 @@
       "pred_minutes": 24.26,
       "pred_pra": 19.51,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 9.0,
+      "actual_rebounds": 6.0,
+      "actual_assists": 1.0,
+      "actual_minutes": 22.0,
+      "actual_pra": 16.0,
+      "error_points": 1.6,
+      "error_rebounds": 0.88,
+      "error_assists": 1.02,
+      "error_minutes": 2.26,
+      "error_pra": 3.51
     },
     {
       "game_id": "401909315",
@@ -14421,7 +14571,17 @@
       "pred_minutes": 9.28,
       "pred_pra": 3.08,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 0.0,
+      "actual_rebounds": 0.0,
+      "actual_assists": 1.0,
+      "actual_minutes": 1.0,
+      "actual_pra": 1.0,
+      "error_points": 1.67,
+      "error_rebounds": 0.67,
+      "error_assists": -0.27,
+      "error_minutes": 8.28,
+      "error_pra": 2.08
     },
     {
       "game_id": "401909314",
@@ -14438,7 +14598,17 @@
       "pred_minutes": 11.2,
       "pred_pra": 4.24,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 7.0,
+      "actual_rebounds": 1.0,
+      "actual_assists": 2.0,
+      "actual_minutes": 14.0,
+      "actual_pra": 10.0,
+      "error_points": -4.5,
+      "error_rebounds": -0.01,
+      "error_assists": -1.24,
+      "error_minutes": -2.8,
+      "error_pra": -5.76
     },
     {
       "game_id": "401909316",
@@ -14455,7 +14625,17 @@
       "pred_minutes": 17.85,
       "pred_pra": 11.03,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 9.0,
+      "actual_rebounds": 10.0,
+      "actual_assists": 1.0,
+      "actual_minutes": 19.0,
+      "actual_pra": 20.0,
+      "error_points": -3.06,
+      "error_rebounds": -6.16,
+      "error_assists": 0.25,
+      "error_minutes": -1.15,
+      "error_pra": -8.97
     },
     {
       "game_id": "401909314",
@@ -14472,7 +14652,17 @@
       "pred_minutes": 17.44,
       "pred_pra": 11.69,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 21.0,
+      "actual_rebounds": 4.0,
+      "actual_assists": 0.0,
+      "actual_minutes": 30.0,
+      "actual_pra": 25.0,
+      "error_points": -12.65,
+      "error_rebounds": -2.01,
+      "error_assists": 1.34,
+      "error_minutes": -12.56,
+      "error_pra": -13.31
     },
     {
       "game_id": "401909315",
@@ -14489,7 +14679,7 @@
       "pred_minutes": 7.39,
       "pred_pra": 1.94,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "DNP_OR_UNMATCHED"
     },
     {
       "game_id": "401909315",
@@ -14506,7 +14696,17 @@
       "pred_minutes": 14.37,
       "pred_pra": 9.19,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 7.0,
+      "actual_rebounds": 4.0,
+      "actual_assists": 0.0,
+      "actual_minutes": 18.0,
+      "actual_pra": 11.0,
+      "error_points": -1.55,
+      "error_rebounds": -1.47,
+      "error_assists": 1.21,
+      "error_minutes": -3.63,
+      "error_pra": -1.81
     },
     {
       "game_id": "401909316",
@@ -14523,7 +14723,17 @@
       "pred_minutes": 6.43,
       "pred_pra": 1.19,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 0.0,
+      "actual_rebounds": 0.0,
+      "actual_assists": 0.0,
+      "actual_minutes": 3.0,
+      "actual_pra": 0.0,
+      "error_points": 0.77,
+      "error_rebounds": 0.26,
+      "error_assists": 0.16,
+      "error_minutes": 3.43,
+      "error_pra": 1.19
     },
     {
       "game_id": "401909315",
@@ -14540,7 +14750,17 @@
       "pred_minutes": 26.18,
       "pred_pra": 19.52,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 7.0,
+      "actual_rebounds": 2.0,
+      "actual_assists": 0.0,
+      "actual_minutes": 24.0,
+      "actual_pra": 9.0,
+      "error_points": 4.48,
+      "error_rebounds": 4.28,
+      "error_assists": 1.76,
+      "error_minutes": 2.18,
+      "error_pra": 10.52
     },
     {
       "game_id": "401909316",
@@ -14557,7 +14777,17 @@
       "pred_minutes": 16.13,
       "pred_pra": 10.06,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 0.0,
+      "actual_rebounds": 3.0,
+      "actual_assists": 0.0,
+      "actual_minutes": 12.0,
+      "actual_pra": 3.0,
+      "error_points": 5.89,
+      "error_rebounds": 0.62,
+      "error_assists": 0.55,
+      "error_minutes": 4.13,
+      "error_pra": 7.06
     },
     {
       "game_id": "401909314",
@@ -14574,7 +14804,17 @@
       "pred_minutes": 15.87,
       "pred_pra": 6.09,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 0.0,
+      "actual_rebounds": 0.0,
+      "actual_assists": 0.0,
+      "actual_minutes": 1.0,
+      "actual_pra": 0.0,
+      "error_points": 3.79,
+      "error_rebounds": 1.3,
+      "error_assists": 1.0,
+      "error_minutes": 14.87,
+      "error_pra": 6.09
     },
     {
       "game_id": "401909316",
@@ -14591,7 +14831,17 @@
       "pred_minutes": 6.76,
       "pred_pra": 1.24,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 2.0,
+      "actual_rebounds": 1.0,
+      "actual_assists": 1.0,
+      "actual_minutes": 3.0,
+      "actual_pra": 4.0,
+      "error_points": -1.44,
+      "error_rebounds": -0.65,
+      "error_assists": -0.67,
+      "error_minutes": 3.76,
+      "error_pra": -2.76
     },
     {
       "game_id": "401909316",
@@ -14608,7 +14858,17 @@
       "pred_minutes": 22.23,
       "pred_pra": 16.57,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 14.0,
+      "actual_rebounds": 1.0,
+      "actual_assists": 2.0,
+      "actual_minutes": 22.0,
+      "actual_pra": 17.0,
+      "error_points": -4.33,
+      "error_rebounds": 3.02,
+      "error_assists": 0.88,
+      "error_minutes": 0.23,
+      "error_pra": -0.43
     },
     {
       "game_id": "401909314",
@@ -14625,7 +14885,17 @@
       "pred_minutes": 27.41,
       "pred_pra": 17.99,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 4.0,
+      "actual_rebounds": 3.0,
+      "actual_assists": 5.0,
+      "actual_minutes": 33.0,
+      "actual_pra": 12.0,
+      "error_points": 6.57,
+      "error_rebounds": 0.9,
+      "error_assists": -1.48,
+      "error_minutes": -5.59,
+      "error_pra": 5.99
     },
     {
       "game_id": "401909315",
@@ -14642,7 +14912,17 @@
       "pred_minutes": 16.82,
       "pred_pra": 9.34,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 8.0,
+      "actual_rebounds": 4.0,
+      "actual_assists": 1.0,
+      "actual_minutes": 19.0,
+      "actual_pra": 13.0,
+      "error_points": -2.91,
+      "error_rebounds": -1.14,
+      "error_assists": 0.39,
+      "error_minutes": -2.18,
+      "error_pra": -3.66
     },
     {
       "game_id": "401909315",
@@ -14659,7 +14939,7 @@
       "pred_minutes": 7.89,
       "pred_pra": 1.53,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "DNP_OR_UNMATCHED"
     },
     {
       "game_id": "401909315",
@@ -14676,7 +14956,7 @@
       "pred_minutes": 15.75,
       "pred_pra": 4.03,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "DNP_OR_UNMATCHED"
     },
     {
       "game_id": "401909315",
@@ -14693,7 +14973,17 @@
       "pred_minutes": 21.16,
       "pred_pra": 13.77,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 4.0,
+      "actual_rebounds": 3.0,
+      "actual_assists": 1.0,
+      "actual_minutes": 22.0,
+      "actual_pra": 8.0,
+      "error_points": 5.16,
+      "error_rebounds": 0.39,
+      "error_assists": 0.22,
+      "error_minutes": -0.84,
+      "error_pra": 5.77
     },
     {
       "game_id": "401909315",
@@ -14710,7 +15000,17 @@
       "pred_minutes": 11.75,
       "pred_pra": 3.43,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 0.0,
+      "actual_rebounds": 2.0,
+      "actual_assists": 0.0,
+      "actual_minutes": 7.0,
+      "actual_pra": 2.0,
+      "error_points": 2.13,
+      "error_rebounds": -1.46,
+      "error_assists": 0.76,
+      "error_minutes": 4.75,
+      "error_pra": 1.43
     },
     {
       "game_id": "401909314",
@@ -14727,7 +15027,17 @@
       "pred_minutes": 33.14,
       "pred_pra": 21.27,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 15.0,
+      "actual_rebounds": 4.0,
+      "actual_assists": 10.0,
+      "actual_minutes": 35.0,
+      "actual_pra": 29.0,
+      "error_points": -1.86,
+      "error_rebounds": -0.6,
+      "error_assists": -5.26,
+      "error_minutes": -1.86,
+      "error_pra": -7.73
     },
     {
       "game_id": "401909315",
@@ -14744,7 +15054,17 @@
       "pred_minutes": 11.54,
       "pred_pra": 4.92,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 5.0,
+      "actual_rebounds": 0.0,
+      "actual_assists": 0.0,
+      "actual_minutes": 5.0,
+      "actual_pra": 5.0,
+      "error_points": -1.98,
+      "error_rebounds": 1.36,
+      "error_assists": 0.54,
+      "error_minutes": 6.54,
+      "error_pra": -0.08
     },
     {
       "game_id": "401909314",
@@ -14761,7 +15081,17 @@
       "pred_minutes": 24.78,
       "pred_pra": 18.38,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 12.0,
+      "actual_rebounds": 4.0,
+      "actual_assists": 0.0,
+      "actual_minutes": 26.0,
+      "actual_pra": 16.0,
+      "error_points": -0.91,
+      "error_rebounds": 2.28,
+      "error_assists": 1.02,
+      "error_minutes": -1.22,
+      "error_pra": 2.38
     },
     {
       "game_id": "401909316",
@@ -14778,7 +15108,17 @@
       "pred_minutes": 6.33,
       "pred_pra": 2.28,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 1.0,
+      "actual_rebounds": 1.0,
+      "actual_assists": 0.0,
+      "actual_minutes": 3.0,
+      "actual_pra": 2.0,
+      "error_points": 0.37,
+      "error_rebounds": -0.23,
+      "error_assists": 0.14,
+      "error_minutes": 3.33,
+      "error_pra": 0.28
     },
     {
       "game_id": "401909314",
@@ -14795,7 +15135,17 @@
       "pred_minutes": 12.0,
       "pred_pra": 4.16,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 0.0,
+      "actual_rebounds": 0.0,
+      "actual_assists": 0.0,
+      "actual_minutes": 1.0,
+      "actual_pra": 0.0,
+      "error_points": 2.19,
+      "error_rebounds": 1.36,
+      "error_assists": 0.61,
+      "error_minutes": 11.0,
+      "error_pra": 4.16
     },
     {
       "game_id": "401909316",
@@ -14812,7 +15162,7 @@
       "pred_minutes": 8.29,
       "pred_pra": 2.51,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "DNP_OR_UNMATCHED"
     },
     {
       "game_id": "401909314",
@@ -14829,7 +15179,17 @@
       "pred_minutes": 26.91,
       "pred_pra": 17.58,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 16.0,
+      "actual_rebounds": 3.0,
+      "actual_assists": 1.0,
+      "actual_minutes": 33.0,
+      "actual_pra": 20.0,
+      "error_points": -3.84,
+      "error_rebounds": 0.76,
+      "error_assists": 0.66,
+      "error_minutes": -6.09,
+      "error_pra": -2.42
     },
     {
       "game_id": "401909314",
@@ -14846,7 +15206,17 @@
       "pred_minutes": 14.54,
       "pred_pra": 8.28,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 13.0,
+      "actual_rebounds": 3.0,
+      "actual_assists": 1.0,
+      "actual_minutes": 17.0,
+      "actual_pra": 17.0,
+      "error_points": -8.37,
+      "error_rebounds": -0.27,
+      "error_assists": -0.08,
+      "error_minutes": -2.46,
+      "error_pra": -8.72
     },
     {
       "game_id": "401909316",
@@ -14863,7 +15233,7 @@
       "pred_minutes": 9.19,
       "pred_pra": 2.47,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "DNP_OR_UNMATCHED"
     },
     {
       "game_id": "401909316",
@@ -14880,7 +15250,17 @@
       "pred_minutes": 30.53,
       "pred_pra": 34.4,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 11.0,
+      "actual_rebounds": 5.0,
+      "actual_assists": 6.0,
+      "actual_minutes": 34.0,
+      "actual_pra": 22.0,
+      "error_points": 14.33,
+      "error_rebounds": -1.22,
+      "error_assists": -0.72,
+      "error_minutes": -3.47,
+      "error_pra": 12.4
     },
     {
       "game_id": "401909315",
@@ -14897,7 +15277,17 @@
       "pred_minutes": 29.62,
       "pred_pra": 22.92,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 6.0,
+      "actual_rebounds": 7.0,
+      "actual_assists": 5.0,
+      "actual_minutes": 30.0,
+      "actual_pra": 18.0,
+      "error_points": 8.38,
+      "error_rebounds": -3.2,
+      "error_assists": -0.26,
+      "error_minutes": -0.38,
+      "error_pra": 4.92
     },
     {
       "game_id": "401909314",
@@ -14914,7 +15304,17 @@
       "pred_minutes": 14.24,
       "pred_pra": 7.35,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 9.0,
+      "actual_rebounds": 0.0,
+      "actual_assists": 0.0,
+      "actual_minutes": 19.0,
+      "actual_pra": 9.0,
+      "error_points": -4.57,
+      "error_rebounds": 1.45,
+      "error_assists": 1.46,
+      "error_minutes": -4.76,
+      "error_pra": -1.65
     },
     {
       "game_id": "401909315",
@@ -14931,7 +15331,17 @@
       "pred_minutes": 32.76,
       "pred_pra": 29.77,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 17.0,
+      "actual_rebounds": 0.0,
+      "actual_assists": 12.0,
+      "actual_minutes": 35.0,
+      "actual_pra": 29.0,
+      "error_points": 0.91,
+      "error_rebounds": 3.1,
+      "error_assists": -3.24,
+      "error_minutes": -2.24,
+      "error_pra": 0.77
     },
     {
       "game_id": "401909314",
@@ -14948,7 +15358,17 @@
       "pred_minutes": 33.57,
       "pred_pra": 34.02,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 20.0,
+      "actual_rebounds": 9.0,
+      "actual_assists": 6.0,
+      "actual_minutes": 38.0,
+      "actual_pra": 35.0,
+      "error_points": 2.03,
+      "error_rebounds": -3.45,
+      "error_assists": 0.44,
+      "error_minutes": -4.43,
+      "error_pra": -0.98
     },
     {
       "game_id": "401909315",
@@ -14965,7 +15385,7 @@
       "pred_minutes": 14.78,
       "pred_pra": 4.9,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "DNP_OR_UNMATCHED"
     },
     {
       "game_id": "401909316",
@@ -14982,7 +15402,17 @@
       "pred_minutes": 24.34,
       "pred_pra": 15.67,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 12.0,
+      "actual_rebounds": 6.0,
+      "actual_assists": 1.0,
+      "actual_minutes": 21.0,
+      "actual_pra": 19.0,
+      "error_points": -2.12,
+      "error_rebounds": -1.64,
+      "error_assists": 0.43,
+      "error_minutes": 3.34,
+      "error_pra": -3.33
     },
     {
       "game_id": "401909314",
@@ -14999,7 +15429,7 @@
       "pred_minutes": 6.58,
       "pred_pra": 1.47,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "DNP_OR_UNMATCHED"
     },
     {
       "game_id": "401909314",
@@ -15016,7 +15446,7 @@
       "pred_minutes": 8.06,
       "pred_pra": 1.68,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "DNP_OR_UNMATCHED"
     },
     {
       "game_id": "401909315",
@@ -15033,7 +15463,17 @@
       "pred_minutes": 33.2,
       "pred_pra": 39.86,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 33.0,
+      "actual_rebounds": 13.0,
+      "actual_assists": 1.0,
+      "actual_minutes": 37.0,
+      "actual_pra": 47.0,
+      "error_points": -6.55,
+      "error_rebounds": -2.26,
+      "error_assists": 1.67,
+      "error_minutes": -3.8,
+      "error_pra": -7.14
     },
     {
       "game_id": "401909315",
@@ -15050,7 +15490,17 @@
       "pred_minutes": 20.61,
       "pred_pra": 12.76,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 0.0,
+      "actual_rebounds": 5.0,
+      "actual_assists": 0.0,
+      "actual_minutes": 18.0,
+      "actual_pra": 5.0,
+      "error_points": 7.03,
+      "error_rebounds": -1.36,
+      "error_assists": 2.08,
+      "error_minutes": 2.61,
+      "error_pra": 7.76
     },
     {
       "game_id": "401909314",
@@ -15067,7 +15517,17 @@
       "pred_minutes": 20.34,
       "pred_pra": 10.3,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 6.0,
+      "actual_rebounds": 2.0,
+      "actual_assists": 1.0,
+      "actual_minutes": 27.0,
+      "actual_pra": 9.0,
+      "error_points": 0.56,
+      "error_rebounds": 1.02,
+      "error_assists": -0.28,
+      "error_minutes": -6.66,
+      "error_pra": 1.3
     },
     {
       "game_id": "401909316",
@@ -15084,7 +15544,17 @@
       "pred_minutes": 7.63,
       "pred_pra": 2.33,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 0.0,
+      "actual_rebounds": 0.0,
+      "actual_assists": 0.0,
+      "actual_minutes": 2.0,
+      "actual_pra": 0.0,
+      "error_points": 1.3,
+      "error_rebounds": 0.87,
+      "error_assists": 0.16,
+      "error_minutes": 5.63,
+      "error_pra": 2.33
     },
     {
       "game_id": "401909314",
@@ -15101,7 +15571,7 @@
       "pred_minutes": 6.81,
       "pred_pra": 1.36,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "DNP_OR_UNMATCHED"
     },
     {
       "game_id": "401909315",
@@ -15118,7 +15588,17 @@
       "pred_minutes": 10.08,
       "pred_pra": 3.71,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 2.0,
+      "actual_rebounds": 0.0,
+      "actual_assists": 0.0,
+      "actual_minutes": 8.0,
+      "actual_pra": 2.0,
+      "error_points": 0.53,
+      "error_rebounds": 0.83,
+      "error_assists": 0.35,
+      "error_minutes": 2.08,
+      "error_pra": 1.71
     },
     {
       "game_id": "401909316",
@@ -15135,7 +15615,7 @@
       "pred_minutes": 11.8,
       "pred_pra": 3.46,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "DNP_OR_UNMATCHED"
     },
     {
       "game_id": "401909316",
@@ -15152,7 +15632,7 @@
       "pred_minutes": 10.42,
       "pred_pra": 3.01,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "DNP_OR_UNMATCHED"
     },
     {
       "game_id": "401909315",
@@ -15169,7 +15649,17 @@
       "pred_minutes": 17.64,
       "pred_pra": 9.42,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 0.0,
+      "actual_rebounds": 5.0,
+      "actual_assists": 0.0,
+      "actual_minutes": 9.0,
+      "actual_pra": 5.0,
+      "error_points": 5.55,
+      "error_rebounds": -1.99,
+      "error_assists": 0.86,
+      "error_minutes": 8.64,
+      "error_pra": 4.42
     },
     {
       "game_id": "401909315",
@@ -15186,7 +15676,7 @@
       "pred_minutes": 6.39,
       "pred_pra": 1.45,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "DNP_OR_UNMATCHED"
     },
     {
       "game_id": "401909316",
@@ -15203,7 +15693,7 @@
       "pred_minutes": 10.51,
       "pred_pra": 4.93,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "DNP_OR_UNMATCHED"
     },
     {
       "game_id": "401909316",
@@ -15220,7 +15710,17 @@
       "pred_minutes": 21.2,
       "pred_pra": 17.48,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 9.0,
+      "actual_rebounds": 5.0,
+      "actual_assists": 1.0,
+      "actual_minutes": 17.0,
+      "actual_pra": 15.0,
+      "error_points": 2.7,
+      "error_rebounds": -1.9,
+      "error_assists": 1.67,
+      "error_minutes": 4.2,
+      "error_pra": 2.48
     },
     {
       "game_id": "401909314",
@@ -15237,7 +15737,7 @@
       "pred_minutes": 16.67,
       "pred_pra": 16.52,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "DNP_OR_UNMATCHED"
     },
     {
       "game_id": "401909314",
@@ -15254,7 +15754,17 @@
       "pred_minutes": 29.57,
       "pred_pra": 22.08,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 9.0,
+      "actual_rebounds": 13.0,
+      "actual_assists": 2.0,
+      "actual_minutes": 38.0,
+      "actual_pra": 24.0,
+      "error_points": 3.32,
+      "error_rebounds": -5.0,
+      "error_assists": -0.24,
+      "error_minutes": -8.43,
+      "error_pra": -1.92
     },
     {
       "game_id": "401909314",
@@ -15271,7 +15781,7 @@
       "pred_minutes": 34.98,
       "pred_pra": 31.7,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "DNP_OR_UNMATCHED"
     },
     {
       "game_id": "401909314",
@@ -15288,7 +15798,7 @@
       "pred_minutes": 7.79,
       "pred_pra": 2.18,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "DNP_OR_UNMATCHED"
     },
     {
       "game_id": "401909316",
@@ -15305,7 +15815,7 @@
       "pred_minutes": 9.28,
       "pred_pra": 3.25,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "DNP_OR_UNMATCHED"
     },
     {
       "game_id": "401909316",
@@ -15322,7 +15832,17 @@
       "pred_minutes": 35.14,
       "pred_pra": 32.58,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 20.0,
+      "actual_rebounds": 2.0,
+      "actual_assists": 3.0,
+      "actual_minutes": 36.0,
+      "actual_pra": 25.0,
+      "error_points": 2.03,
+      "error_rebounds": 2.43,
+      "error_assists": 3.13,
+      "error_minutes": -0.86,
+      "error_pra": 7.58
     },
     {
       "game_id": "401909314",
@@ -15339,7 +15859,7 @@
       "pred_minutes": 10.99,
       "pred_pra": 4.37,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "DNP_OR_UNMATCHED"
     },
     {
       "game_id": "401909315",
@@ -15356,7 +15876,17 @@
       "pred_minutes": 33.39,
       "pred_pra": 40.45,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 41.0,
+      "actual_rebounds": 6.0,
+      "actual_assists": 8.0,
+      "actual_minutes": 37.0,
+      "actual_pra": 55.0,
+      "error_points": -13.6,
+      "error_rebounds": 1.52,
+      "error_assists": -2.47,
+      "error_minutes": -3.61,
+      "error_pra": -14.55
     },
     {
       "game_id": "401909314",
@@ -15373,7 +15903,17 @@
       "pred_minutes": 31.23,
       "pred_pra": 22.39,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 6.0,
+      "actual_rebounds": 10.0,
+      "actual_assists": 7.0,
+      "actual_minutes": 31.0,
+      "actual_pra": 23.0,
+      "error_points": 4.15,
+      "error_rebounds": -2.25,
+      "error_assists": -2.5,
+      "error_minutes": 0.23,
+      "error_pra": -0.61
     },
     {
       "game_id": "401909315",
@@ -15390,7 +15930,17 @@
       "pred_minutes": 34.3,
       "pred_pra": 24.57,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 24.0,
+      "actual_rebounds": 9.0,
+      "actual_assists": 3.0,
+      "actual_minutes": 38.0,
+      "actual_pra": 36.0,
+      "error_points": -7.67,
+      "error_rebounds": -4.52,
+      "error_assists": 0.76,
+      "error_minutes": -3.7,
+      "error_pra": -11.43
     },
     {
       "game_id": "401909316",
@@ -15407,7 +15957,17 @@
       "pred_minutes": 21.43,
       "pred_pra": 13.36,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 5.0,
+      "actual_rebounds": 2.0,
+      "actual_assists": 2.0,
+      "actual_minutes": 14.0,
+      "actual_pra": 9.0,
+      "error_points": 2.91,
+      "error_rebounds": 0.53,
+      "error_assists": 0.92,
+      "error_minutes": 7.43,
+      "error_pra": 4.36
     },
     {
       "game_id": "401909314",
@@ -15424,7 +15984,7 @@
       "pred_minutes": 4.67,
       "pred_pra": 0.68,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "DNP_OR_UNMATCHED"
     },
     {
       "game_id": "401909314",
@@ -15441,7 +16001,7 @@
       "pred_minutes": 6.7,
       "pred_pra": 1.78,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "DNP_OR_UNMATCHED"
     },
     {
       "game_id": "401909316",
@@ -15458,7 +16018,17 @@
       "pred_minutes": 18.55,
       "pred_pra": 7.62,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 7.0,
+      "actual_rebounds": 3.0,
+      "actual_assists": 1.0,
+      "actual_minutes": 22.0,
+      "actual_pra": 11.0,
+      "error_points": -2.44,
+      "error_rebounds": -0.72,
+      "error_assists": -0.22,
+      "error_minutes": -3.45,
+      "error_pra": -3.38
     },
     {
       "game_id": "401909316",
@@ -15475,7 +16045,17 @@
       "pred_minutes": 23.82,
       "pred_pra": 16.73,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 13.0,
+      "actual_rebounds": 4.0,
+      "actual_assists": 4.0,
+      "actual_minutes": 30.0,
+      "actual_pra": 21.0,
+      "error_points": -3.51,
+      "error_rebounds": 0.63,
+      "error_assists": -1.39,
+      "error_minutes": -6.18,
+      "error_pra": -4.27
     },
     {
       "game_id": "401909314",
@@ -15492,7 +16072,17 @@
       "pred_minutes": 32.89,
       "pred_pra": 27.32,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 21.0,
+      "actual_rebounds": 1.0,
+      "actual_assists": 5.0,
+      "actual_minutes": 34.0,
+      "actual_pra": 27.0,
+      "error_points": -1.73,
+      "error_rebounds": 3.24,
+      "error_assists": -1.19,
+      "error_minutes": -1.11,
+      "error_pra": 0.32
     },
     {
       "game_id": "401909316",
@@ -15509,7 +16099,17 @@
       "pred_minutes": 32.5,
       "pred_pra": 19.99,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 15.0,
+      "actual_rebounds": 2.0,
+      "actual_assists": 4.0,
+      "actual_minutes": 29.0,
+      "actual_pra": 21.0,
+      "error_points": -2.23,
+      "error_rebounds": 2.71,
+      "error_assists": -1.49,
+      "error_minutes": 3.5,
+      "error_pra": -1.01
     },
     {
       "game_id": "401909316",
@@ -15526,7 +16126,17 @@
       "pred_minutes": 35.22,
       "pred_pra": 47.35,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 18.0,
+      "actual_rebounds": 11.0,
+      "actual_assists": 5.0,
+      "actual_minutes": 33.0,
+      "actual_pra": 34.0,
+      "error_points": 7.35,
+      "error_rebounds": 1.31,
+      "error_assists": 4.69,
+      "error_minutes": 2.22,
+      "error_pra": 13.35
     },
     {
       "game_id": "401909315",
@@ -15543,7 +16153,17 @@
       "pred_minutes": 24.0,
       "pred_pra": 13.29,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 10.0,
+      "actual_rebounds": 3.0,
+      "actual_assists": 1.0,
+      "actual_minutes": 22.0,
+      "actual_pra": 14.0,
+      "error_points": -2.31,
+      "error_rebounds": 1.41,
+      "error_assists": 0.19,
+      "error_minutes": 2.0,
+      "error_pra": -0.71
     },
     {
       "game_id": "401909314",
@@ -15560,7 +16180,7 @@
       "pred_minutes": 8.77,
       "pred_pra": 2.32,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "DNP_OR_UNMATCHED"
     },
     {
       "game_id": "401909314",
@@ -15577,7 +16197,17 @@
       "pred_minutes": 14.8,
       "pred_pra": 11.7,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 2.0,
+      "actual_rebounds": 8.0,
+      "actual_assists": 1.0,
+      "actual_minutes": 13.0,
+      "actual_pra": 11.0,
+      "error_points": 4.19,
+      "error_rebounds": -3.61,
+      "error_assists": 0.11,
+      "error_minutes": 1.8,
+      "error_pra": 0.7
     },
     {
       "game_id": "401909316",
@@ -15594,7 +16224,17 @@
       "pred_minutes": 15.64,
       "pred_pra": 7.99,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 2.0,
+      "actual_rebounds": 1.0,
+      "actual_assists": 0.0,
+      "actual_minutes": 4.0,
+      "actual_pra": 3.0,
+      "error_points": 3.18,
+      "error_rebounds": 0.85,
+      "error_assists": 0.97,
+      "error_minutes": 11.64,
+      "error_pra": 4.99
     },
     {
       "game_id": "401909316",
@@ -15611,7 +16251,7 @@
       "pred_minutes": 11.97,
       "pred_pra": 5.56,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "DNP_OR_UNMATCHED"
     },
     {
       "game_id": "401909315",
@@ -15628,7 +16268,7 @@
       "pred_minutes": 17.15,
       "pred_pra": 3.04,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "DNP_OR_UNMATCHED"
     },
     {
       "game_id": "401909315",
@@ -15645,7 +16285,17 @@
       "pred_minutes": 16.58,
       "pred_pra": 8.99,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 0.0,
+      "actual_rebounds": 1.0,
+      "actual_assists": 0.0,
+      "actual_minutes": 8.0,
+      "actual_pra": 1.0,
+      "error_points": 6.43,
+      "error_rebounds": 0.61,
+      "error_assists": 0.94,
+      "error_minutes": 8.58,
+      "error_pra": 7.99
     },
     {
       "game_id": "401909315",
@@ -15662,7 +16312,17 @@
       "pred_minutes": 33.35,
       "pred_pra": 23.54,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 20.0,
+      "actual_rebounds": 11.0,
+      "actual_assists": 7.0,
+      "actual_minutes": 41.0,
+      "actual_pra": 38.0,
+      "error_points": -5.7,
+      "error_rebounds": -4.65,
+      "error_assists": -4.12,
+      "error_minutes": -7.65,
+      "error_pra": -14.46
     },
     {
       "game_id": "401909314",
@@ -15679,7 +16339,17 @@
       "pred_minutes": 30.98,
       "pred_pra": 18.73,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 13.0,
+      "actual_rebounds": 6.0,
+      "actual_assists": 5.0,
+      "actual_minutes": 32.0,
+      "actual_pra": 24.0,
+      "error_points": -0.68,
+      "error_rebounds": -2.68,
+      "error_assists": -1.91,
+      "error_minutes": -1.02,
+      "error_pra": -5.27
     },
     {
       "game_id": "401909315",
@@ -15696,7 +16366,17 @@
       "pred_minutes": 26.82,
       "pred_pra": 17.53,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 14.0,
+      "actual_rebounds": 4.0,
+      "actual_assists": 2.0,
+      "actual_minutes": 28.0,
+      "actual_pra": 20.0,
+      "error_points": -3.63,
+      "error_rebounds": -0.76,
+      "error_assists": 1.92,
+      "error_minutes": -1.18,
+      "error_pra": -2.47
     },
     {
       "game_id": "401909315",
@@ -15713,7 +16393,17 @@
       "pred_minutes": 12.02,
       "pred_pra": 5.63,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 0.0,
+      "actual_rebounds": 2.0,
+      "actual_assists": 1.0,
+      "actual_minutes": 5.0,
+      "actual_pra": 3.0,
+      "error_points": 3.6,
+      "error_rebounds": -0.39,
+      "error_assists": -0.57,
+      "error_minutes": 7.02,
+      "error_pra": 2.63
     },
     {
       "game_id": "401909314",
@@ -15730,7 +16420,17 @@
       "pred_minutes": 11.22,
       "pred_pra": 3.17,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "SETTLED",
+      "actual_points": 2.0,
+      "actual_rebounds": 2.0,
+      "actual_assists": 0.0,
+      "actual_minutes": 7.0,
+      "actual_pra": 4.0,
+      "error_points": 0.08,
+      "error_rebounds": -1.27,
+      "error_assists": 0.36,
+      "error_minutes": 4.22,
+      "error_pra": -0.83
     },
     {
       "game_id": "401909314",
@@ -15747,7 +16447,7 @@
       "pred_minutes": 6.44,
       "pred_pra": 0.29,
       "model_verified_for_betting": false,
-      "status": "PENDING"
+      "status": "DNP_OR_UNMATCHED"
     },
     {
       "game_id": "401909319",
