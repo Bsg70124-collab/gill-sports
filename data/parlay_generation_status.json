@@ -1,0 +1,19 @@
+{
+  "schema_version": 2,
+  "checked_at_utc": "2026-11-26T03:02:52.035531+00:00",
+  "date_pacific": "2026-11-25",
+  "odds_captured_at_utc": "2026-11-25T02:59:36.331998+00:00",
+  "odds_age_minutes": 1443.3,
+  "market_outcomes": 816,
+  "distinct_games_in_fresh_feed": 0,
+  "eligible_player_candidates": 0,
+  "verified_distinct_games": 0,
+  "generated_slips": [],
+  "reasons": {
+    "snapshot_missing_or_expired": 1,
+    "insufficient_distinct_verified_games_for_3_legs": 1,
+    "insufficient_distinct_verified_games_for_4_legs": 1
+  },
+  "state": "no_qualifying_parlays",
+  "disclaimer": "Paper-tracking only. Does not infer win probabilities or EV from projection-minus-line. No slip is generated without live quotes, confirmed player availability, validated edge, and calibrated model probabilities."
+}
