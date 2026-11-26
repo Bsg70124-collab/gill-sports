@@ -1,0 +1,234 @@
+name: Gill Sports - Daily Parlay Generator V2
+
+"on":
+  workflow_dispatch:
+  schedule:
+    - cron: '11 15 * * *'
+    - cron: '11 18 * * *'
+    - cron: '11 21 * * *'
+    - cron: '11 0 * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gill-sports-parlay-generation-v2
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Generate only validated, fresh paper parlay slips
+        shell: bash
+        run: |
+          python - <<'PYCODE'
+          import json, math, os, re, sys, urllib.request
+          from collections import Counter
+          from datetime import datetime, timezone
+          from pathlib import Path
+          from zoneinfo import ZoneInfo
+          
+          FEED = Path('data/nba_market_comparison.json')
+          PARLAYS = Path('data/parlays.json')
+          STATUS = Path('data/parlay_generation_status.json')
+          NOW = datetime.now(timezone.utc)
+          DAY = NOW.astimezone(ZoneInfo('America/Los_Angeles')).date().isoformat()
+          MIN_EDGE = 0.025  # Minimum estimated expected return, not a guarantee
+          MAX_QUOTE_MINUTES = 30
+          MIN_MINUTES_BEFORE_TIP = 20
+          
+          def dt(value):
+              if not isinstance(value, str): return None
+              try:
+                  parsed = datetime.fromisoformat(value.replace('Z', '+00:00'))
+                  return parsed.astimezone(timezone.utc) if parsed.tzinfo else None
+              except ValueError: return None
+          
+          def num(value):
+              if isinstance(value, bool) or not isinstance(value, (int, float)): return None
+              return float(value) if math.isfinite(value) else None
+          
+          def read(path, default):
+              try: return json.loads(path.read_text(encoding='utf-8'))
+              except (OSError, json.JSONDecodeError): return default
+          
+          def save(path, data):
+              path.parent.mkdir(parents=True, exist_ok=True)
+              path.write_text(json.dumps(data, indent=2, ensure_ascii=False, allow_nan=False) + '\n', encoding='utf-8')
+          
+          def espn_event(game_id):
+              url = 'https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=' + game_id
+              req = urllib.request.Request(url, headers={'User-Agent':'GillSportsDailyParlayCandidate/2'})
+              try:
+                  with urllib.request.urlopen(req, timeout=20) as response:
+                      body = json.load(response)
+                  comps = body.get('header', {}).get('competitions', [])
+                  if not comps: return None
+                  comp = comps[0]
+                  state = comp.get('status', {}).get('type', {})
+                  start = dt(comp.get('date'))
+                  if not start or (start - NOW).total_seconds() < MIN_MINUTES_BEFORE_TIP * 60:
+                      return None
+                  if state.get('completed') is True or str(state.get('state','')).lower() in ('in','post'):
+                      return None
+                  return start
+              except Exception as exc:
+                  print('EVENT_VERIFICATION_FAILED', game_id, str(exc)[:140])
+                  return None
+          
+          def main():
+              feed = read(FEED, {})
+              history = read(PARLAYS, {'rows': []})
+              if not isinstance(history.get('rows'), list):
+                  raise SystemExit('PARLAY_HISTORY_INVALID: refusing to overwrite saved results')
+              rows = feed.get('rows', [])
+              if not isinstance(rows, list): rows = []
+              reasons = Counter()
+              eligible = []
+              games_available = set()
+              captured = dt(feed.get('odds_captured_at_utc'))
+              age = ((NOW - captured).total_seconds()/60) if captured else None
+              if age is None or age < 0 or age > MAX_QUOTE_MINUTES:
+                  reasons['snapshot_missing_or_expired'] += 1
+              else:
+                  for row in rows:
+                      if not isinstance(row, dict): continue
+                      game_id = str(row.get('game_id') or '')
+                      if not game_id.isdigit() or not row.get('player_name') or not row.get('player_id'):
+                          reasons['unmatched_player_or_game'] += 1; continue
+                      games_available.add(game_id)
+                      if row.get('stat') not in ('points', 'rebounds', 'assists'):
+                          reasons['unsupported_stat'] += 1; continue
+                      if row.get('side') not in ('Over', 'Under'):
+                          reasons['unsupported_side'] += 1; continue
+                      if row.get('availability_verified') is not True:
+                          reasons['player_availability_unverified'] += 1; continue
+                      if row.get('validated_edge') is not True:
+                          reasons['model_edge_not_validated'] += 1; continue
+                      prob = num(row.get('model_probability'))
+                      ev = num(row.get('estimated_ev'))
+                      line = num(row.get('line'))
+                      price = num(row.get('american_price'))
+                      if prob is None or not (0 < prob < 1) or ev is None or ev < MIN_EDGE or line is None or price is None:
+                          reasons['missing_calibrated_probability_or_value'] += 1; continue
+                      quote_at = dt(row.get('market_last_update'))
+                      if not quote_at or (NOW - quote_at).total_seconds() > MAX_QUOTE_MINUTES*60 or quote_at > NOW:
+                          reasons['quote_expired'] += 1; continue
+                      if row.get('quote_stale_at_capture') is True:
+                          reasons['quote_stale_at_capture'] += 1; continue
+                      eligible.append(row)
+          
+              # Pick the most attractive priced direction for each player. Never use multiple
+              # books for the same athlete or both sides of the same stat in one slip.
+              unique = {}
+              for row in eligible:
+                  key = (str(row['game_id']), str(row['player_id']))
+                  if key not in unique or row['estimated_ev'] > unique[key]['estimated_ev']:
+                      unique[key] = row
+              choices = sorted(unique.values(), key=lambda x: (-x['estimated_ev'], -x['model_probability'], str(x['player_id'])))
+              event_cache = {}
+              verified = []
+              for row in choices:
+                  gid = str(row['game_id'])
+                  if gid not in event_cache:
+                      event_cache[gid] = espn_event(gid)
+                  if event_cache[gid] is None:
+                      reasons['game_not_verified_upcoming'] += 1
+                      continue
+                  verified.append(row)
+              # Distinct NBA games for all legs; do not claim independence from this alone.
+              selected = []
+              used_games = set()
+              for row in verified:
+                  if str(row['game_id']) in used_games: continue
+                  selected.append(row)
+                  used_games.add(str(row['game_id']))
+                  if len(selected) == 4: break
+          
+              slips_added = []
+              for n in (3,4):
+                  if len(selected) < n:
+                      reasons['insufficient_distinct_verified_games_for_'+str(n)+'_legs'] += 1
+                      continue
+                  slip_id = f'{DAY}-{n}-v2'
+                  if any(str(x.get('id')) == slip_id or (str(x.get('day')) == DAY and x.get('size') == n)
+                         for x in history['rows']):
+                      reasons['already_generated_'+str(n)+'_leg'] += 1
+                      continue
+                  legs = []
+                  for row in selected[:n]:
+                      gid = str(row['game_id'])
+                      stat = {'points':'pts','rebounds':'reb','assists':'ast'}[row['stat']]
+                      side = 'MORE' if row['side'] == 'Over' else 'LESS'
+                      legs.append({
+                          'id': f'v2|{gid}|{row["player_id"]}|{stat}|{side}|{row["line"]}',
+                          'kind':'player', 'eventKey':'NBA|'+gid,
+                          'playerRowId':f'auto-{gid}-{row["player_id"]}',
+                          'start':event_cache[gid].isoformat(),
+                          'name':str(row['player_name'])+' · '+str(row.get('matchup','NBA')),
+                          'selection':f'{side} {row["line"]:g} {stat.upper()}',
+                          'probability':row['model_probability'],
+                          'line':row['line'], 'stat':stat, 'side':side,
+                          'source':str(row.get('bookmaker_title') or row.get('bookmaker_key') or 'bookmaker'),
+                          'americanPrice':row['american_price'],
+                          'estimatedEV':row['estimated_ev'],
+                          'observedAt':row['market_last_update'],
+                          'result':'Pending','actual':None,
+                          'confidence':'Calibrated, still uncertain'})
+                  history['rows'].append({
+                      'id':slip_id,'day':DAY,'size':n,'created':NOW.isoformat(),
+                      'legs':legs,'independenceEstimate':None,'boundLow':None,'boundHigh':None,
+                      'confidence':'Experimental paper parlay — calibrated legs, unvalidated joint probability',
+                      'strategy':'Verified current markets, positive estimated EV, distinct NBA games; not a guarantee',
+                      'stake':0,'result':'Pending','settledAt':None,
+                      'source':'Gill Sports daily paper parlay generator V2'})
+                  slips_added.append(slip_id)
+              counts = Counter(str(x.get('result','Pending')) for x in history['rows'])
+              history['summary'] = {'locked':len(history['rows']), 'wins':counts['Win'], 'losses':counts['Loss'],
+                                    'pending':counts['Pending'], 'void':counts['Void']}
+              if slips_added:
+                  save(PARLAYS, history)
+              status = {
+                  'schema_version':2, 'checked_at_utc':NOW.isoformat(), 'date_pacific':DAY,
+                  'odds_captured_at_utc':feed.get('odds_captured_at_utc'),
+                  'odds_age_minutes':round(age,1) if age is not None else None,
+                  'market_outcomes':len(rows), 'distinct_games_in_fresh_feed':len(games_available),
+                  'eligible_player_candidates':len(eligible),
+                  'verified_distinct_games':len(used_games),
+                  'generated_slips':slips_added, 'reasons':dict(reasons),
+                  'state':'generated' if slips_added else 'no_qualifying_parlays',
+                  'disclaimer':'Paper-tracking only. Does not infer win probabilities or EV from projection-minus-line. No slip is generated without live quotes, confirmed player availability, validated edge, and calibrated model probabilities.'}
+              save(STATUS,status)
+              print('PARLAY_GENERATION_STATE:',status['state'])
+              print('MARKET_OUTCOMES:',len(rows))
+              print('DISTINCT_GAMES_IN_FRESH_FEED:',len(games_available))
+              print('ELIGIBLE_CANDIDATES:',len(eligible))
+              print('GENERATED_SLIPS:',slips_added)
+              print('NO_SLIP_REASONS:',dict(reasons))
+              print('PAID_ODDS_API_CALLS: 0')
+          
+          if __name__ == '__main__':main()
+          PYCODE
+      - name: Publish generated slips and audit status
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/parlays.json data/parlay_generation_status.json
+          if git diff --cached --quiet; then
+            echo NO_CHANGES
+            exit 0
+          fi
+          git commit -m "Refresh Gill Sports daily parlay generation and status"
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
