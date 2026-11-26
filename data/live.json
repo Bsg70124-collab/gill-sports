@@ -5900,9 +5900,9 @@
       "away_id": "14",
       "home": "Philadelphia 76ers",
       "away": "Miami Heat",
-      "home_score": null,
-      "away_score": null,
-      "completed": false
+      "home_score": 111.0,
+      "away_score": 104.0,
+      "completed": true
     },
     "nba-401909318": {
       "id": "nba-401909318",
@@ -5912,9 +5912,9 @@
       "away_id": "4",
       "home": "Charlotte Hornets",
       "away": "Chicago Bulls",
-      "home_score": null,
-      "away_score": null,
-      "completed": false
+      "home_score": 105.0,
+      "away_score": 107.0,
+      "completed": true
     },
     "nba-401909319": {
       "id": "nba-401909319",
@@ -5924,9 +5924,9 @@
       "away_id": "5",
       "home": "New York Knicks",
       "away": "Cleveland Cavaliers",
-      "home_score": null,
-      "away_score": null,
-      "completed": false
+      "home_score": 121.0,
+      "away_score": 102.0,
+      "completed": true
     },
     "nba-401909320": {
       "id": "nba-401909320",
@@ -5936,9 +5936,9 @@
       "away_id": "16",
       "home": "Oklahoma City Thunder",
       "away": "Minnesota Timberwolves",
-      "home_score": null,
-      "away_score": null,
-      "completed": false
+      "home_score": 106.0,
+      "away_score": 113.0,
+      "completed": true
     },
     "nba-401909321": {
       "id": "nba-401909321",
@@ -5948,9 +5948,9 @@
       "away_id": "12",
       "home": "Memphis Grizzlies",
       "away": "LA Clippers",
-      "home_score": null,
-      "away_score": null,
-      "completed": false
+      "home_score": 115.0,
+      "away_score": 97.0,
+      "completed": true
     },
     "nba-401909322": {
       "id": "nba-401909322",
@@ -5960,9 +5960,9 @@
       "away_id": "17",
       "home": "Milwaukee Bucks",
       "away": "Brooklyn Nets",
-      "home_score": null,
-      "away_score": null,
-      "completed": false
+      "home_score": 97.0,
+      "away_score": 104.0,
+      "completed": true
     },
     "nba-401909323": {
       "id": "nba-401909323",
@@ -5972,9 +5972,9 @@
       "away_id": "21",
       "home": "Houston Rockets",
       "away": "Phoenix Suns",
-      "home_score": null,
-      "away_score": null,
-      "completed": false
+      "home_score": 116.0,
+      "away_score": 104.0,
+      "completed": true
     },
     "nba-401909324": {
       "id": "nba-401909324",
@@ -5984,9 +5984,9 @@
       "away_id": "23",
       "home": "Golden State Warriors",
       "away": "Sacramento Kings",
-      "home_score": null,
-      "away_score": null,
-      "completed": false
+      "home_score": 129.0,
+      "away_score": 110.0,
+      "completed": true
     },
     "nba-401909325": {
       "id": "nba-401909325",
@@ -5996,9 +5996,9 @@
       "away_id": "24",
       "home": "Portland Trail Blazers",
       "away": "San Antonio Spurs",
-      "home_score": null,
-      "away_score": null,
-      "completed": false
+      "home_score": 116.0,
+      "away_score": 111.0,
+      "completed": true
     },
     "nfl-401873079": {
       "id": "nfl-401873079",
@@ -6008,9 +6008,9 @@
       "away_id": "9",
       "home": "Los Angeles Rams",
       "away": "Green Bay Packers",
-      "home_score": null,
-      "away_score": null,
-      "completed": false
+      "home_score": 26.0,
+      "away_score": 13.0,
+      "completed": true
     },
     "nfl-401873081": {
       "id": "nfl-401873081",
@@ -7026,7 +7026,9 @@
       "model": "elo-v1",
       "k": 22,
       "locked_at": "2026-11-24T04:50:28.777648+00:00",
-      "result": "pending"
+      "result": "win",
+      "settled_at": "2026-11-26T13:55:48.526603+00:00",
+      "final_score": "Miami Heat 104 – Philadelphia 76ers 111"
     },
     "nba-401909318": {
       "id": "nba-401909318",
@@ -7046,7 +7048,9 @@
       "model": "elo-v1",
       "k": 22,
       "locked_at": "2026-11-24T04:50:28.777648+00:00",
-      "result": "pending"
+      "result": "loss",
+      "settled_at": "2026-11-26T13:55:48.526603+00:00",
+      "final_score": "Chicago Bulls 107 – Charlotte Hornets 105"
     },
     "nba-401909319": {
       "id": "nba-401909319",
@@ -7066,7 +7070,9 @@
       "model": "elo-v1",
       "k": 22,
       "locked_at": "2026-11-24T04:50:28.777648+00:00",
-      "result": "pending"
+      "result": "win",
+      "settled_at": "2026-11-26T13:55:48.526603+00:00",
+      "final_score": "Cleveland Cavaliers 102 – New York Knicks 121"
     },
     "nba-401909320": {
       "id": "nba-401909320",
@@ -7086,7 +7092,9 @@
       "model": "elo-v1",
       "k": 22,
       "locked_at": "2026-11-24T04:50:28.777648+00:00",
-      "result": "pending"
+      "result": "win",
+      "settled_at": "2026-11-26T13:55:48.526603+00:00",
+      "final_score": "Minnesota Timberwolves 113 – Oklahoma City Thunder 106"
     },
     "nba-401909321": {
       "id": "nba-401909321",
@@ -7106,7 +7114,9 @@
       "model": "elo-v1",
       "k": 22,
       "locked_at": "2026-11-24T04:50:28.777648+00:00",
-      "result": "pending"
+      "result": "win",
+      "settled_at": "2026-11-26T13:55:48.526603+00:00",
+      "final_score": "LA Clippers 97 – Memphis Grizzlies 115"
     },
     "nba-401909322": {
       "id": "nba-401909322",
@@ -7126,7 +7136,9 @@
       "model": "elo-v1",
       "k": 22,
       "locked_at": "2026-11-24T04:50:28.777648+00:00",
-      "result": "pending"
+      "result": "loss",
+      "settled_at": "2026-11-26T13:55:48.526603+00:00",
+      "final_score": "Brooklyn Nets 104 – Milwaukee Bucks 97"
     },
     "nba-401909323": {
       "id": "nba-401909323",
@@ -7146,7 +7158,9 @@
       "model": "elo-v1",
       "k": 22,
       "locked_at": "2026-11-24T04:50:28.777648+00:00",
-      "result": "pending"
+      "result": "win",
+      "settled_at": "2026-11-26T13:55:48.526603+00:00",
+      "final_score": "Phoenix Suns 104 – Houston Rockets 116"
     },
     "nba-401909324": {
       "id": "nba-401909324",
@@ -7166,7 +7180,9 @@
       "model": "elo-v1",
       "k": 22,
       "locked_at": "2026-11-24T04:50:28.777648+00:00",
-      "result": "pending"
+      "result": "win",
+      "settled_at": "2026-11-26T13:55:48.526603+00:00",
+      "final_score": "Sacramento Kings 110 – Golden State Warriors 129"
     },
     "nba-401909325": {
       "id": "nba-401909325",
@@ -7186,7 +7202,9 @@
       "model": "elo-v1",
       "k": 22,
       "locked_at": "2026-11-24T04:50:28.777648+00:00",
-      "result": "pending"
+      "result": "win",
+      "settled_at": "2026-11-26T13:55:48.526603+00:00",
+      "final_score": "San Antonio Spurs 111 – Portland Trail Blazers 116"
     },
     "nfl-401873079": {
       "id": "nfl-401873079",
@@ -7206,7 +7224,9 @@
       "model": "elo-v1",
       "k": 28,
       "locked_at": "2026-11-24T04:50:28.777648+00:00",
-      "result": "pending"
+      "result": "win",
+      "settled_at": "2026-11-26T13:55:48.526603+00:00",
+      "final_score": "Green Bay Packers 13 – Los Angeles Rams 26"
     },
     "nfl-401873081": {
       "id": "nfl-401873081",
@@ -7510,5 +7530,5 @@
     }
   },
   "errors": [],
-  "last_refresh": "2026-11-26T00:23:11.043949+00:00"
+  "last_refresh": "2026-11-26T13:55:48.526603+00:00"
 }
