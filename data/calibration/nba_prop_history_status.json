@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "updated_at_utc": "2026-11-26T04:45:28.507921+00:00",
+  "snapshot_capture_time_utc": "2026-11-26T02:08:08.416072+00:00",
+  "current_published_source_rows": 762,
+  "new_pregame_quotes_archived": 762,
+  "total_pregame_quotes_archived": 762,
+  "graded_quote_outcomes": 0,
+  "ungraded_quotes": 762,
+  "unique_graded_games": 0,
+  "unique_graded_dates": 0,
+  "skipped_invalid_rows": 0,
+  "skipped_post_tipoff_rows": 0,
+  "duplicate_settled_player_keys": 0,
+  "calibrated_model_probabilities_ready": false,
+  "betting_edges_validated": false,
+  "odds_api_credits_spent": 0,
+  "warning": "Historical quote grading is not a calibrated probability model. Games and dates must be split chronologically; avoid leakage and overfitting."
+}
