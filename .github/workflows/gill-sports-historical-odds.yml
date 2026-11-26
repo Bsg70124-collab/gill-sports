@@ -1,0 +1,189 @@
+name: Gill Sports - Historical Odds Outcome Tracking V1
+'on':
+  workflow_dispatch: null
+  push:
+    branches:
+    - main
+    paths:
+    - data/nba_market_comparison.json
+    - data/player_live.json
+  schedule:
+  - cron: 49 9 * * *
+permissions:
+  contents: write
+concurrency:
+  group: gill-sports-odds-outcome-history
+  cancel-in-progress: false
+jobs:
+  track-odds:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+    - name: Checkout public site data
+      uses: actions/checkout@v4
+      with:
+        ref: main
+        fetch-depth: 0
+    - name: Archive pregame quotes and grade settled outcomes
+      shell: bash
+      run: |-
+        python - <<'PYCODE'
+        import hashlib, json, math, sys
+        from datetime import datetime, timezone
+        from pathlib import Path
+
+        ROOT=Path('data')
+        MARKET=ROOT/'nba_market_comparison.json'
+        PLAYERS=ROOT/'player_live.json'
+        DIRECTORY=ROOT/'calibration'
+        ARCHIVE=DIRECTORY/'nba_prop_quote_history.json'
+        RESULTS=DIRECTORY/'nba_prop_outcome_history.json'
+        STATUS=DIRECTORY/'nba_prop_history_status.json'
+
+
+        def parse_time(value):
+            try:
+                d=datetime.fromisoformat(str(value).replace('Z','+00:00'))
+                if d.tzinfo is None:
+                    return None
+                return d.astimezone(timezone.utc)
+            except (ValueError,TypeError,OverflowError):
+                return None
+
+
+        def numeric(v):
+            return isinstance(v,(float,int)) and not isinstance(v,bool) and math.isfinite(v)
+
+
+        def read(path):
+            if not path.is_file():
+                return None
+            try:
+                return json.loads(path.read_text(encoding='utf-8'))
+            except (ValueError,UnicodeError) as e:
+                raise SystemExit(f'INVALID_JSON {path}: {e}')
+
+
+        def rows_of(data):
+            return data.get('rows',[]) if isinstance(data,dict) and isinstance(data.get('rows'),list) else []
+
+
+        now=datetime.now(timezone.utc)
+        market=read(MARKET)
+        players=read(PLAYERS)
+        if market is None or players is None:
+            raise SystemExit('SOURCE_MISSING: both public odds and settled player files are required')
+
+        past=read(ARCHIVE)
+        if past is None:
+            quotes=[]
+        elif isinstance(past,dict) and isinstance(past.get('rows'),list):
+            quotes=past['rows']
+        else:
+            raise SystemExit('INVALID_ARCHIVE: refusing to overwrite')
+
+        known={x['quote_id'] for x in quotes if isinstance(x,dict) and isinstance(x.get('quote_id'),str)}
+        added=0
+        skipped_not_pregame=0
+        skipped_invalid=0
+        capture_top=parse_time(market.get('odds_captured_at_utc'))
+        for r in rows_of(market):
+            if not isinstance(r,dict):
+                skipped_invalid+=1;continue
+            game_id=str(r.get('game_id') or '').strip()
+            player_id=str(r.get('player_id') or '').strip()
+            stat=r.get('stat');side=r.get('side');line=r.get('line');price=r.get('american_price')
+            captured=parse_time(r.get('odds_captured_at_utc')) or capture_top
+            tip=parse_time(r.get('tipoff_utc'))
+            if not game_id or not player_id or stat not in ('points','rebounds','assists','pra') or side not in ('Over','Under') or not numeric(line) or not numeric(price) or not captured or not tip:
+                skipped_invalid+=1;continue
+            if captured>=tip:
+                skipped_not_pregame+=1;continue
+            # Archive observed quotes, even when already expired at the time this job runs.
+            # They remain historical observations, never actionable current recommendations.
+            key_fields=[game_id,player_id,stat,side,float(line),float(price),str(r.get('bookmaker_key') or ''),captured.isoformat(),str(r.get('market_last_update') or '')]
+            qid=hashlib.sha256(json.dumps(key_fields,separators=(',',':')).encode()).hexdigest()[:24]
+            if qid in known:
+                continue
+            known.add(qid)
+            quotes.append({'quote_id':qid,'game_id':game_id,'game_date':r.get('game_date'),
+               'matchup':r.get('matchup'),'player_id':player_id,'player_name':r.get('player_name'),
+               'stat':stat,'side':side,'line':float(line),'american_price':float(price),
+               'bookmaker_key':r.get('bookmaker_key'),'bookmaker_title':r.get('bookmaker_title'),
+               'odds_captured_at_utc':captured.isoformat(),'tipoff_utc':tip.isoformat(),
+               'market_last_update':r.get('market_last_update'),
+               'model_projection':r.get('model_projection') if numeric(r.get('model_projection')) else None,
+               'source':'published_nba_market_comparison','availability_verified':r.get('availability_verified') is True})
+            added+=1
+
+        settled={}
+        conflicts=set()
+        for r in rows_of(players):
+            if not isinstance(r,dict) or r.get('status')!='SETTLED':
+                continue
+            game_id=str(r.get('game_id') or '').strip()
+            player_id=str(r.get('player_id') or '').strip()
+            if not game_id or not player_id:
+                continue
+            k=(game_id,player_id)
+            if k in settled:
+                conflicts.add(k)
+            else:
+                settled[k]=r
+
+        results=[]
+        num_settled=0
+        for q in quotes:
+            if not isinstance(q,dict) or 'quote_id' not in q:
+                continue
+            k=(str(q.get('game_id')),str(q.get('player_id')))
+            player=settled.get(k) if k not in conflicts else None
+            value=(player or {}).get('actual_'+str(q.get('stat')))
+            if not numeric(value):
+                continue
+            num_settled+=1
+            line=q['line'];side=q['side']
+            outcome='PUSH' if float(value)==float(line) else ('WIN' if (value>line)==(side=='Over') else 'LOSS')
+            # Historical settlement; not proof that the line was widely available or bettable.
+            results.append({**q,'actual_stat':float(value),'result':outcome,
+               'settled_game_date':player.get('game_date'),
+               'captured_before_tipoff':True,'verified_pregame_availability':q['availability_verified']})
+
+        DIRECTORY.mkdir(parents=True,exist_ok=True)
+        status={'schema_version':1,'updated_at_utc':now.isoformat(),
+         'snapshot_capture_time_utc':market.get('odds_captured_at_utc'),
+         'current_published_source_rows':len(rows_of(market)),
+         'new_pregame_quotes_archived':added,'total_pregame_quotes_archived':len(quotes),
+         'graded_quote_outcomes':num_settled,'ungraded_quotes':len(quotes)-num_settled,
+         'unique_graded_games':len({x['game_id'] for x in results}),
+         'unique_graded_dates':len({x['game_date'] for x in results}),
+         'skipped_invalid_rows':skipped_invalid,'skipped_post_tipoff_rows':skipped_not_pregame,
+         'duplicate_settled_player_keys':len(conflicts),'calibrated_model_probabilities_ready':False,
+         'betting_edges_validated':False,'odds_api_credits_spent':0,
+         'warning':'Historical quote grading is not a calibrated probability model. Games and dates must be split chronologically; avoid leakage and overfitting.'}
+        for path,data in ((ARCHIVE,{'schema_version':1,'rows':quotes}),(RESULTS,{'schema_version':1,'rows':results}),(STATUS,status)):
+            temp=path.with_suffix('.tmp')
+            temp.write_text(json.dumps(data,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
+            temp.replace(path)
+        print('=== GILL SPORTS HISTORICAL MARKET OUTCOME TRACKER ===')
+        for k,v in status.items():
+            if k!='warning':print(f'{k.upper()}: {v}')
+        print('NO_MODEL_PROBABILITIES_PUBLISHED; NO_EDGES_CLAIMED; API_CREDITS_SPENT: 0')
+        PYCODE
+    - name: Commit historical tracking results
+      shell: bash
+      run: |-
+        set -euo pipefail
+        git config user.name 'github-actions[bot]'
+        git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+        git add data/calibration/nba_prop_quote_history.json data/calibration/nba_prop_outcome_history.json data/calibration/nba_prop_history_status.json
+        if git diff --cached --quiet; then echo 'No changes'; exit 0; fi
+        git commit -m 'Track historical sportsbook quotes and settled outcomes'
+        for attempt in 1 2 3; do
+          if git push origin HEAD:main; then exit 0; fi
+          echo "Push conflict, retry $attempt"
+          git fetch origin main
+          git rebase origin/main
+          sleep 2
+        done
+        exit 1
