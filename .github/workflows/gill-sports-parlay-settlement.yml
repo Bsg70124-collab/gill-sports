@@ -1,0 +1,143 @@
+name: Gill Sports - Settle Archived Parlays
+
+"on":
+  workflow_dispatch:
+  schedule:
+    - cron: '17 7 * * *'
+    - cron: '17 12 * * *'
+    - cron: '17 17 * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gill-sports-parlay-settlement
+  cancel-in-progress: false
+
+jobs:
+  settle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Grade pending slips only from verified ESPN final box scores
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json,re,unicodedata,urllib.request
+          from collections import Counter
+          from datetime import datetime,timezone
+          from pathlib import Path
+
+          path=Path('data/parlays.json')
+          if not path.is_file():raise SystemExit('PARLAYS_FILE_MISSING')
+          doc=json.loads(path.read_text(encoding='utf-8'))
+          slips=doc.get('rows',[])
+          if not isinstance(slips,list):raise SystemExit('INVALID_PARLAY_ROWS')
+          def norm(value):
+              s=unicodedata.normalize('NFKD',str(value or ''))
+              return re.sub('[^a-z0-9]','', ''.join(c for c in s.lower() if not unicodedata.combining(c)))
+          def number(value):
+              try:return float(value)
+              except (ValueError,TypeError):return None
+          def minutes(value):
+              if isinstance(value,str) and ':' in value:
+                  try:
+                      m,s=value.split(':',1)
+                      return float(m)+float(s)/60
+                  except (ValueError,TypeError):return None
+              return number(value)
+          cache={}
+          def game(gid):
+              if gid not in cache:
+                  url='https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event='+gid
+                  req=urllib.request.Request(url,headers={'User-Agent':'GillSportsParlaySettlement/1'})
+                  try:
+                      with urllib.request.urlopen(req,timeout=30) as response:cache[gid]=json.load(response)
+                  except Exception as exc:
+                      print('GAME_FETCH_ERROR',gid,str(exc)[:160]);cache[gid]=None
+              return cache[gid]
+          def completed(payload):
+              if not isinstance(payload,dict):return False
+              competitions=payload.get('header',{}).get('competitions',[])
+              return bool(competitions and competitions[0].get('status',{}).get('type',{}).get('completed') is True)
+          def box(payload):
+              result=[]
+              for team in payload.get('boxscore',{}).get('players',[]):
+                  for group in team.get('statistics',[]):
+                      keys=[norm(k) for k in group.get('keys',[])]
+                      for entry in group.get('athletes',[]):
+                          athlete=entry.get('athlete',{})
+                          vals=entry.get('stats',[])
+                          mapped={k:vals[i] for i,k in enumerate(keys) if i<len(vals)}
+                          result.append({'name':norm(athlete.get('displayName') or athlete.get('fullName')),
+                                         'dnp':bool(entry.get('didNotPlay') or athlete.get('didNotPlay')),
+                                         'minutes':minutes(mapped.get('min',mapped.get('minutes'))),
+                                         'pts':number(mapped.get('pts',mapped.get('points'))),
+                                         'reb':number(mapped.get('reb',mapped.get('rebounds'))),
+                                         'ast':number(mapped.get('ast',mapped.get('assists')))})
+              return result
+          now=datetime.now(timezone.utc).isoformat()
+          changed=0;unresolved=Counter()
+          for slip in slips:
+              for leg in slip.get('legs',[]):
+                  if str(leg.get('result','Pending')).lower()!='pending':continue
+                  if leg.get('kind')!='player':
+                      unresolved['non_player_market']+=1;continue
+                  event=re.fullmatch(r'NBA\|(\d+)',str(leg.get('eventKey','')))
+                  if not event:
+                      unresolved['unknown_event']+=1;continue
+                  payload=game(event.group(1))
+                  if not completed(payload):
+                      unresolved['not_confirmed_final']+=1;continue
+                  player_name=str(leg.get('name','')).split(' · ')[0]
+                  matched=[p for p in box(payload) if p['name']==norm(player_name)]
+                  if len(matched)!=1:
+                      unresolved['player_not_uniquely_matched']+=1;continue
+                  player=matched[0]
+                  if player['dnp']:
+                      leg.update(result='Void',actual=None,settledAt=now,settlementSource='ESPN explicitly DNP')
+                      changed+=1;continue
+                  if player['minutes'] is None or player['minutes']<=0:
+                      unresolved['minutes_unverified']+=1;continue
+                  stat={'pts':'pts','reb':'reb','ast':'ast'}.get(str(leg.get('stat','')).lower())
+                  actual=player.get(stat) if stat else None
+                  line=number(leg.get('line'));side=str(leg.get('side','')).upper()
+                  if actual is None or line is None or side not in ('MORE','LESS'):
+                      unresolved['invalid_stat_or_line']+=1;continue
+                  outcome='Void' if actual==line else ('Win' if (actual>line if side=='MORE' else actual<line) else 'Loss')
+                  leg.update(result=outcome,actual=actual,settledAt=now,settlementSource='ESPN final box score')
+                  changed+=1
+              statuses=[x.get('result','Pending') for x in slip.get('legs',[])]
+              if 'Loss' in statuses:overall='Loss'
+              elif 'Pending' in statuses:overall='Pending'
+              elif 'Void' in statuses:overall='Void'
+              elif statuses and all(x=='Win' for x in statuses):overall='Win'
+              else:overall='Pending'
+              if overall!=slip.get('result'):
+                  slip['result']=overall
+                  if overall!='Pending':slip['settledAt']=now
+                  changed+=1
+          counts=Counter(s.get('result','Pending') for s in slips)
+          doc['summary']={'locked':len(slips),'wins':counts['Win'],'losses':counts['Loss'],
+                          'pending':counts['Pending'],'void':counts['Void']}
+          doc['settlement_checked_at_utc']=now
+          doc['settlement_unresolved_reasons']=dict(unresolved)
+          doc['settlement_notice']='Historical paper-tracking only; previously settled legs not re-audited. Unavailable player stats are never treated as zero. Model probabilities uncalibrated.'
+          path.write_text(json.dumps(doc,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print('PARLAYS:',len(slips),'CHANGES:',changed,'RESULTS:',dict(counts), 'UNRESOLVED:',dict(unresolved))
+          print('PAID_ODDS_API_CREDITS_USED: 0')
+          PY
+      - name: Commit settled parlay results
+        shell: bash
+        run: |
+          if git diff --quiet -- data/parlays.json; then
+            echo 'NO_PARLAY_CHANGES'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/parlays.json
+          git commit -m 'Update archived NBA parlay settlement'
+          git pull --rebase origin main
+          git push
