@@ -5,7 +5,7 @@ const owner="Bsg70124-collab";
 const actions={
   overview:["gill-sports","daily.yml","Update game predictions"],
   games:["gill-sports","daily.yml","Update game predictions"],
-  players:["gill-sports-engine","gill-sports-daily-player-projections-v1.yml","Run NBA player projections"],
+  players:["gill-sports-engine","gill-sports-archive-forecasts-v3.yml","Run NBA player projections"],
   props:["gill-sports-engine","gill-sports-odds-collector-v1.yml","Collect fresh odds (uses API quota)"],
   parlays:["gill-sports","gill-sports-daily-parlay-generator-v2.yml","Check strict parlays"],
   research:["gill-sports","gill-sports-parlay-research-previews.yml","Generate research parlays"],
