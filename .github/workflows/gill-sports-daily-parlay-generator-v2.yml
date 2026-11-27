@@ -154,7 +154,7 @@ jobs:
                   if len(selected) == 4: break
           
               slips_added = []
-              for n in (3,4):
+              for n in (2,3,4):
                   if len(selected) < n:
                       reasons['insufficient_distinct_verified_games_for_'+str(n)+'_legs'] += 1
                       continue
@@ -203,7 +203,7 @@ jobs:
                   'market_outcomes':len(rows), 'distinct_games_in_fresh_feed':len(games_available),
                   'eligible_player_candidates':len(eligible),
                   'verified_distinct_games':len(used_games),
-                  'generated_slips':slips_added, 'reasons':dict(reasons),
+                  'generated_slips':slips_added, 'supported_leg_counts':[2,3,4], 'reasons':dict(reasons),
                   'state':'generated' if slips_added else 'no_qualifying_parlays',
                   'disclaimer':'Paper-tracking only. Does not infer win probabilities or EV from projection-minus-line. No slip is generated without live quotes, confirmed player availability, validated edge, and calibrated model probabilities.'}
               save(STATUS,status)
