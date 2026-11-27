@@ -225,11 +225,13 @@ a{color:#95bcff}
 </section>
 
 <section class="page" id="tab-parlays">
-<div class="notice">These are saved historical paper parlays, not automatically generated new parlays. Joint probability estimates have not been independently validated.</div>
+<div class="notice">Historical paper parlays are experimental. New 2-, 3-, and 4-leg slips require verified current lines, player availability, calibrated probabilities and validated edges. No qualifying selections is a valid outcome.</div>
 <div class="panel">
  <h2>Parlay tracking and individual legs</h2>
  <p id="parlay-summary"></p>
+ <p id="parlay-run-status" class="muted" aria-live="polite">Checking latest generation run...</p>
  <div class="toolbar">
+  <select id="parlay-size"><option value="all">All sizes</option><option value="2">2 legs · Conservative</option><option value="3">3 legs · Balanced</option><option value="4">4 legs · Aggressive</option></select>
   <select id="parlay-view">
    <option value="all">All parlays</option><option value="pending">Pending</option><option value="win">Wins</option><option value="loss">Losses</option>
   </select>
@@ -305,6 +307,7 @@ let live = {};
 let oldGames = [];
 let players = [];
 let parlays = [];
+let parlayRunStatus = null;
 let props = [];
 let fileStatus = {};
 
@@ -515,7 +518,8 @@ function renderProps() {
 
 function parlayRows() {
   const v = $('parlay-view').value;
-  return parlays.filter(x => v==='all' || status(x.result)===v)
+  return parlays.filter(x => (v==='all' || status(x.result)===v) &&
+      ($('parlay-size').value==='all' || String(x.size||x.legs?.length)===$('parlay-size').value))
     .sort((a,b) => String(b.day||'').localeCompare(String(a.day||'')));
 }
 
@@ -526,6 +530,13 @@ function renderParlays() {
     `${parlays.length} saved paper parlays · ` +
     `${parlays.filter(x=>status(x.result)==='win').length} recorded wins · ` +
     `${parlays.filter(x=>status(x.result)==='pending').length} pending`;
+
+  const st=parlayRunStatus;
+  const reasons=st?.reasons||{};
+  const why=Object.entries(reasons).filter(([,count])=>count>0).map(([reason,count])=>`${reason.replace(/_/g,' ')} (${count})`).slice(0,5).join('; ');
+  $('parlay-run-status').textContent=st
+    ? `Latest generator check: ${date(st.checked_at_utc)} · ${st.state==='generated'?'New slips generated':'No qualifying new parlays'} · Eligible candidates: ${st.eligible_player_candidates??'—'}${why?' · '+why:''}.`
+    : 'Latest generator status is unavailable; saved historical parlays may still display.';
 
   $('parlay-list').innerHTML = a.map(x => `
     <article class="parlay">
@@ -610,6 +621,7 @@ for(const id of ['prop-search','prop-view']) {
   $(id).addEventListener('input',renderProps);
 }
 $('parlay-view').addEventListener('change',renderParlays);
+$('parlay-size').addEventListener('change',renderParlays);
 
 async function loadAll() {
   const b=$('refresh');
@@ -621,7 +633,8 @@ async function loadAll() {
       ['data/live.json','live'],
       ['data/forecasts.json','history'],
       ['data/players.json','players'],
-      ['data/parlays.json','parlays']
+      ['data/parlays.json','parlays'],
+      ['data/parlay_generation_status.json','parlayStatus']
     ];
 
     const results=await Promise.allSettled(entries.map(([path])=>fetchJSON(path)));
@@ -647,6 +660,7 @@ async function loadAll() {
       if(key==='parlays') {
         parlays=Array.isArray(d.rows)?d.rows:[];
       }
+      if(key==='parlayStatus') parlayRunStatus=d||null;
     });
 
     props=buildProps();
