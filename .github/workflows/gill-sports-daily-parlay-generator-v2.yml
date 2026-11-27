@@ -7,6 +7,10 @@ name: Gill Sports - Daily Parlay Generator V2
     paths:
       - "data/nba_market_comparison.json"
       - "data/validated_player_edges.json"
+  workflow_run:
+    workflows:
+      - Gill Sports - Validated NBA Prop Edge Gate
+    types: [completed]
   schedule:
     - cron: '11 15 * * *'
     - cron: '11 18 * * *'
@@ -22,6 +26,7 @@ concurrency:
 
 jobs:
   generate:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 12
     steps:
