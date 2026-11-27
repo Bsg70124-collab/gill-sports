@@ -13,7 +13,7 @@ const actions={
   settle:["gill-sports-engine","gill-sports-daily-settlement-v2.yml","Tally player results"],
   retrain:["gill-sports-engine","gill-sports-controlled-retraining-v1.yml","Evaluate retraining"]
 };
-let credential=null,pending=null,running=false;
+let credential=null,pending=null,running=false,verified=false;
 const $=id=>document.getElementById(id);
 const style=document.createElement("style");
 style.textContent="#gill-login:not([hidden]){position:fixed;inset:0;display:grid;place-items:center;background:#000b;z-index:100;padding:16px}.gill-login-panel{max-width:520px;width:100%;background:#14263d;border:1px solid #54749d;border-radius:13px;padding:20px;box-shadow:0 15px 50px #0009}.gill-login-panel p{line-height:1.5;font-size:13px}.gill-login-panel input{display:block;width:100%;margin:10px 0}.gill-job-message{font-size:12px;color:#c0d1e9}";
@@ -31,23 +31,27 @@ const bar=document.createElement("div");bar.className="toolbar";
 bar.innerHTML='<button id="gill-authorize" type="button" class="secondary">Connect GitHub for one-click runs</button><button id="gill-disconnect" type="button" class="secondary" hidden>Disconnect</button><span id="gill-connection-status" class="small" aria-live="polite">Not connected</span>';
 header.append(bar);
 function authState(){
- $("gill-authorize").textContent=credential?"GitHub authorized for this page":"Connect GitHub for one-click runs";
+ $("gill-authorize").textContent=credential?(verified?"GitHub request accepted":"Token entered (not yet verified)"):"Connect GitHub for one-click runs";
  $("gill-disconnect").hidden=!credential;
- $("gill-connection-status").textContent=credential?"Token held in memory; never saved":"No token connected; manual GitHub Actions links remain available";
+ $("gill-connection-status").textContent=credential?(verified?"GitHub accepted a workflow request. Token held in memory only.":"Token entered, not yet verified by GitHub. It is never saved."):"No token connected; manual GitHub Actions links remain available";
 }
 function openModal(key){pending=key||null;modal.hidden=false;$("gill-token").focus();}
 function closeModal(){modal.hidden=true;$("gill-token").value="";$("gill-token-warning").textContent="";}
 $("gill-authorize").onclick=()=>openModal(null);
-$("gill-disconnect").onclick=()=>{credential=null;pending=null;authState();};
+$("gill-disconnect").onclick=()=>{credential=null;verified=false;pending=null;authState();};
 $("gill-cancel").onclick=()=>{pending=null;closeModal();};
 modal.addEventListener("click",ev=>{if(ev.target===modal){pending=null;closeModal();}});
 $("gill-connect").onclick=()=>{
  const raw=$("gill-token").value.trim();
+ if(location.protocol!=="https:"){
+  $("gill-token-warning").textContent="Workflow credentials may only be entered on a secure HTTPS website.";
+  return;
+ }
  if(!/^github_pat_[A-Za-z0-9_]{15,}$/.test(raw)){
   $("gill-token-warning").textContent="Only fine-grained GitHub tokens are accepted. Do not paste an unrestricted classic token.";
   return;
  }
- credential=raw;
+ credential=raw;verified=false;
  const next=pending;pending=null;
  closeModal();authState();
  if(next)dispatch(next);
@@ -68,8 +72,9 @@ async function dispatch(key){
   });
   if(!response.ok){
    state.textContent="GitHub rejected the request (HTTP "+response.status+"). Check Actions: write access for "+config[0]+".";
-   if(response.status===401){credential=null;authState();}
+   if(response.status===401){credential=null;verified=false;authState();}
   }else{
+   verified=true;authState();
    state.textContent="GitHub accepted the job request. This does NOT mean the workflow succeeded. Check GitHub Actions and reload the published feed after completion.";
   }
  }catch(e){state.textContent="Browser could not confirm a GitHub request; use the GitHub Actions link instead.";}
