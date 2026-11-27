@@ -1,16 +1,17 @@
 {
   "schema_version": 2,
-  "checked_at_utc": "2026-11-27T01:42:08.081657+00:00",
+  "checked_at_utc": "2026-11-27T03:37:29.019216+00:00",
   "date_pacific": "2026-11-26",
-  "odds_captured_at_utc": "2026-11-26T02:08:08.416072+00:00",
-  "odds_age_minutes": 1414.0,
-  "market_outcomes": 762,
-  "distinct_games_in_fresh_feed": 0,
+  "odds_captured_at_utc": "2026-11-27T03:14:00.324326+00:00",
+  "odds_age_minutes": 23.5,
+  "market_outcomes": 802,
+  "distinct_games_in_fresh_feed": 4,
   "eligible_player_candidates": 0,
   "verified_distinct_games": 0,
   "generated_slips": [],
   "reasons": {
-    "snapshot_missing_or_expired": 1,
+    "player_availability_unverified": 606,
+    "unsupported_stat": 196,
     "insufficient_distinct_verified_games_for_3_legs": 1,
     "insufficient_distinct_verified_games_for_4_legs": 1
   },
