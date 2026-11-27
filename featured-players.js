@@ -21,7 +21,7 @@ function latestPlayers() {
   return [...m.values()];
 }
 function latestMarketGaps(){
-  const now=Date.now(),best=new Map();
+  const now=Date.now(),fresh=new Map(),historical=new Map();
   for(const r of markets){
     if(!r||!r.player_id||!["points","rebounds","assists","pra"].includes(r.stat))continue;
     const proj=Number(r.model_projection),line=Number(r.line);
@@ -29,11 +29,15 @@ function latestMarketGaps(){
     const cap=Date.parse(r.odds_captured_at_utc||captured||"");
     const quote=Date.parse(r.market_last_update||"");
     const tip=Date.parse(r.tipoff_utc||"");
-    if(!Number.isFinite(cap)||cap>now||now-cap>1800000||!Number.isFinite(quote)||quote>now||now-quote>1800000||!Number.isFinite(tip)||tip-now<=1200000||r.quote_stale_at_capture===true)continue;
-    const score=Math.abs(proj-line)/Math.max(1,line),id=String(r.player_id);
-    if(!best.has(id)||score>best.get(id).score)best.set(id,{row:r,score});
+    if(!Number.isFinite(cap)||!Number.isFinite(quote)||!Number.isFinite(tip)||cap>=tip||r.quote_stale_at_capture===true)continue;
+    // Rank per player and game; old quotes are available only as historical research.
+    const score=Math.abs(proj-line)/Math.max(1,line);
+    const id=String(r.player_id),item={row:r,score};
+    if(!historical.has(id)||score>historical.get(id).score)historical.set(id,item);
+    const isFresh=cap<=now&&now-cap<=30*60000&&quote<=now&&now-quote<=30*60000&&tip-now>20*60000;
+    if(isFresh&&(!fresh.has(id)||score>fresh.get(id).score))fresh.set(id,item);
   }
-  return best;
+  return {fresh,historical};
 }
 function render(){
   const mode=$("featured-mode").value,all=latestPlayers();
@@ -41,21 +45,30 @@ function render(){
   const pending=all.filter(r=>r.status==="PENDING"&&r.game_date>=current);
   // Always retain saved favorites even when their latest forecast is archived.
   const pool=[...new Map([...all.filter(isFav),...(pending.length?pending:all)].map(r=>[String(r.player_id),r])).values()];
-  const gaps=latestMarketGaps();
+  const gapSets=latestMarketGaps();
+  const useHistorical=mode==="gaps"&&gapSets.fresh.size===0;
+  const gaps=mode==="gaps"?(useHistorical?gapSets.historical:gapSets.fresh):gapSets.fresh;
   let chosen;
   if(mode==="favorites")chosen=pool.filter(isFav).sort((a,b)=>String(b.game_date).localeCompare(String(a.game_date)));
-  else if(mode==="gaps")chosen=pool.filter(r=>gaps.has(String(r.player_id))).sort((a,b)=>gaps.get(String(b.player_id)).score-gaps.get(String(a.player_id)).score);
+  else if(mode==="gaps") {
+    const lookup=new Map(players.filter(p=>p&&p.player_id).map(p=>[String(p.player_id)+"|"+String(p.game_id),p]));
+    chosen=[...gaps.values()].sort((a,b)=>b.score-a.score).map(v=>{
+      const q=v.row;
+      return lookup.get(String(q.player_id)+"|"+String(q.game_id))||all.find(p=>String(p.player_id)===String(q.player_id))||
+        {player_id:q.player_id,player_name:q.player_name,matchup:q.matchup,game_date:q.game_date,status:"UNVERIFIED"};
+    }).filter((r,i,arr)=>arr.findIndex(x=>String(x.player_id)===String(r.player_id))===i);
+  }
   else chosen=pool.filter(r=>isFav(r)||popularRank.has(norm(r.player_name))).sort((a,b)=>Number(isFav(b))-Number(isFav(a))||(popularRank.get(norm(a.player_name))??999)-(popularRank.get(norm(b.player_name))??999));
   const shown=chosen.slice(0,12);
   $("featured-summary").textContent=mode==="gaps"
-   ? shown.length+" players with recent pregame sportsbook quotes. Ranked by relative projection-versus-line gap, NOT betting probability or expected value."
+   ? shown.length+" players with model-vs-market differences · "+(useHistorical?"HISTORICAL / EXPIRED quotes; NOT actionable. ":"Recent pregame quotes; availability unverified. ")+"Ranked by relative projection-versus-line difference, NOT model win probability, betting edge or expected value."
    : favorites.size+" saved favorites · "+shown.length+" featured players · forecast published "+(updated||"unknown")+". "+(pending.length?"Showing pending upcoming forecasts.":"No upcoming pending player forecasts; showing latest archived records.");
-  const reason=mode==="favorites"?"Use the player picker below to star favorites.":mode==="gaps"?"No fresh, pregame market quotes meet the 30-minute rule. Expired prices are not ranked as opportunities.":"No featured names are present in the latest forecast feed; use the picker to follow any player.";
+  const reason=mode==="favorites"?"Use the player picker below to star favorites.":mode==="gaps"?"No usable historical or fresh quotes with a verified pre-tip timestamp and model projection were found.":"No featured names are present in the latest forecast feed; use the picker to follow any player.";
   $("featured-cards").innerHTML=shown.map(r=>{
     const g=gaps.get(String(r.player_id))?.row;
     const fav=isFav(r),pts=Number(r.pred_points);
     const details=mode==="gaps"&&g
-      ? '<b>Model '+esc(Number(g.model_projection).toFixed(1))+' / '+esc(g.stat)+' · Market '+esc(Number(g.line).toFixed(1))+'</b><div class="small">'+esc(g.bookmaker_title||g.bookmaker_key||"Sportsbook")+' · '+esc(g.side)+' · NOT a validated edge</div>'
+      ? '<b>Model '+esc(Number(g.model_projection).toFixed(1))+' / '+esc(g.stat)+' · Market '+esc(Number(g.line).toFixed(1))+'</b><div class="small">'+esc(g.bookmaker_title||g.bookmaker_key||"Sportsbook")+' · '+esc(g.side)+' · '+(useHistorical?'EXPIRED historical quote':'Recent pregame quote')+' · Captured '+esc(g.odds_captured_at_utc||captured||'Unknown')+' · NOT a validated edge</div>'
       : '<b>PTS '+(Number.isFinite(pts)?pts.toFixed(1):"—")+'</b><div class="small">REB '+esc(r.pred_rebounds??"—")+' · AST '+esc(r.pred_assists??"—")+' · PRA '+esc(r.pred_pra??"—")+'</div>';
     return '<article class="gs-featured-card"><button class="gs-favorite-star" data-id="'+esc(String(r.player_id))+'" aria-pressed="'+fav+'" aria-label="'+(fav?"Remove ":"Favorite ")+esc(r.player_name)+'">'+(fav?"★":"☆")+'</button><strong>'+esc(r.player_name)+'</strong><div class="small">'+esc(r.matchup)+' · '+esc(r.game_date)+' · '+esc(r.status)+'</div><div class="gs-featured-proj">'+details+'</div><div class="small">Availability not independently verified</div></article>';
   }).join("")||'<p class="small">'+esc(reason)+'</p>';
