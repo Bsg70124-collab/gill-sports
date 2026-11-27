@@ -1,16 +1,17 @@
 {
-  "updated_at_utc": "2026-11-26T19:18:52.797981+00:00",
+  "updated_at_utc": "2026-11-27T03:50:00.641179+00:00",
   "source": "Yahoo Sports NBA RSS",
   "source_url": "https://sports.yahoo.com/nba/rss/",
   "status": "OK",
   "headline_count": 50,
   "matched_headline_count": 14,
-  "forecast_rows": 1022,
+  "forecast_rows": 1409,
   "covered_forecast_dates": [
     "2026-11-22",
     "2026-11-23",
     "2026-11-24",
-    "2026-11-25"
+    "2026-11-25",
+    "2026-11-27"
   ],
   "warnings": [
     "Headlines are not official injury or starting-lineup confirmations.",
@@ -19,6 +20,34 @@
   ],
   "rotowire_reference_url": "https://www.rotowire.com/rss/",
   "matched_headlines": [
+    {
+      "title": "Lakers’ Austin Reaves gets crucial injury upgrade ahead of Spurs game",
+      "url": "https://sports.yahoo.com/nba/articles/lakers-austin-reaves-gets-crucial-001553229.html",
+      "published_at_utc": "2026-11-27T00:15:53+00:00",
+      "matched_players": [
+        "Austin Reaves"
+      ],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "76ers rule out Jaylen Brown (hamstring), list Joel Embiid (illness) as questionable for Friday's game vs. Pacers",
+      "url": "https://sports.yahoo.com/nba/article/76ers-rule-out-jaylen-brown-hamstring-list-joel-embiid-illness-as-questionable-for-fridays-game-vs-pacers-225906822.html",
+      "published_at_utc": "2026-11-26T22:59:06+00:00",
+      "matched_players": [
+        "Jaylen Brown",
+        "Joel Embiid"
+      ],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "The Jordan Clarkson moment that shows why Knicks’ unique bench works so well",
+      "url": "https://sports.yahoo.com/nba/articles/jordan-clarkson-moment-shows-why-203228876.html",
+      "published_at_utc": "2026-11-26T20:32:28+00:00",
+      "matched_players": [
+        "Jordan Clarkson"
+      ],
+      "source": "Yahoo Sports NBA RSS"
+    },
     {
       "title": "Watch Dillon Brooks' ejection after going nose-to-nose with Kevin Durant while play goes on",
       "url": "https://sports.yahoo.com/nba/articles/watch-dillon-brooks-ejection-going-185840381.html",
@@ -120,37 +149,72 @@
         "Kevin Durant"
       ],
       "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "NBA trade rumors 2026-27: Will Anthony Davis get traded? Clippers as sellers.",
-      "url": "https://sports.yahoo.com/nba/articles/nba-trade-rumors-2026-27-010016324.html",
-      "published_at_utc": "2026-11-26T01:00:16+00:00",
-      "matched_players": [
-        "Anthony Davis"
-      ],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "NBA Cup 2026: 76ers' LeBron James oldest to post triple-double; Rockets' Kevin Durant fifth ever to score 33,000 points",
-      "url": "https://sports.yahoo.com/nba/breaking-news/article/nba-cup-2026-76ers-lebron-james-oldest-to-post-triple-double-rockets-kevin-durant-fifth-ever-to-score-33000-points-061556599.html",
-      "published_at_utc": "2026-11-26T00:42:00+00:00",
-      "matched_players": [
-        "Kevin Durant",
-        "LeBron James"
-      ],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "LeBron James records first triple-double with 76ers: Where he ranks on all-time list",
-      "url": "https://sports.yahoo.com/nba/articles/lebron-james-records-first-triple-003220692.html",
-      "published_at_utc": "2026-11-26T00:32:20+00:00",
-      "matched_players": [
-        "LeBron James"
-      ],
-      "source": "Yahoo Sports NBA RSS"
     }
   ],
   "recent_headlines": [
+    {
+      "title": "Lakers’ Austin Reaves gets crucial injury upgrade ahead of Spurs game",
+      "url": "https://sports.yahoo.com/nba/articles/lakers-austin-reaves-gets-crucial-001553229.html",
+      "published_at_utc": "2026-11-27T00:15:53+00:00",
+      "matched_players": [
+        "Austin Reaves"
+      ],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "What are Spurs fans thankful for this Thanksgiving?",
+      "url": "https://sports.yahoo.com/nba/articles/spurs-fans-thankful-thanksgiving-001226682.html",
+      "published_at_utc": "2026-11-27T00:12:26+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "76ers rule out Jaylen Brown (hamstring), list Joel Embiid (illness) as questionable for Friday's game vs. Pacers",
+      "url": "https://sports.yahoo.com/nba/article/76ers-rule-out-jaylen-brown-hamstring-list-joel-embiid-illness-as-questionable-for-fridays-game-vs-pacers-225906822.html",
+      "published_at_utc": "2026-11-26T22:59:06+00:00",
+      "matched_players": [
+        "Jaylen Brown",
+        "Joel Embiid"
+      ],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "A Thanksgiving thank you to the community that changed my life",
+      "url": "https://sports.yahoo.com/general/articles/thanksgiving-thank-community-changed-life-210000705.html",
+      "published_at_utc": "2026-11-26T21:00:00+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "The Jordan Clarkson moment that shows why Knicks’ unique bench works so well",
+      "url": "https://sports.yahoo.com/nba/articles/jordan-clarkson-moment-shows-why-203228876.html",
+      "published_at_utc": "2026-11-26T20:32:28+00:00",
+      "matched_players": [
+        "Jordan Clarkson"
+      ],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Boston Celtics Daily Links 11/26/26",
+      "url": "https://sports.yahoo.com/nba/articles/boston-celtics-daily-links-11-200528084.html",
+      "published_at_utc": "2026-11-26T20:05:28+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Lakers biggest test is coming, but it’s not Spurs, per JJ Redick",
+      "url": "https://sports.yahoo.com/nba/articles/lakers-biggest-test-coming-not-193737959.html",
+      "published_at_utc": "2026-11-26T19:37:37+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "The Sixers’ NBA Cup dreams come down to Friday",
+      "url": "https://sports.yahoo.com/nba/articles/sixers-nba-cup-dreams-come-192146036.html",
+      "published_at_utc": "2026-11-26T19:21:46+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
     {
       "title": "Watch Dillon Brooks' ejection after going nose-to-nose with Kevin Durant while play goes on",
       "url": "https://sports.yahoo.com/nba/articles/watch-dillon-brooks-ejection-going-185840381.html",
@@ -159,6 +223,20 @@
         "Dillon Brooks",
         "Kevin Durant"
       ],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "The Lakers will need help to advance in the NBA Cup",
+      "url": "https://sports.yahoo.com/nba/articles/lakers-help-advance-nba-cup-184248207.html",
+      "published_at_utc": "2026-11-26T18:42:48+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "What we learned from the Spurs’ loss to the Trail Blazers",
+      "url": "https://sports.yahoo.com/nba/articles/learned-spurs-loss-trail-blazers-181137350.html",
+      "published_at_utc": "2026-11-26T18:11:37+00:00",
+      "matched_players": [],
       "source": "Yahoo Sports NBA RSS"
     },
     {
@@ -210,6 +288,55 @@
       "source": "Yahoo Sports NBA RSS"
     },
     {
+      "title": "Observations after James posts triple-double, Sixers beat Heat in NBA Cup",
+      "url": "https://sports.yahoo.com/nba/articles/observations-james-posts-triple-double-152000904.html",
+      "published_at_utc": "2026-11-26T14:09:35+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "James can still take over ‘any given moment,' and Sixers trust he'll pick right spots",
+      "url": "https://sports.yahoo.com/nba/articles/james-still-over-given-moment-085206036.html",
+      "published_at_utc": "2026-11-26T14:09:35+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Embiid sidelined for Sixers-Blazers with illness",
+      "url": "https://sports.yahoo.com/articles/embiid-sidelined-sixers-blazers-illness-173500321.html",
+      "published_at_utc": "2026-11-26T14:09:35+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Brown out again with hamstring injury for Sixers' last NBA Cup group game",
+      "url": "https://sports.yahoo.com/nba/articles/brown-again-hamstring-injury-sixers-192207841.html",
+      "published_at_utc": "2026-11-26T14:09:35+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "LeBron Log No. 6: A Rocky night, a shooting lesson and a fight over ‘Bron'",
+      "url": "https://sports.yahoo.com/articles/lebron-log-no-6-rocky-023500875.html",
+      "published_at_utc": "2026-11-26T14:09:35+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Observations after Sixers beat Bucks to move to 3-0, Embiid posts triple-double",
+      "url": "https://sports.yahoo.com/articles/observations-sixers-beat-bucks-move-220632710.html",
+      "published_at_utc": "2026-11-26T14:09:35+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
+      "title": "Observations after Sixers' 5-game win streak ends with blowout loss to Blazers",
+      "url": "https://sports.yahoo.com/articles/observations-sixers-5-game-win-173500225.html",
+      "published_at_utc": "2026-11-26T14:09:35+00:00",
+      "matched_players": [],
+      "source": "Yahoo Sports NBA RSS"
+    },
+    {
       "title": "From Cooper Flagg to Ben Simmons, a look at Montverde Academy’s top NBA draft picks",
       "url": "https://sports.yahoo.com/high-school-sports/articles/cooper-flagg-ben-simmons-look-140046833.html",
       "published_at_utc": "2026-11-26T14:00:46+00:00",
@@ -217,134 +344,6 @@
         "Ben Simmons",
         "Cooper Flagg"
       ],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Knicks 121, Cavaliers 102: “The most Mike Brown victory imaginable”",
-      "url": "https://sports.yahoo.com/nba/articles/knicks-121-cavaliers-102-most-130609742.html",
-      "published_at_utc": "2026-11-26T13:06:09+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "So much for a Spurs fan to be thankful for in 2026 and beyond",
-      "url": "https://sports.yahoo.com/nba/articles/much-spurs-fan-thankful-2026-130000917.html",
-      "published_at_utc": "2026-11-26T13:00:00+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Clippers interim GM given full power to blow up roster at trade deadline",
-      "url": "https://sports.yahoo.com/nba/articles/clippers-interim-gm-given-full-130000542.html",
-      "published_at_utc": "2026-11-26T13:00:00+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Bucks vs. Nets Player Grades: Turner, Burries, and rest of team come down to earth in dreadful showing",
-      "url": "https://sports.yahoo.com/nba/articles/bucks-vs-nets-player-grades-130000182.html",
-      "published_at_utc": "2026-11-26T13:00:00+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Lakers, behind Luka Doncic, must crack Wemby code, exploit these areas to beat Spurs",
-      "url": "https://sports.yahoo.com/nba/articles/lakers-behind-luka-doncic-must-130000607.html",
-      "published_at_utc": "2026-11-26T13:00:00+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "'All about giving': Why the Lakers' Ziaire Williams enjoys giving back",
-      "url": "https://sports.yahoo.com/nba/articles/giving-why-lakers-ziaire-williams-120000392.html",
-      "published_at_utc": "2026-11-26T12:00:00+00:00",
-      "matched_players": [
-        "Ziaire Williams"
-      ],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Open Thread: Giving thanks for Carter Bryant",
-      "url": "https://sports.yahoo.com/nba/articles/open-thread-giving-thanks-carter-120000014.html",
-      "published_at_utc": "2026-11-26T12:00:00+00:00",
-      "matched_players": [
-        "Carter Bryant"
-      ],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Grading the Mavericks: Dallas’ accountability helped prevent a serious fall",
-      "url": "https://sports.yahoo.com/nba/articles/grading-mavericks-dallas-accountability-helped-120000539.html",
-      "published_at_utc": "2026-11-26T12:00:00+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "There’s something to like about the way the Suns lost in Houston",
-      "url": "https://sports.yahoo.com/nba/articles/something-way-suns-lost-houston-120000036.html",
-      "published_at_utc": "2026-11-26T12:00:00+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Knicks’ Pacome Dadiet has big night after Mike Brown calls him out",
-      "url": "https://sports.yahoo.com/nba/articles/knicks-pacome-dadiet-big-night-105522188.html",
-      "published_at_utc": "2026-11-26T10:55:22+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "De’Anthony Melton stuffs the box score in Warriors’ pre-Thanksgiving win",
-      "url": "https://sports.yahoo.com/nba/articles/anthony-melton-stuffs-box-score-090141371.html",
-      "published_at_utc": "2026-11-26T09:01:41+00:00",
-      "matched_players": [
-        "De'Anthony Melton"
-      ],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Spurs drop NBA Cup game to Trail Blazers despite Wembanyama’s big game",
-      "url": "https://sports.yahoo.com/nba/articles/spurs-drop-nba-cup-game-070000795.html",
-      "published_at_utc": "2026-11-26T07:00:00+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Rockets Scurry Over Suns To Another 116-104 Victory",
-      "url": "https://sports.yahoo.com/nba/articles/rockets-scurry-over-suns-another-065702969.html",
-      "published_at_utc": "2026-11-26T06:57:02+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "San Antonio at Portland, Final Score: the Spurs lose their first road game 116-111 to the Blazers",
-      "url": "https://sports.yahoo.com/nba/articles/san-antonio-portland-final-score-055842097.html",
-      "published_at_utc": "2026-11-26T05:58:42+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Game Recap: Suns run out of fuel in 116-104 loss to Rockets",
-      "url": "https://sports.yahoo.com/nba/articles/game-recap-suns-run-fuel-055320447.html",
-      "published_at_utc": "2026-11-26T05:53:20+00:00",
-      "matched_players": [],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Dillon Brooks gets ejected with 23 seconds left vs. Rockets after getting into it with Kevin Durant",
-      "url": "https://sports.yahoo.com/nba/breaking-news/article/dillon-brooks-gets-ejected-with-23-seconds-left-vs-rockets-after-getting-into-it-with-kevin-durant-044033904.html",
-      "published_at_utc": "2026-11-26T04:40:33+00:00",
-      "matched_players": [
-        "Dillon Brooks",
-        "Kevin Durant"
-      ],
-      "source": "Yahoo Sports NBA RSS"
-    },
-    {
-      "title": "Diving deeper into Cavs 121-102 loss to Knicks: Even when the stars are at their best, this team isn’t",
-      "url": "https://sports.yahoo.com/nba/articles/diving-deeper-cavs-121-102-043303193.html",
-      "published_at_utc": "2026-11-26T04:33:03+00:00",
-      "matched_players": [],
       "source": "Yahoo Sports NBA RSS"
     }
   ]
