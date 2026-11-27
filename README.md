@@ -37,3 +37,63 @@ This is a baseline, not a reproduction of the original LightGBM/Monte Carlo mode
 - `server.py` and `index.html` — local dashboard and functional Refresh button
 - `data/forecasts.json`, `data/players.json`, `data/parlays.json` — recovered archives
 - `.github/workflows/daily.yml` — optional daily GitHub Actions update
+
+## Current hosted dashboard: GitHub Pages / on-demand jobs (November 2026)
+
+Live site: https://bsg70124-collab.github.io/gill-sports/
+
+The hosted site is a **static GitHub Pages site**. Its per-tab refresh buttons only fetch
+recently published JSON and do not themselves generate new predictions.
+
+### Optional "Run now" backend controls
+
+The separate `github-actions-control.js` file adds authenticated workflow-dispatch
+buttons for game projections, NBA player projections, sportsbook snapshots,
+settlement, research previews, probability-calibration checks, and controlled retraining.
+
+To enable them on the public site:
+
+1. Sign in to your own GitHub account on GitHub. Create a **fine-grained**, short-lived
+   personal access token restricted to the two repositories
+   `Bsg70124-collab/gill-sports` and `Bsg70124-collab/gill-sports-engine`
+   (or only the repository required for the selected workflow).
+2. Grant repository permission **Actions: Read and write**. Do not grant unnecessary
+   administration, contents, issues, or secrets permissions.
+3. Open the dashboard and select **Connect GitHub for one-click runs**. Enter this
+   limited token *only on your own trusted device*. It is kept in JavaScript page
+   memory and discarded when the page is reloaded or closed. Do not post it in chat,
+   put it in repository files, or use an unrestricted/classic token.
+4. Choose a **Run** action. An accepted GitHub API dispatch means a job was queued,
+   **not** that it succeeded. Check the GitHub Actions page for its result and
+   reload data after publication.
+
+This opt-in browser-token solution has the normal risks of entering secrets in a
+web page. The preferred long-term production option is a separately hosted
+OAuth/GitHub App backend; GitHub Pages alone cannot securely store service secrets.
+The site also keeps links to GitHub's authenticated Actions interface as fallback.
+The app never stores a token in browser localStorage or sessionStorage.
+
+### Calibration and independently gated model edges
+
+Historical outcomes are stored in
+`data/calibration/nba_prop_outcome_history.json`. The walk-forward calibration
+workflow `gill-sports-probability-calibration-v1.yml` runs daily and on supported
+updates. It requires adequate independent games and dates, strictly later holdout
+observations, verified pregame player availability, and improvement against a
+sportsbook probability baseline. The model publishes **no betting probabilities**
+until the holdout gates pass.
+
+`gill-sports-validated-prop-edge-gate.yml` then checks only independently
+holdout-approved market models, recent pre-tip sportsbook prices, matching quote
+timestamps, model direction, price-adjusted expected return, and a conservative
+probability stress check. It writes `data/validated_player_edges.json`, which
+can legitimately contain **zero** opportunities. The strict parlay generator
+reads this gated feed and also rejects stale or unmatched snapshots.
+These are uncertain model estimates, never guaranteed or advice to wager.
+
+**As of the first audit on November 27, 2026:** 802 sportsbook outcomes checked,
+zero holdout-approved market models, and zero validated positive edges. This is
+a data/validation limitation rather than a failed automation. Research parlay
+previews stay separate and may use expired quotes, labeled as non-bettable.
+
+The workflows collecting paid sportsbook quotes retain a daily API budget cap.
