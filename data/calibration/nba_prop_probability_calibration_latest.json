@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-11-27T21:53:12.380445+00:00",
+  "source": "data/calibration/nba_prop_outcome_history.json",
+  "source_graded_quotes": 762,
+  "independent_groups": 183,
+  "exclusions": {},
+  "calibrated_for_betting": false,
+  "markets": {
+    "points": {
+      "independent_observations": 81,
+      "distinct_dates": 1,
+      "training_dates": 0,
+      "holdout_dates": 0,
+      "training_games": 0,
+      "holdout_games": 0,
+      "training_observations": 0,
+      "holdout_observations": 0,
+      "verified_availability_observations": 0,
+      "ready": false,
+      "reasons": [
+        "INSUFFICIENT_TRAIN_DATES",
+        "INSUFFICIENT_HOLDOUT_DATES",
+        "INSUFFICIENT_TRAIN_GAMES",
+        "INSUFFICIENT_HOLDOUT_GAMES",
+        "INSUFFICIENT_TRAIN_OBSERVATIONS",
+        "INSUFFICIENT_HOLDOUT_OBSERVATIONS",
+        "PREGAME_AVAILABILITY_NOT_VERIFIED"
+      ],
+      "holdout_brier": null,
+      "market_baseline_brier": null,
+      "holdout_ece": null,
+      "calibration_parameters": null
+    },
+    "rebounds": {
+      "independent_observations": 35,
+      "distinct_dates": 1,
+      "training_dates": 0,
+      "holdout_dates": 0,
+      "training_games": 0,
+      "holdout_games": 0,
+      "training_observations": 0,
+      "holdout_observations": 0,
+      "verified_availability_observations": 0,
+      "ready": false,
+      "reasons": [
+        "INSUFFICIENT_TRAIN_DATES",
+        "INSUFFICIENT_HOLDOUT_DATES",
+        "INSUFFICIENT_TRAIN_GAMES",
+        "INSUFFICIENT_HOLDOUT_GAMES",
+        "INSUFFICIENT_TRAIN_OBSERVATIONS",
+        "INSUFFICIENT_HOLDOUT_OBSERVATIONS",
+        "PREGAME_AVAILABILITY_NOT_VERIFIED"
+      ],
+      "holdout_brier": null,
+      "market_baseline_brier": null,
+      "holdout_ece": null,
+      "calibration_parameters": null
+    },
+    "assists": {
+      "independent_observations": 21,
+      "distinct_dates": 1,
+      "training_dates": 0,
+      "holdout_dates": 0,
+      "training_games": 0,
+      "holdout_games": 0,
+      "training_observations": 0,
+      "holdout_observations": 0,
+      "verified_availability_observations": 0,
+      "ready": false,
+      "reasons": [
+        "INSUFFICIENT_TRAIN_DATES",
+        "INSUFFICIENT_HOLDOUT_DATES",
+        "INSUFFICIENT_TRAIN_GAMES",
+        "INSUFFICIENT_HOLDOUT_GAMES",
+        "INSUFFICIENT_TRAIN_OBSERVATIONS",
+        "INSUFFICIENT_HOLDOUT_OBSERVATIONS",
+        "PREGAME_AVAILABILITY_NOT_VERIFIED"
+      ],
+      "holdout_brier": null,
+      "market_baseline_brier": null,
+      "holdout_ece": null,
+      "calibration_parameters": null
+    },
+    "pra": {
+      "independent_observations": 46,
+      "distinct_dates": 1,
+      "training_dates": 0,
+      "holdout_dates": 0,
+      "training_games": 0,
+      "holdout_games": 0,
+      "training_observations": 0,
+      "holdout_observations": 0,
+      "verified_availability_observations": 0,
+      "ready": false,
+      "reasons": [
+        "INSUFFICIENT_TRAIN_DATES",
+        "INSUFFICIENT_HOLDOUT_DATES",
+        "INSUFFICIENT_TRAIN_GAMES",
+        "INSUFFICIENT_HOLDOUT_GAMES",
+        "INSUFFICIENT_TRAIN_OBSERVATIONS",
+        "INSUFFICIENT_HOLDOUT_OBSERVATIONS",
+        "PREGAME_AVAILABILITY_NOT_VERIFIED"
+      ],
+      "holdout_brier": null,
+      "market_baseline_brier": null,
+      "holdout_ece": null,
+      "calibration_parameters": null
+    }
+  },
+  "warning": "No model probabilities or betting edges are published from this evaluation. Joint parlay probabilities and player availability require separate validation.",
+  "all_markets_ready": false
+}
