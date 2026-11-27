@@ -1,0 +1,145 @@
+name: Gill Sports - Validated NBA Prop Edge Gate
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'data/nba_market_comparison.json'
+      - 'data/calibration/nba_prop_probability_calibration_latest.json'
+      - '.github/workflows/gill-sports-validated-prop-edge-gate.yml'
+  schedule:
+    - cron: '7 21 * * *'
+    - cron: '7 0 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: gill-sports-validated-prop-edge-gate
+  cancel-in-progress: false
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Apply out-of-sample calibration only to fresh independently verified prop opportunities
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, math
+          from collections import Counter
+          from datetime import datetime, timezone, timedelta
+          from pathlib import Path
+
+          NOW=datetime.now(timezone.utc)
+          MARKET=Path('data/nba_market_comparison.json')
+          CAL=Path('data/calibration/nba_prop_probability_calibration_latest.json')
+          OUT=Path('data/validated_player_edges.json')
+          def read(path):
+              try: return json.loads(path.read_text(encoding='utf8'))
+              except (ValueError,OSError) as exc:raise SystemExit('UNREADABLE_INPUT '+str(path)+' '+type(exc).__name__)
+          def time(v):
+              if not isinstance(v,str):return None
+              try:
+                  x=datetime.fromisoformat(v.replace('Z','+00:00'))
+                  return x.astimezone(timezone.utc) if x.tzinfo else None
+              except (ValueError,OverflowError):return None
+          def finite(v):
+              return isinstance(v,(float,int)) and not isinstance(v,bool) and math.isfinite(v)
+          def logistic(v):
+              return 1/(1+math.exp(-max(-30,min(30,v))))
+          def payout(price):
+              return price/100 if price>0 else 100/abs(price)
+
+          market=read(MARKET)
+          calibration=read(CAL)
+          candidates=[]
+          reasons=Counter()
+          quotes=market.get('rows',[])
+          models=calibration.get('markets',{})
+          if not isinstance(quotes,list) or not isinstance(models,dict):raise SystemExit('INVALID_INPUT_SCHEMA')
+          captured=time(market.get('odds_captured_at_utc'))
+          calibration_time=time(calibration.get('generated_at_utc'))
+          # No calibration trained from future quotes, and no stale approval.
+          calibration_ok=bool(calibration_time and calibration_time<=NOW and NOW-calibration_time<=timedelta(days=7))
+          for row in quotes:
+              if not isinstance(row,dict):continue
+              stat=row.get('stat')
+              model=models.get(stat,{})
+              if not calibration_ok or not isinstance(model,dict) or model.get('ready') is not True:
+                  reasons['no_approved_current_stat_calibration']+=1;continue
+              params=model.get('calibration_parameters')
+              if not isinstance(params,dict) or any(not finite(params.get(k)) for k in ('center','scale','intercept','weight')):
+                  reasons['missing_calibration_parameters']+=1;continue
+              if params['scale']<=0:reasons['invalid_scale']+=1;continue
+              # Approval must be based on chronological holdout vs sportsbook market baseline.
+              brier=model.get('holdout_brier')
+              baseline=model.get('market_baseline_brier')
+              ece=model.get('holdout_ece')
+              if any(not finite(x) for x in (brier,baseline,ece)) or brier>baseline-0.005 or ece>0.06:
+                  reasons['holdout_quality_gate_failed']+=1;continue
+              if model.get('training_games',0)<75 or model.get('holdout_games',0)<25 or model.get('training_dates',0)<20 or model.get('holdout_dates',0)<7:
+                  reasons['independent_games_or_dates_insufficient']+=1;continue
+              if row.get('availability_verified') is not True:
+                  reasons['player_availability_unverified']+=1;continue
+              # A separate authoritative pregame source must be added before this becomes true.
+              cap=time(row.get('odds_captured_at_utc') or market.get('odds_captured_at_utc'))
+              observed=time(row.get('market_last_update'))
+              tip=time(row.get('tipoff_utc'))
+              if not cap or not observed or not tip or NOW<cap or NOW<observed or NOW-cap>timedelta(minutes=30) or NOW-observed>timedelta(minutes=30) or tip-NOW<timedelta(minutes=20) or cap>=tip or row.get('quote_stale_at_capture') is True:
+                  reasons['expired_or_invalid_pretip_quote']+=1;continue
+              proj,line,price=(row.get(k) for k in ('model_projection','line','american_price'))
+              if any(not finite(x) for x in (proj,line,price)) or price==0 or line<0 or row.get('side') not in ('Over','Under'):
+                  reasons['invalid_model_market_inputs']+=1;continue
+              # Training labels use the direction chosen by projection vs line.
+              # Never score the opposite direction by reusing these parameters.
+              side='Over' if proj>line else 'Under' if proj<line else None
+              if row.get('side')!=side:
+                  reasons['direction_not_trained']+=1;continue
+              margin=abs(proj-line)
+              p=logistic(params['intercept']+params['weight']*(margin-params['center'])/params['scale'])
+              # Conservative stress check; not a statistically valid confidence interval.
+              pessimistic=max(0,p-max(float(ece),0.01))
+              ev=p*payout(price)-(1-p)
+              cautious_ev=pessimistic*payout(price)-(1-pessimistic)
+              no_vig=row.get('no_vig_market_probability')
+              if not finite(no_vig) or not 0<no_vig<1:
+                  reasons['no_verified_two_sided_market_probability']+=1;continue
+              if p<0.55 or p-no_vig<0.04 or cautious_ev<0.025:
+                  reasons['probability_or_stressed_ev_threshold_not_met']+=1;continue
+              item={k:row.get(k) for k in ('game_id','game_date','player_id','player_name','matchup',
+                'tipoff_utc','stat','side','line','american_price','bookmaker_key',
+                'bookmaker_title','market_last_update','odds_captured_at_utc','model_projection')}
+              item.update({'model_probability':round(p,6),'estimated_ev':round(ev,6),
+                'stress_test_ev':round(cautious_ev,6),'validated_edge':True,'availability_verified':True,
+                'stat_calibration_holdout_brier':brier,'stat_calibration_market_brier':baseline,
+                'stat_calibration_ece':ece})
+              candidates.append(item)
+          report={
+              'schema_version':1,'generated_at_utc':NOW.isoformat(),
+              'market_snapshot_captured_at_utc':market.get('odds_captured_at_utc'),
+              'calibration_generated_at_utc':calibration.get('generated_at_utc'),
+              'quotes_examined':len(quotes),'calibration_fresh':calibration_ok,
+              'stat_markets_ready':sorted(k for k,v in models.items() if isinstance(v,dict) and v.get('ready') is True),
+              'validated_positive_edges':len(candidates),
+              'rows':candidates,'excluded':dict(reasons),
+              'note':'Only uses approved chronological holdout models and independently verified pregame availability. Model win probabilities and EV remain estimates, not guarantees. Stressed EV is a heuristic, not a confidence interval.'}
+          OUT.write_text(json.dumps(report,indent=2,ensure_ascii=False,allow_nan=False)+'\n',encoding='utf8')
+          print('MARKETS_READY:',report['stat_markets_ready'])
+          print('CANDIDATES:',len(candidates))
+          print('EXCLUSIONS:',dict(reasons))
+          print('PAID_API_CALLS: 0')
+          PY
+      - name: Commit validated edge gate report (possibly empty)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/validated_player_edges.json
+          if git diff --cached --quiet; then echo NO_CHANGES; exit 0; fi
+          git commit -m "Audit calibrated sportsbook edge eligibility without fabricated picks"
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
