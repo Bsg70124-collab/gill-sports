@@ -6032,9 +6032,9 @@
       "away_id": "21",
       "home": "Dallas Cowboys",
       "away": "Philadelphia Eagles",
-      "home_score": null,
-      "away_score": null,
-      "completed": false
+      "home_score": 38.0,
+      "away_score": 39.0,
+      "completed": true
     },
     "nfl-401873082": {
       "id": "nfl-401873082",
@@ -6044,9 +6044,9 @@
       "away_id": "12",
       "home": "Buffalo Bills",
       "away": "Kansas City Chiefs",
-      "home_score": null,
-      "away_score": null,
-      "completed": false
+      "home_score": 13.0,
+      "away_score": 10.0,
+      "completed": true
     },
     "nba-401909326": {
       "id": "nba-401909326",
@@ -7328,7 +7328,9 @@
       "model": "elo-v1",
       "k": 28,
       "locked_at": "2026-11-25T03:33:57.435653+00:00",
-      "result": "pending"
+      "result": "loss",
+      "settled_at": "2026-11-27T13:53:57.751793+00:00",
+      "final_score": "Philadelphia Eagles 39 – Dallas Cowboys 38"
     },
     "nfl-401873082": {
       "id": "nfl-401873082",
@@ -7348,7 +7350,9 @@
       "model": "elo-v1",
       "k": 28,
       "locked_at": "2026-11-25T03:33:57.435653+00:00",
-      "result": "pending"
+      "result": "win",
+      "settled_at": "2026-11-27T13:53:57.751793+00:00",
+      "final_score": "Kansas City Chiefs 10 – Buffalo Bills 13"
     },
     "nba-401909326": {
       "id": "nba-401909326",
@@ -7692,5 +7696,5 @@
     }
   },
   "errors": [],
-  "last_refresh": "2026-11-27T00:37:15.886583+00:00"
+  "last_refresh": "2026-11-27T13:53:57.751793+00:00"
 }
