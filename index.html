@@ -81,7 +81,7 @@ a{color:#95bcff}
     <div class="logo">Gill <span>Sports</span> <small class="pill">Independent Lab</small></div>
     <div class="subtitle">NBA / NFL · locked forecasts · recovered history · model monitoring</div>
   </div>
-  <button id="refresh">↻ Reload saved data</button>
+  <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><label class="small" for="gs-auto-refresh" title="Reloads published data in the currently open tab every 5 minutes; does not launch new private workflows"><input id="gs-auto-refresh" type="checkbox" checked style="width:auto;min-width:0;vertical-align:middle"> Auto-refresh (5 min)</label><button id="refresh">↻ Reload saved data</button></div>
 </div>
 <nav class="nav">
   <button class="active" data-tab="overview">Overview</button>
@@ -243,6 +243,7 @@ a{color:#95bcff}
   <p id="parlay-research-status" class="muted" aria-live="polite">Loading separate research previews...</p>
   <div class="toolbar"><select id="parlay-research-size"><option value="all">All preview sizes</option><option value="2">2-leg previews</option><option value="3">3-leg previews</option><option value="4">4-leg previews</option></select>
   <a href="https://github.com/Bsg70124-collab/gill-sports/actions/workflows/gill-sports-parlay-research-previews.yml" target="_blank" rel="noopener noreferrer" class="small">Generate refreshed research previews in GitHub ↗</a></div>
+  <button class="secondary" id="parlay-research-export">Export research previews CSV</button>
   <div id="parlay-research-list"></div>
 </div>
 <div class="panel">
@@ -272,6 +273,11 @@ a{color:#95bcff}
   <div><strong>Market feed</strong><span id="market-feed-state">Checking published snapshot...</span></div>
   <div><strong>Automatic retraining</strong><span>Automated evaluation enabled; model promotion requires measured improvement</span></div>
  </div>
+</div>
+<div class="panel">
+ <div class="rowhead"><h2>Automated feed health</h2><span class="badge">Based on published timestamps</span></div>
+ <p class="small">A successful GitHub workflow does not guarantee fresh prices, verified availability, or new predictions. Check each feed timestamp before using its data.</p>
+ <div id="feed-health" class="info">Loading feed status...</div>
 </div>
 <div class="panel">
  <h2>Migration integrity</h2>
@@ -716,7 +722,31 @@ function renderParlays() {
   `).join('') || '<p class="muted">No matching parlays.</p>';
 }
 
+function renderFeedHealth() {
+  const now=Date.now();
+  const specs=[
+    ['Game predictions',live?.last_refresh,24*60,'data/live.json'],
+    ['Player projections / grading',livePlayerFeed?.updated_at_utc,24*60,'data/player_live.json'],
+    ['Sportsbook quote capture',liveMarketFeed?.odds_captured_at_utc,30,'data/nba_market_comparison.json'],
+    ['Injury watch',injuryFeed?.updated_at_utc,12*60,'data/injury_watch.json'],
+    ['Research previews',parlayResearch?.generated_at_utc,12*60,'data/parlay_research_previews.json'],
+    ['Strict parlay generator',parlayRunStatus?.checked_at_utc,12*60,'data/parlay_generation_status.json'],
+    ['Probability calibration',parlayCalibration?.generated_at_utc,7*24*60,'data/calibration/nba_prop_probability_calibration_latest.json']
+  ];
+  $('feed-health').innerHTML=specs.map(([name,stamp,maxMins,file])=>{
+    const time=Date.parse(stamp||'');
+    const age=Number.isFinite(time)?Math.round((now-time)/60000):null;
+    const missing=age===null||age<0;
+    const stale=missing||age>maxMins;
+    const state=missing?'Missing timestamp':stale?'Old snapshot':'Recent snapshot';
+    const ageText=missing?'unknown':age>=60?(age/60).toFixed(1)+' hours':age+' minutes';
+    return '<div><strong>'+esc(name)+'</strong><span class="'+(stale?'mid':'high')+'">'+esc(state)+'</span>'+
+      '<div class="small">Last: '+esc(date(stamp))+' · '+esc(ageText)+' old</div>'+
+      '<div class="small">'+esc(file)+'</div></div>';
+  }).join('');
+}
 function renderSystem() {
+  renderFeedHealth();
   const errors = Array.isArray(live.errors) ? live.errors : [];
 
   $('last-run').textContent = date(live.last_refresh);
@@ -781,6 +811,23 @@ for(const id of ['prop-search','prop-view']) {
 }
 $('parlay-view').addEventListener('change',renderParlays);
 $('parlay-research-size').addEventListener('change',renderParlayResearch);
+$('parlay-research-export').addEventListener('click',()=>{
+  const sizes=$('parlay-research-size').value;
+  const slips=(parlayResearch?.previews||[]).filter(x=>sizes==='all'||String(x.size)===sizes);
+  const rows=slips.flatMap(slip=>(slip.legs||[]).map(leg=>({
+    preview_id:slip.id,legs:slip.size,classification:slip.classification,
+    day:slip.day,player:leg.player_name,matchup:leg.matchup,stat:leg.stat,
+    side:leg.side,line:leg.line,model_projection:leg.model_projection,
+    projection_minus_line:leg.projection_minus_line,bookmaker:leg.bookmaker,
+    quote_updated_at_utc:leg.quote_updated_at_utc,tipoff_utc:leg.tipoff_utc,
+    availability_verified:leg.availability_verified,
+    model_probability:leg.model_probability,validated_edge:leg.validated_edge
+  })));
+  csv('gill-parlay-research-not-verified.csv',rows,
+    ['preview_id','legs','classification','day','player','matchup','stat','side','line',
+     'model_projection','projection_minus_line','bookmaker','quote_updated_at_utc',
+     'tipoff_utc','availability_verified','model_probability','validated_edge']);
+});
 for(const id of ['market-search','market-stat','market-view']) $(id).addEventListener('input',renderMarket);
 $('market-export').onclick=()=>csv('gill-nba-sportsbook-observations.csv',marketRows(),['game_date','matchup','player_name','stat','side','line','model_projection','american_price','bookmaker_title','market_last_update','no_vig_market_probability','model_probability','validated_edge']);
 $('parlay-size').addEventListener('change',renderParlays);
@@ -851,7 +898,7 @@ async function loadAll(tabName=null) {
       if(iframe)iframe.src='gill-sports-live-players.html?updated='+Date.now();
     }
 
-    if(!fileStatus['data/live.json'].ok) {
+    if(fileStatus['data/live.json']?.ok===false) {
       $('overview-notice').textContent =
         'Live forecasts unavailable. Check data/live.json in GitHub.';
       $('overview-notice').classList.remove('oknotice');
@@ -865,7 +912,23 @@ async function loadAll(tabName=null) {
 }
 
 $('refresh').addEventListener('click',()=>loadAll());
+let isAutoRefreshEnabled=true;
+try {
+  const saved=localStorage.getItem('gill-sports-auto-refresh-v1');
+  if(saved==='false')isAutoRefreshEnabled=false;
+} catch(e) { /* Private browsing may disallow storage. */ }
+$('gs-auto-refresh').checked=isAutoRefreshEnabled;
+$('gs-auto-refresh').addEventListener('change',()=>{
+  isAutoRefreshEnabled=$('gs-auto-refresh').checked;
+  try {localStorage.setItem('gill-sports-auto-refresh-v1',String(isAutoRefreshEnabled));} catch(e) {}
+});
 loadAll();
+setInterval(()=>{
+  if(!isAutoRefreshEnabled||document.visibilityState!=='visible')return;
+  const active=document.querySelector('.page.active');
+  const activeName=active?.id?.replace(/^tab-/,'');
+  if(activeName&&REFRESH_CONFIG[activeName])loadAll(activeName);
+},5*60*1000);
 
 setInterval(async()=>{
   try {
