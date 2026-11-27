@@ -35,11 +35,11 @@ jobs:
           if missing:raise SystemExit('MISSING_DOM_ELEMENTS: '+','.join(missing))
           required=['data/player_live.json','data/nba_market_comparison.json',
             'data/parlay_generation_status.json','parlay-size','market-table','market-feed-state',
-            'setupTabRefresh','renderMarket','Refresh reloads saved data']
+            'setupTabRefresh','renderMarket','renderParlayResearch','parlay-research-list','Refresh reloads saved data']
           absent=[x for x in required if x not in html]
           if absent:raise SystemExit('MISSING_DASHBOARD_INTEGRATIONS: '+','.join(absent))
           for name in ('data/player_live.json','data/nba_market_comparison.json',
-                       'data/parlay_generation_status.json','data/parlays.json'):
+                       'data/parlay_generation_status.json','data/parlay_research_previews.json','data/parlays.json'):
             json.loads(Path(name).read_text(encoding='utf8'))
           print('DASHBOARD_MARKUP_AND_FEEDS_OK',len(ids),'elements',len(jsrefs),'references')
           PYCODE
