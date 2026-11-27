@@ -35,7 +35,7 @@ jobs:
           if missing:raise SystemExit('MISSING_DOM_ELEMENTS: '+','.join(missing))
           required=['data/player_live.json','data/nba_market_comparison.json',
             'data/parlay_generation_status.json','parlay-size','market-table','market-feed-state',
-            'setupTabRefresh','renderMarket','renderParlayResearch','parlay-research-list','Refresh reloads saved data']
+            'setupTabRefresh','renderMarket','renderParlayResearch','parlay-research-list','renderFeedHealth','gs-auto-refresh','parlay-research-export','Refresh reloads saved data']
           absent=[x for x in required if x not in html]
           if absent:raise SystemExit('MISSING_DASHBOARD_INTEGRATIONS: '+','.join(absent))
           for name in ('data/player_live.json','data/nba_market_comparison.json',
