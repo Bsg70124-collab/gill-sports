@@ -238,6 +238,14 @@ a{color:#95bcff}
 <section class="page" id="tab-parlays">
 <div class="notice">Historical paper parlays are experimental. New 2-, 3-, and 4-leg slips require verified current lines, player availability, calibrated probabilities and validated edges. No qualifying selections is a valid outcome.</div>
 <div class="panel">
+  <div class="rowhead"><h2>Research-only NBA parlay previews</h2><span class="badge">Not validated betting picks</span></div>
+  <p class="notice">These examples pair players by model projection versus a previously observed sportsbook line. <strong>These are NOT actionable betting recommendations</strong>: lines may be expired, player availability is unverified, and no calibrated win probability or positive expected value has been established. These previews are NOT added to the settled parlay record.</p>
+  <p id="parlay-research-status" class="muted" aria-live="polite">Loading separate research previews...</p>
+  <div class="toolbar"><select id="parlay-research-size"><option value="all">All preview sizes</option><option value="2">2-leg previews</option><option value="3">3-leg previews</option><option value="4">4-leg previews</option></select>
+  <a href="https://github.com/Bsg70124-collab/gill-sports/actions/workflows/gill-sports-parlay-research-previews.yml" target="_blank" rel="noopener noreferrer" class="small">Generate refreshed research previews in GitHub ↗</a></div>
+  <div id="parlay-research-list"></div>
+</div>
+<div class="panel">
  <h2>Parlay tracking and individual legs</h2>
  <p id="parlay-summary"></p>
  <p id="parlay-run-status" class="muted" aria-live="polite">Checking latest generation run...</p>
@@ -320,6 +328,7 @@ let oldGames = [];
 let players = [];
 let parlays = [];
 let parlayRunStatus = null;
+let parlayResearch = null;
 let parlayCalibration = null;
 let parlayBacktest = null;
 let livePlayerFeed = null;
@@ -333,8 +342,8 @@ const REFRESH_CONFIG = {
   games: {feeds:['live','history'], label:'Refresh games and results', run:'https://github.com/Bsg70124-collab/gill-sports/actions/workflows/daily.yml', runLabel:'Run new game projections in GitHub'},
   players: {feeds:['livePlayers','injury','players'], label:'Refresh player feed', run:'https://github.com/Bsg70124-collab/gill-sports-engine/actions/workflows/gill-sports-daily-player-projections-v1.yml', runLabel:'Run new player projections in GitHub'},
   props: {feeds:['markets','players','livePlayers'], label:'Refresh market feed', run:'https://github.com/Bsg70124-collab/gill-sports-engine/actions/workflows/gill-sports-odds-collector-v1.yml', runLabel:'Run odds collector in GitHub'},
-  parlays: {feeds:['parlays','parlayStatus','parlayBacktest','parlayCalibration','markets'], label:'Refresh parlay results', run:'https://github.com/Bsg70124-collab/gill-sports/actions/workflows/gill-sports-daily-parlay-generator-v2.yml', runLabel:'Generate new paper parlays in GitHub'},
-  system: {feeds:['live','history','players','parlays','livePlayers','markets','injury','parlayStatus','parlayBacktest','parlayCalibration'], label:'Refresh all feed statuses', run:'https://github.com/Bsg70124-collab/gill-sports/actions', runLabel:'View workflow runs in GitHub'}
+  parlays: {feeds:['parlays','parlayStatus','parlayResearch','parlayBacktest','parlayCalibration','markets'], label:'Refresh parlay results', run:'https://github.com/Bsg70124-collab/gill-sports/actions/workflows/gill-sports-daily-parlay-generator-v2.yml', runLabel:'Generate new paper parlays in GitHub'},
+  system: {feeds:['live','history','players','parlays','livePlayers','markets','injury','parlayStatus','parlayResearch','parlayBacktest','parlayCalibration'], label:'Refresh all feed statuses', run:'https://github.com/Bsg70124-collab/gill-sports/actions', runLabel:'View workflow runs in GitHub'}
 };
 function setupTabRefresh() {
   for(const [name,cfg] of Object.entries(REFRESH_CONFIG)) {
@@ -644,7 +653,28 @@ function parlayRows() {
     .sort((a,b) => String(b.day||'').localeCompare(String(a.day||'')));
 }
 
+function renderParlayResearch() {
+  const list=Array.isArray(parlayResearch?.previews)?parlayResearch.previews:[];
+  const size=$('parlay-research-size').value;
+  const shown=list.filter(p=>size==='all'||String(p.size)===size);
+  const age=Date.parse(parlayResearch?.source_capture_utc||'');
+  $('parlay-research-status').textContent=parlayResearch
+    ? `${parlayResearch.candidate_player_games??0} distinct player-games · ${parlayResearch.independent_games_covered??0} different NBA games · ${parlayResearch.fresh_player_games??0} recently quoted players · Source captured: ${date(parlayResearch.source_capture_utc)}. Research only; no bets verified.`
+    : 'No research previews have been generated yet. Use the GitHub workflow link above; refreshing this tab only reloads saved data.';
+  $('parlay-research-list').innerHTML=shown.map(slip=>{
+    const obsolete=(slip.legs||[]).some(l=>Date.now()>=Date.parse(l.tipoff_utc||'')-20*60000||Date.now()-Date.parse(l.quote_updated_at_utc||'')>30*60000);
+    const condition=obsolete?'HISTORICAL / EXPIRED — NOT BETTABLE':'RECENT SNAPSHOT — STILL UNVERIFIED';
+    return `<article class="parlay">
+      <div class="rowhead"><h3>${esc(slip.size)}-leg model-versus-market research preview</h3><span class="badge">${esc(condition)}</span></div>
+      <p class="small">No calibrated win probability, verified player availability, or validated EV · Independent games selected to limit overlapping matchups, not to prove independence</p>
+      ${(slip.legs||[]).map(l=>`<div class="leg"><strong>${esc(l.player_name)} · ${esc(l.matchup)}</strong>
+        <div class="small">Model ${fmt(l.model_projection,2)} ${esc(l.stat)} · Observed sportsbook line ${fmt(l.line,1)} · Direction ${esc(l.side)} · Difference ${fmt(l.projection_minus_line,2)} · ${esc(l.bookmaker)}</div>
+        <div class="small">Quote: ${esc(date(l.quote_updated_at_utc))} · Game: ${esc(date(l.tipoff_utc))} · Availability unverified</div></div>`).join('')}
+    </article>`;
+  }).join('')||'<p class="muted">No research preview of this size is available. There may not be enough distinct games with usable saved quotes.</p>';
+}
 function renderParlays() {
+  renderParlayResearch();
   const a = parlayRows();
 
   $('parlay-summary').textContent =
@@ -750,6 +780,7 @@ for(const id of ['prop-search','prop-view']) {
   $(id).addEventListener('input',renderProps);
 }
 $('parlay-view').addEventListener('change',renderParlays);
+$('parlay-research-size').addEventListener('change',renderParlayResearch);
 for(const id of ['market-search','market-stat','market-view']) $(id).addEventListener('input',renderMarket);
 $('market-export').onclick=()=>csv('gill-nba-sportsbook-observations.csv',marketRows(),['game_date','matchup','player_name','stat','side','line','model_projection','american_price','bookmaker_title','market_last_update','no_vig_market_probability','model_probability','validated_edge']);
 $('parlay-size').addEventListener('change',renderParlays);
@@ -766,6 +797,7 @@ async function loadAll(tabName=null) {
       ['data/players.json','players'],
       ['data/parlays.json','parlays'],
       ['data/parlay_generation_status.json','parlayStatus'],
+      ['data/parlay_research_previews.json','parlayResearch'],
       ['data/calibration/nba_prop_backtest_readiness_latest.json','parlayBacktest'],
       ['data/calibration/nba_prop_probability_calibration_latest.json','parlayCalibration'],
       ['data/player_live.json','livePlayers'],
@@ -797,6 +829,7 @@ async function loadAll(tabName=null) {
         parlays=Array.isArray(d.rows)?d.rows:[];
       }
       if(key==='parlayStatus') parlayRunStatus=d||null;
+      if(key==='parlayResearch') parlayResearch=d||null;
       if(key==='parlayBacktest') parlayBacktest=d||null;
       if(key==='parlayCalibration') parlayCalibration=d||null;
       if(key==='livePlayers') livePlayerFeed=d||null;
