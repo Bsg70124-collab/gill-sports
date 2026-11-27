@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-11-27T23:37:09.970859+00:00",
+  "market_snapshot_captured_at_utc": "2026-11-27T03:14:00.324326+00:00",
+  "calibration_generated_at_utc": "2026-11-27T21:53:12.380445+00:00",
+  "quotes_examined": 802,
+  "calibration_fresh": true,
+  "stat_markets_ready": [],
+  "validated_positive_edges": 0,
+  "rows": [],
+  "excluded": {
+    "no_approved_current_stat_calibration": 802
+  },
+  "note": "Only uses approved chronological holdout models and independently verified pregame availability. Model win probabilities and EV remain estimates, not guarantees. Stressed EV is a heuristic, not a confidence interval."
+}
