@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'data/calibration/nba_prop_outcome_history.json'
+      - '.github/workflows/gill-sports-probability-calibration-v1.yml'
   schedule:
     - cron: '27 12 * * *'
 permissions:
