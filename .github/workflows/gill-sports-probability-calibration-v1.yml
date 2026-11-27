@@ -1,0 +1,192 @@
+name: Gill Sports - Walk Forward Prop Probability Calibration V1
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'data/calibration/nba_prop_outcome_history.json'
+  schedule:
+    - cron: '27 12 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: gill-sports-walk-forward-prop-calibration
+  cancel-in-progress: false
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Fit chronological probability calibration only with independent sufficient observations
+        shell: bash
+        run: |
+          python - <<'PYCODE'
+          import json, math
+          from collections import defaultdict, Counter
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          SOURCE=Path('data/calibration/nba_prop_outcome_history.json')
+          OUT=Path('data/calibration/nba_prop_probability_calibration_latest.json')
+          MARKETS=('points','rebounds','assists','pra')
+          HOLDOUT_DAYS=7
+          MIN_TRAIN_DAYS=20
+          MIN_TRAIN_GAMES=75
+          MIN_HOLDOUT_GAMES=25
+          MIN_TRAIN_ROWS=300
+          MIN_HOLDOUT_ROWS=100
+          MIN_AVAILABILITY_VERIFIED=100
+          MIN_BRIER_IMPROVEMENT=0.005
+          MAX_ECE=0.06
+
+          def finite(v):
+              return isinstance(v,(int,float)) and not isinstance(v,bool) and math.isfinite(v)
+          def implied(price):
+              if not finite(price) or price==0: return None
+              return 100/(100+price) if price>0 else -price/(100-price)
+          def sigmoid(v):
+              v=max(-25,min(25,v))
+              return 1/(1+math.exp(-v))
+          def brier(ps,ys):
+              return sum((p-y)**2 for p,y in zip(ps,ys))/len(ys)
+          def ece(ps,ys):
+              # Equal-width probability bins; avoid reporting empty bins.
+              bins=defaultdict(list)
+              for p,y in zip(ps,ys):
+                  bins[min(9,int(p*10))].append((p,y))
+              return sum(len(items)/len(ps)*abs(sum(p for p,y in items)/len(items)-sum(y for p,y in items)/len(items)) for items in bins.values())
+          def train(rows):
+              # One-variable regularized logistic model trained from pre-tip
+              # model projection versus line, no game outcome as a feature.
+              # Standardize using training data only.
+              diffs=[x['delta'] for x in rows]
+              center=sum(diffs)/len(diffs)
+              scale=max(1.0,math.sqrt(sum((x-center)**2 for x in diffs)/len(diffs)))
+              intercept=0.0
+              weight=0.0
+              for step in range(600):
+                  gi=gw=0.0
+                  for r in rows:
+                      z=(r['delta']-center)/scale
+                      err=sigmoid(intercept+weight*z)-r['win']
+                      gi+=err
+                      gw+=err*z
+                  intercept-=0.15*gi/len(rows)
+                  weight-=0.15*(gw/len(rows)+0.01*weight)
+              return {'center':center,'scale':scale,'intercept':intercept,'weight':weight}
+          def predict(model,rows):
+              return [sigmoid(model['intercept']+model['weight']*(r['delta']-model['center'])/model['scale']) for r in rows]
+
+          src=json.loads(SOURCE.read_text(encoding='utf-8'))
+          raw=src.get('rows')
+          if not isinstance(raw,list): raise SystemExit('INVALID_GRADED_HISTORY')
+          groups=defaultdict(list)
+          excludes=Counter()
+          for r in raw:
+              if not isinstance(r,dict): excludes['not_object']+=1;continue
+              if r.get('captured_before_tipoff') is not True: excludes['not_pretip']+=1;continue
+              stat=r.get('stat')
+              if stat not in MARKETS or r.get('side') not in ('Over','Under'): excludes['unsupported_market']+=1;continue
+              if not all(finite(r.get(k)) for k in ('line','actual_stat','model_projection')): excludes['missing_numeric']+=1;continue
+              p=implied(r.get('american_price'))
+              if p is None: excludes['invalid_price']+=1;continue
+              date=str(r.get('game_date') or '')
+              try: datetime.strptime(date,'%Y-%m-%d')
+              except ValueError: excludes['invalid_date']+=1;continue
+              game=str(r.get('game_id') or '')
+              player=str(r.get('player_id') or '')
+              if not game or not player: excludes['missing_identity']+=1;continue
+              key=(date,game,player,stat,float(r['line']))
+              groups[key].append((r,p))
+
+          by_market=defaultdict(list)
+          for (day,game,player,stat,line),quotes in groups.items():
+              actuals={float(r['actual_stat']) for r,p in quotes}
+              predictions={float(r['model_projection']) for r,p in quotes}
+              if len(actuals)!=1 or max(predictions)-min(predictions)>0.001:
+                  excludes['conflicting_group']+=1;continue
+              pred=next(iter(predictions))
+              if pred==line: excludes['prediction_tie']+=1;continue
+              side='Over' if pred>line else 'Under'
+              candidates=[(r,p) for r,p in quotes if r['side']==side]
+              if not candidates: excludes['side_not_quoted']+=1;continue
+              # One record per independent player/game/stat/line; multiple
+              # books/sides must never multiply sample size.
+              r,p=sorted(candidates,key=lambda x:(str(x[0].get('odds_captured_at_utc') or ''),str(x[0].get('bookmaker_key') or '')))[0]
+              actual=next(iter(actuals))
+              if actual==line: excludes['push']+=1;continue
+              win=int((actual>line)==(side=='Over'))
+              by_market[stat].append({'date':day,'game':game,'win':win,
+                'delta':(pred-line) if side=='Over' else (line-pred),
+                'market_probability':p,
+                'availability_verified':r.get('verified_pregame_availability') is True})
+
+          report={'schema_version':1,'generated_at_utc':datetime.now(timezone.utc).isoformat(),
+            'source':'data/calibration/nba_prop_outcome_history.json',
+            'source_graded_quotes':len(raw),'independent_groups':sum(map(len,by_market.values())),
+            'exclusions':dict(excludes),'calibrated_for_betting':False,'markets':{},
+            'warning':'No model probabilities or betting edges are published from this evaluation. Joint parlay probabilities and player availability require separate validation.'}
+          for stat in MARKETS:
+              rows=by_market[stat]
+              dates=sorted({x['date'] for x in rows})
+              train_dates=set(dates[:-HOLDOUT_DAYS]) if len(dates)>HOLDOUT_DAYS else set()
+              holdout_dates=set(dates[-HOLDOUT_DAYS:]) if train_dates else set()
+              train_rows=[x for x in rows if x['date'] in train_dates]
+              hold_rows=[x for x in rows if x['date'] in holdout_dates]
+              verified=sum(x['availability_verified'] for x in train_rows+hold_rows)
+              reasons=[]
+              if len(train_dates)<MIN_TRAIN_DAYS: reasons.append('INSUFFICIENT_TRAIN_DATES')
+              if len(holdout_dates)<HOLDOUT_DAYS: reasons.append('INSUFFICIENT_HOLDOUT_DATES')
+              if len({x['game'] for x in train_rows})<MIN_TRAIN_GAMES: reasons.append('INSUFFICIENT_TRAIN_GAMES')
+              if len({x['game'] for x in hold_rows})<MIN_HOLDOUT_GAMES: reasons.append('INSUFFICIENT_HOLDOUT_GAMES')
+              if len(train_rows)<MIN_TRAIN_ROWS: reasons.append('INSUFFICIENT_TRAIN_OBSERVATIONS')
+              if len(hold_rows)<MIN_HOLDOUT_ROWS: reasons.append('INSUFFICIENT_HOLDOUT_OBSERVATIONS')
+              if verified<MIN_AVAILABILITY_VERIFIED or verified!=len(train_rows)+len(hold_rows):
+                  reasons.append('PREGAME_AVAILABILITY_NOT_VERIFIED')
+              item={'independent_observations':len(rows),'distinct_dates':len(dates),
+                 'training_dates':len(train_dates),'holdout_dates':len(holdout_dates),
+                 'training_games':len({x['game'] for x in train_rows}),
+                 'holdout_games':len({x['game'] for x in hold_rows}),
+                 'training_observations':len(train_rows),'holdout_observations':len(hold_rows),
+                 'verified_availability_observations':verified,'ready':False,'reasons':reasons,
+                 'holdout_brier':None,'market_baseline_brier':None,'holdout_ece':None,
+                 'calibration_parameters':None}
+              if not reasons:
+                  model=train(train_rows)
+                  ps=predict(model,hold_rows)
+                  ys=[x['win'] for x in hold_rows]
+                  bs=brier(ps,ys)
+                  baseline=brier([x['market_probability'] for x in hold_rows],ys)
+                  error=ece(ps,ys)
+                  item.update({'holdout_brier':round(bs,6),
+                    'market_baseline_brier':round(baseline,6),'holdout_ece':round(error,6)})
+                  if bs>baseline-MIN_BRIER_IMPROVEMENT: reasons.append('NO_BRIER_IMPROVEMENT_VERSUS_MARKET')
+                  if error>MAX_ECE: reasons.append('HOLDOUT_CALIBRATION_ERROR_TOO_HIGH')
+                  if not reasons:
+                      # Diagnostic parameters only. Do not copy directly into
+                      # live market audit or mark actionable before additional review.
+                      item['calibration_parameters']={k:round(v,8) for k,v in model.items()}
+                      item['ready']=True
+              report['markets'][stat]=item
+              print('MARKET',stat,'GROUPS',len(rows),'TRAIN',len(train_rows),'HOLDOUT',len(hold_rows),'READY',item['ready'],'REASONS',','.join(reasons))
+          report['all_markets_ready']=all(x['ready'] for x in report['markets'].values())
+          OUT.parent.mkdir(parents=True,exist_ok=True)
+          OUT.write_text(json.dumps(report,indent=2,allow_nan=False)+'\n',encoding='utf-8')
+          print('ALL_MARKETS_READY:',report['all_markets_ready'])
+          print('BETTING_EDGES_PUBLISHED: 0')
+          PYCODE
+      - name: Save calibration report
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/calibration/nba_prop_probability_calibration_latest.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Evaluate walk-forward NBA prop probability calibration readiness"
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
