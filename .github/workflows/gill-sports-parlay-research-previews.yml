@@ -1,0 +1,144 @@
+name: Gill Sports - NBA Research Parlay Previews
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'data/nba_market_comparison.json'
+      - '.github/workflows/gill-sports-parlay-research-previews.yml'
+  schedule:
+    - cron: '17 21 * * *'
+    - cron: '17 0 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: gill-sports-research-parlays
+  cancel-in-progress: false
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Build descriptive research-only pairs with no invented betting edge
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, math
+          from pathlib import Path
+          from collections import defaultdict
+          from datetime import datetime, timezone, timedelta
+          from zoneinfo import ZoneInfo
+
+          MARKET=Path('data/nba_market_comparison.json')
+          OUT=Path('data/parlay_research_previews.json')
+          NOW=datetime.now(timezone.utc)
+          DAY=NOW.astimezone(ZoneInfo('America/Los_Angeles')).date().isoformat()
+          def dt(s):
+              try:
+                  d=datetime.fromisoformat(str(s).replace('Z','+00:00'))
+                  return d.astimezone(timezone.utc) if d.tzinfo else None
+              except (ValueError,TypeError,OverflowError):return None
+          def num(v):
+              return float(v) if isinstance(v,(int,float)) and not isinstance(v,bool) and math.isfinite(v) else None
+          source=json.loads(MARKET.read_text(encoding='utf8'))
+          rows=source.get('rows',[])
+          if not isinstance(rows,list): raise SystemExit('INVALID_MARKET_FEED')
+          captures=[]
+          groups=defaultdict(list)
+          excluded=defaultdict(int)
+          for r in rows:
+              if not isinstance(r,dict):continue
+              gid=str(r.get('game_id') or '')
+              pid=str(r.get('player_id') or '')
+              cap=dt(r.get('odds_captured_at_utc') or source.get('odds_captured_at_utc'))
+              tip=dt(r.get('tipoff_utc'))
+              upd=dt(r.get('market_last_update'))
+              pred,line,price=num(r.get('model_projection')),num(r.get('line')),num(r.get('american_price'))
+              if not gid.isdecimal() or not pid.isdecimal() or not r.get('player_name'):
+                  excluded['missing_player_or_game']+=1;continue
+              if r.get('stat') not in ('points','rebounds','assists','pra') or r.get('side') not in ('Over','Under'):
+                  excluded['invalid_market']+=1;continue
+              if None in (cap,tip,upd,pred,line,price) or line<=0 or cap>=tip or upd>cap+timedelta(minutes=2):
+                  excluded['invalid_or_posttip_quote']+=1;continue
+              if (cap-upd)>timedelta(minutes=30) or r.get('quote_stale_at_capture') is True:
+                  excluded['stale_at_capture']+=1;continue
+              # Maintain one independently quoted direction for each player/game/stat/line.
+              direction='Over' if pred>line else 'Under' if pred<line else None
+              if r.get('side')!=direction:
+                  continue
+              difference=pred-line
+              gap=abs(difference)/max(1,line)
+              if gap>3:
+                  excluded['extreme_ratio']+=1;continue
+              candidate={
+                  'game_id':gid,'player_id':pid,'player_name':r['player_name'],
+                  'matchup':r.get('matchup'),'game_date':r.get('game_date'),
+                  'tipoff_utc':tip.isoformat(),'stat':r['stat'],'side':direction,
+                  'line':line,'model_projection':pred,'projection_minus_line':round(difference,3),
+                  'relative_gap':round(gap,5),'american_price':price,
+                  'bookmaker':r.get('bookmaker_title') or r.get('bookmaker_key'),
+                  'odds_captured_at_utc':cap.isoformat(),'quote_updated_at_utc':upd.isoformat(),
+                  'quote_is_fresh_now':bool(NOW>=upd and NOW-upd<=timedelta(minutes=30)
+                    and NOW>=cap and NOW-cap<=timedelta(minutes=30)
+                    and tip-NOW>=timedelta(minutes=20)),
+                  'availability_verified':r.get('availability_verified') is True,
+                  'validated_edge':False,'model_probability':None,'estimated_ev':None}
+              groups[(gid,pid)].append(candidate)
+              captures.append(cap)
+
+          selected=[]
+          for (gid,pid),items in groups.items():
+              # Prefer closer-to-current published price; use discrepancy as descriptive rank only.
+              best=max(items,key=lambda x:(x['quote_is_fresh_now'],x['relative_gap'],x['odds_captured_at_utc']))
+              selected.append(best)
+          selected.sort(key=lambda x:(not x['quote_is_fresh_now'],-x['relative_gap'],str(x['game_id']),str(x['player_id'])))
+          bygame={}
+          for row in selected:
+              if row['game_id'] not in bygame:bygame[row['game_id']]=row
+          distinct=sorted(bygame.values(),key=lambda r:(not r['quote_is_fresh_now'],-r['relative_gap']))
+          previews=[]
+          for size in (2,3,4):
+              if len(distinct)<size:continue
+              legs=distinct[:size]
+              # Never label these as actionable. Unknown lineup, price drift and model
+              # calibration disqualify them even if capture happened recently.
+              previews.append({
+                  'id':f'{DAY}-{size}-research',
+                  'size':size,'day':DAY,'strategy':'Exploratory model-vs-line discrepancy ranking; distinct games; no joint probability',
+                  'classification':'RESEARCH_ONLY_NOT_BETTABLE',
+                  'created_at_utc':NOW.isoformat(),
+                  'any_expired_quote':any(not l['quote_is_fresh_now'] for l in legs),
+                  'all_availability_verified':all(l['availability_verified'] for l in legs),
+                  'validated_win_probability':None,'validated_ev':None,
+                  'legs':legs})
+          report={'schema_version':1,'generated_at_utc':NOW.isoformat(),
+              'source_capture_utc':source.get('odds_captured_at_utc'),
+              'independent_games_covered':len(bygame),'candidate_player_games':len(selected),
+              'fresh_player_games':sum(x['quote_is_fresh_now'] for x in selected),
+              'excluded':dict(excluded),'previews':previews,
+              'research_only':True,
+              'warning':'These are historical or unverified model-versus-sportsbook comparisons, NOT verified betting recommendations, live executable lines, calibrated win probabilities, positive EV, or tracked picks. Confirm latest prices, official player status and calibration first.'}
+          OUT.write_text(json.dumps(report,indent=2,ensure_ascii=False,allow_nan=False)+'\n',encoding='utf8')
+          print('RESEARCH_PREVIEW_SIZES', [x['size'] for x in previews])
+          print('FRESH_PLAYER_GAMES',report['fresh_player_games'])
+          print('PAID_API_CALLS',0)
+          PY
+      - name: Publish separate research preview feed
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/parlay_research_previews.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Refresh research-only NBA parlay previews without claiming edges"
+          for i in 1 2 3; do
+            if git push origin HEAD:main; then exit 0; fi
+            git fetch origin main
+            git rebase origin/main
+            sleep 2
+          done
+          exit 1
