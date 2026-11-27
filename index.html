@@ -251,6 +251,7 @@ a{color:#95bcff}
  <p id="parlay-summary"></p>
  <p id="parlay-run-status" class="muted" aria-live="polite">Checking latest generation run...</p>
  <p id="parlay-calibration-status" class="muted" aria-live="polite">Checking historical calibration coverage...</p>
+ <p id="validated-edge-status" class="muted" aria-live="polite">Checking independently validated player edges...</p>
  <div class="toolbar">
   <select id="parlay-size"><option value="all">All sizes</option><option value="2">2 legs · Conservative</option><option value="3">3 legs · Balanced</option><option value="4">4 legs · Aggressive</option></select>
   <select id="parlay-view">
@@ -278,6 +279,7 @@ a{color:#95bcff}
  <div class="rowhead"><h2>Automated feed health</h2><span class="badge">Based on published timestamps</span></div>
  <p class="small">A successful GitHub workflow does not guarantee fresh prices, verified availability, or new predictions. Check each feed timestamp before using its data.</p>
  <div id="feed-health" class="info">Loading feed status...</div>
+ <p id="edge-health-details" class="small" aria-live="polite"></p>
 </div>
 <div class="panel">
  <h2>Migration integrity</h2>
@@ -336,6 +338,7 @@ let parlays = [];
 let parlayRunStatus = null;
 let parlayResearch = null;
 let parlayCalibration = null;
+let calibratedEdgeReport = null;
 let parlayBacktest = null;
 let livePlayerFeed = null;
 let liveMarketFeed = null;
@@ -348,8 +351,8 @@ const REFRESH_CONFIG = {
   games: {feeds:['live','history'], label:'Refresh games and results', run:'https://github.com/Bsg70124-collab/gill-sports/actions/workflows/daily.yml', runLabel:'Run new game projections in GitHub'},
   players: {feeds:['livePlayers','injury','players'], label:'Refresh player feed', run:'https://github.com/Bsg70124-collab/gill-sports-engine/actions/workflows/gill-sports-daily-player-projections-v1.yml', runLabel:'Run new player projections in GitHub'},
   props: {feeds:['markets','players','livePlayers'], label:'Refresh market feed', run:'https://github.com/Bsg70124-collab/gill-sports-engine/actions/workflows/gill-sports-odds-collector-v1.yml', runLabel:'Run odds collector in GitHub'},
-  parlays: {feeds:['parlays','parlayStatus','parlayResearch','parlayBacktest','parlayCalibration','markets'], label:'Refresh parlay results', run:'https://github.com/Bsg70124-collab/gill-sports/actions/workflows/gill-sports-daily-parlay-generator-v2.yml', runLabel:'Generate new paper parlays in GitHub'},
-  system: {feeds:['live','history','players','parlays','livePlayers','markets','injury','parlayStatus','parlayResearch','parlayBacktest','parlayCalibration'], label:'Refresh all feed statuses', run:'https://github.com/Bsg70124-collab/gill-sports/actions', runLabel:'View workflow runs in GitHub'}
+  parlays: {feeds:['parlays','parlayStatus','parlayResearch','parlayBacktest','parlayCalibration','edgeGate','markets'], label:'Refresh parlay results', run:'https://github.com/Bsg70124-collab/gill-sports/actions/workflows/gill-sports-daily-parlay-generator-v2.yml', runLabel:'Generate new paper parlays in GitHub'},
+  system: {feeds:['live','history','players','parlays','livePlayers','markets','injury','parlayStatus','parlayResearch','parlayBacktest','parlayCalibration','edgeGate'], label:'Refresh all feed statuses', run:'https://github.com/Bsg70124-collab/gill-sports/actions', runLabel:'View workflow runs in GitHub'}
 };
 function setupTabRefresh() {
   for(const [name,cfg] of Object.entries(REFRESH_CONFIG)) {
@@ -693,6 +696,12 @@ function renderParlays() {
   const coverage=readiness ? `${readiness.source_independent_games??0} independent games across ${readiness.source_independent_dates??0} dates` : "Historical coverage unavailable";
   const readyMarkets=latest && latest.markets ? Object.values(latest.markets).filter(x=>x.ready===true).length : 0;
   $('parlay-calibration-status').textContent=`Probability calibration: ${readyMarkets}/4 markets passed holdout checks · ${coverage}. ${latest ? "Last checked "+date(latest.generated_at_utc)+". " : ""}No verified betting edges are being published.`;
+  const gate=calibratedEdgeReport;
+  const gateRejected=gate?.excluded||{};
+  const reasonsList=Object.entries(gateRejected).filter(([,n])=>n>0).map(([r,n])=>r.replace(/_/g,' ')+': '+n).slice(0,3).join(' · ');
+  $('validated-edge-status').textContent=gate
+    ? `Independent calibrated edge gate: ${gate.validated_positive_edges??0} eligible player outcomes · ${gate.stat_markets_ready?.length??0}/4 stat markets passed historical holdout checks · Latest audit ${date(gate.generated_at_utc)}.${reasonsList?' Blockers: '+reasonsList+'.':''}`
+    : 'Independent edge validation has not completed. No edge is approved.';
   const st=parlayRunStatus;
   const reasons=st?.reasons||{};
   const why=Object.entries(reasons).filter(([,count])=>count>0).map(([reason,count])=>`${reason.replace(/_/g,' ')} (${count})`).slice(0,5).join('; ');
@@ -731,7 +740,8 @@ function renderFeedHealth() {
     ['Injury watch',injuryFeed?.updated_at_utc,12*60,'data/injury_watch.json'],
     ['Research previews',parlayResearch?.generated_at_utc,12*60,'data/parlay_research_previews.json'],
     ['Strict parlay generator',parlayRunStatus?.checked_at_utc,12*60,'data/parlay_generation_status.json'],
-    ['Probability calibration',parlayCalibration?.generated_at_utc,7*24*60,'data/calibration/nba_prop_probability_calibration_latest.json']
+    ['Probability calibration',parlayCalibration?.generated_at_utc,7*24*60,'data/calibration/nba_prop_probability_calibration_latest.json'],
+    ['Calibrated edge gate',calibratedEdgeReport?.generated_at_utc,60,'data/validated_player_edges.json']
   ];
   $('feed-health').innerHTML=specs.map(([name,stamp,maxMins,file])=>{
     const time=Date.parse(stamp||'');
@@ -755,6 +765,9 @@ function renderSystem() {
     window._oldModel?.version || window._playerMeta?.version || 'Not transferred';
   $('player-captured').textContent = date(window._playerCaptured);
 
+  $('edge-health-details').textContent=calibratedEdgeReport
+    ? `${calibratedEdgeReport.validated_positive_edges??0} independently gated candidate outcomes · ${calibratedEdgeReport.stat_markets_ready?.length??0}/4 stat markets holdout-approved. Approved edges are estimates, not guaranteed profits. Published odds may already be stale.`
+    : 'No completed calibrated edge audit found. No actionable player prop edges can be claimed.';
   $('file-check').innerHTML = Object.entries(fileStatus).map(([p,v]) =>
     `<div class="leg">${v.ok?'✅':'❌'} ${esc(p)} — ${v.ok?'loaded':'Error: '+esc(v.error||'unknown')}</div>`
   ).join('');
@@ -847,6 +860,7 @@ async function loadAll(tabName=null) {
       ['data/parlay_research_previews.json','parlayResearch'],
       ['data/calibration/nba_prop_backtest_readiness_latest.json','parlayBacktest'],
       ['data/calibration/nba_prop_probability_calibration_latest.json','parlayCalibration'],
+      ['data/validated_player_edges.json','edgeGate'],
       ['data/player_live.json','livePlayers'],
       ['data/nba_market_comparison.json','markets'],
       ['data/injury_watch.json','injury']
@@ -879,6 +893,7 @@ async function loadAll(tabName=null) {
       if(key==='parlayResearch') parlayResearch=d||null;
       if(key==='parlayBacktest') parlayBacktest=d||null;
       if(key==='parlayCalibration') parlayCalibration=d||null;
+      if(key==='edgeGate') calibratedEdgeReport=d||null;
       if(key==='livePlayers') livePlayerFeed=d||null;
       if(key==='markets') liveMarketFeed=d||null;
       if(key==='injury') injuryFeed=d||null;
