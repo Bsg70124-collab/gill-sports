@@ -168,8 +168,8 @@ a{color:#95bcff}
     <h2>Live NBA Player Predictions &amp; Accuracy</h2>
     <span class="badge">Automated Feed</span>
   </div>
-  <p>Daily model forecasts, final player statistics,
-     prediction errors, and accuracy tracking.</p>
+  <p>Daily model forecasts, final player statistics, prediction errors, and accuracy tracking.</p>
+   <p id="player-live-status" class="small" aria-live="polite">Checking the published player feed...</p>
   <iframe
     src="gill-sports-live-players.html"
     title="Gill Sports Live NBA Player Dashboard"
@@ -207,7 +207,18 @@ a{color:#95bcff}
 </section>
 
 <section class="page" id="tab-props">
-<div class="notice">Archived market prop data only. No live PrizePicks or Kalshi market feed is connected to this dashboard yet. Historical probabilities are not verified betting edges.</div>
+<div class="notice">Published sportsbook odds comparisons are available, but they are time-stamped snapshots—not streaming live quotes. Historical model projections are unverified for betting; no PrizePicks or Kalshi live integration is claimed.</div>
+<div class="panel">
+  <div class="rowhead"><h2>NBA sportsbook market comparison</h2><span class="badge">Time-stamped published feed</span></div>
+  <p id="market-live-status" aria-live="polite">Loading latest market snapshot...</p>
+  <div class="toolbar">
+    <input id="market-search" aria-label="Search live market comparison" placeholder="Search player, game or sportsbook...">
+    <select id="market-stat" aria-label="Market statistic"><option value="all">All stats</option><option value="points">Points</option><option value="rebounds">Rebounds</option><option value="assists">Assists</option><option value="pra">PRA</option></select>
+    <select id="market-view" aria-label="Quote freshness"><option value="all">All observed quotes</option><option value="fresh">Fresh (under 30 minutes)</option><option value="expired">Old / expired quotes</option><option value="validated">Validated model edge only</option></select>
+    <button class="secondary" id="market-export">Export market CSV</button>
+  </div>
+  <div class="scroll"><table><thead><tr><th>Game / player</th><th>Stat</th><th>Side / line</th><th>Model projection</th><th>Book / price</th><th>Market probability (no vig)</th><th>Model probability</th><th>Estimated edge</th><th>Quote observed</th><th>Freshness / availability</th></tr></thead><tbody id="market-table"></tbody></table></div>
+</div>
 <div class="panel">
  <h2>Recovered player prop picks</h2>
  <div class="toolbar">
@@ -250,8 +261,8 @@ a{color:#95bcff}
   <div><strong>Feed errors</strong><span id="feed-errors">—</span></div>
   <div><strong>Original player model</strong><span id="legacy-model">—</span></div>
   <div><strong>Player archive captured</strong><span id="player-captured">—</span></div>
-  <div><strong>Market feed</strong>Archive only</div>
-  <div><strong>Automatic retraining</strong>Not independently verified</div>
+  <div><strong>Market feed</strong><span id="market-feed-state">Checking published snapshot...</span></div>
+  <div><strong>Automatic retraining</strong><span>Automated evaluation enabled; model promotion requires measured improvement</span></div>
  </div>
 </div>
 <div class="panel">
@@ -311,9 +322,49 @@ let parlays = [];
 let parlayRunStatus = null;
 let parlayCalibration = null;
 let parlayBacktest = null;
+let livePlayerFeed = null;
+let liveMarketFeed = null;
+let injuryFeed = null;
 let props = [];
 let fileStatus = {};
 
+const REFRESH_CONFIG = {
+  overview: {feeds:['live','history','players','parlays'], label:'Refresh overview', run:'https://github.com/Bsg70124-collab/gill-sports/actions/workflows/daily.yml', runLabel:'Run game update in GitHub'},
+  games: {feeds:['live','history'], label:'Refresh games and results', run:'https://github.com/Bsg70124-collab/gill-sports/actions/workflows/daily.yml', runLabel:'Run new game projections in GitHub'},
+  players: {feeds:['livePlayers','injury','players'], label:'Refresh player feed', run:'https://github.com/Bsg70124-collab/gill-sports-engine/actions/workflows/gill-sports-daily-player-projections-v1.yml', runLabel:'Run new player projections in GitHub'},
+  props: {feeds:['markets','players','livePlayers'], label:'Refresh market feed', run:'https://github.com/Bsg70124-collab/gill-sports-engine/actions/workflows/gill-sports-odds-collector-v1.yml', runLabel:'Run odds collector in GitHub'},
+  parlays: {feeds:['parlays','parlayStatus','parlayBacktest','parlayCalibration','markets'], label:'Refresh parlay results', run:'https://github.com/Bsg70124-collab/gill-sports/actions/workflows/gill-sports-daily-parlay-generator-v2.yml', runLabel:'Generate new paper parlays in GitHub'},
+  system: {feeds:['live','history','players','parlays','livePlayers','markets','injury','parlayStatus','parlayBacktest','parlayCalibration'], label:'Refresh all feed statuses', run:'https://github.com/Bsg70124-collab/gill-sports/actions', runLabel:'View workflow runs in GitHub'}
+};
+function setupTabRefresh() {
+  for(const [name,cfg] of Object.entries(REFRESH_CONFIG)) {
+    const page=$('tab-'+name);
+    if(!page) continue;
+    const bar=document.createElement('div');
+    bar.className='toolbar';
+    bar.style.cssText='padding:7px 0 14px;gap:10px';
+    const btn=document.createElement('button');
+    btn.className='secondary';
+    btn.textContent='↻ '+cfg.label;
+    btn.setAttribute('aria-label',cfg.label);
+    btn.addEventListener('click',async()=>{
+      btn.disabled=true;btn.textContent='↻ Checking published data...';
+      try { await loadAll(name); } finally { btn.disabled=false;btn.textContent='↻ '+cfg.label; }
+    });
+    const link=document.createElement('a');
+    link.href=cfg.run;
+    link.target='_blank';link.rel='noopener noreferrer';
+    link.textContent=cfg.runLabel+' ↗';
+    link.className='small';
+    link.title='Opens GitHub Actions to start a backend run. Refresh only reloads already published data.';
+    const note=document.createElement('span');
+    note.className='small';
+    note.textContent='Refresh reloads saved data; GitHub runs generate new data.';
+    bar.append(btn,link,note);
+    page.prepend(bar);
+  }
+}
+setupTabRefresh();
 function tab(name) {
   document.querySelectorAll('.page').forEach(e =>
     e.classList.toggle('active', e.id === 'tab-' + name));
@@ -381,7 +432,7 @@ function renderOverview() {
 
   $('overview-notice').textContent =
     'Game model last updated: ' + date(live.last_refresh) +
-    '. Player and market archives are historical snapshots.';
+    '. Player forecasts and sportsbook comparisons are published snapshots with their own freshness indicators.';
   $('overview-notice').classList.add('oknotice');
 }
 
@@ -470,6 +521,73 @@ function renderPlayers() {
   }).join('') || blank(7,'No matching player projections.');
 }
 
+function marketRows() {
+  const data=Array.isArray(liveMarketFeed?.rows)?liveMarketFeed.rows:[];
+  const now=Date.now();
+  const q=$('market-search').value.trim().toLowerCase();
+  const stat=$('market-stat').value;
+  const mode=$('market-view').value;
+  return data.filter(r=>{
+    if(q && ![r.player_name,r.matchup,r.bookmaker_title,r.side,r.stat].join(' ').toLowerCase().includes(q))return false;
+    if(stat!=='all' && r.stat!==stat)return false;
+    const captured=Date.parse(r.odds_captured_at_utc||liveMarketFeed.odds_captured_at_utc||'');
+    const observed=Date.parse(r.market_last_update||'');
+    const tipoff=Date.parse(r.tipoff_utc||'');
+    const fresh=Number.isFinite(captured)&&Number.isFinite(observed)&&Number.isFinite(tipoff)
+      && now>=observed && now-observed<=30*60000
+      && now>=captured && now-captured<=30*60000
+      && now<tipoff-20*60000
+      && r.quote_stale_at_capture!==true;
+    if(mode==='fresh' && !fresh)return false;
+    if(mode==='expired' && fresh)return false;
+    if(mode==='validated' && r.validated_edge!==true)return false;
+    return true;
+  }).sort((a,b)=>{
+    const d=String(a.tipoff_utc||'').localeCompare(String(b.tipoff_utc||''));
+    return d || String(a.player_name||'').localeCompare(String(b.player_name||''));
+  });
+}
+function renderMarket() {
+  const rows=marketRows();
+  const published=Array.isArray(liveMarketFeed?.rows)?liveMarketFeed.rows:[];
+  const capture=liveMarketFeed?.odds_captured_at_utc;
+  const captureTime=Date.parse(capture||'');
+  const minutes=Number.isFinite(captureTime)?Math.round((Date.now()-captureTime)/60000):null;
+  const freshness=minutes!==null && minutes>=0&&minutes<=30 ? 'recently captured' : 'archive / expired';
+  $('market-live-status').textContent=liveMarketFeed
+    ? `${published.length} observed sportsbook outcomes across ${liveMarketFeed.summary?.games??'?'} games · snapshot: ${date(capture)} · ${freshness} (${minutes===null?'unknown':minutes+' min'} old) · 0 validated betting edges unless independently confirmed. Prices and availability can change.`
+    : 'Published market comparison feed unavailable. Historical archive is displayed separately below.';
+  $('market-feed-state').textContent=liveMarketFeed
+    ? `Published NBA sportsbook snapshot: ${date(capture)} · ${freshness} · ${published.length} outcomes; no verified live streaming`
+    : 'Published sportsbook comparison unavailable; historical data only';
+  $('market-table').innerHTML=rows.slice(0,450).map(r=>{
+    const age=Date.now()-Date.parse(r.market_last_update||'');
+    const captureAge=Date.now()-Date.parse(r.odds_captured_at_utc||liveMarketFeed?.odds_captured_at_utc||'');
+    const tip=Date.parse(r.tipoff_utc||'');
+    const fresh=Number.isFinite(age)&&age>=0&&age<=1800000
+      && Number.isFinite(captureAge)&&captureAge>=0&&captureAge<=1800000
+      && Number.isFinite(tip)&&Date.now()<tip-1200000&&r.quote_stale_at_capture!==true;
+    const confirmed=fresh&&r.availability_verified===true&&r.validated_edge===true;
+    const quoteState=fresh?'Recent quote':'Old / expired';
+    return `<tr>
+      <td>${esc(r.player_name)}<div class="small">${esc(r.matchup)} · ${esc(r.game_date)}</div></td>
+      <td>${esc(r.stat)}</td><td>${esc(r.side)} ${fmt(r.line)}</td>
+      <td>${fmt(r.model_projection,2)}</td>
+      <td>${esc(r.bookmaker_title||r.bookmaker_key)} · ${esc(r.american_price)}</td>
+      <td>${pct(r.no_vig_market_probability)}</td>
+      <td>${r.model_probability===null?'—':pct(r.model_probability)}</td>
+      <td>${confirmed?fmt(r.estimated_ev,3):'Not validated'}</td>
+      <td>${esc(date(r.market_last_update))}</td>
+      <td class="${confirmed?'high':'mid'}">${esc(quoteState)} · ${r.availability_verified===true?'Availability confirmed':'Availability unverified'}</td>
+    </tr>`;
+  }).join('')||blank(10,'No matching sportsbook quotes in the published feed.');
+}
+function renderLivePlayerStatus() {
+  const counts=livePlayerFeed?.counts||{};
+  $('player-live-status').textContent=livePlayerFeed
+    ? `Published ${date(livePlayerFeed.updated_at_utc)} · ${counts.SETTLED??0} settled · ${counts.PENDING??0} pending · ${counts.DNP_OR_UNMATCHED??0} DNP/unmatched · Player availability remains unverified unless explicitly confirmed.`
+    : 'Live player feed unavailable. The embedded dashboard will report its own data status.';
+}
 function buildProps() {
   const out = [], ids = new Set();
 
@@ -586,6 +704,9 @@ function renderSystem() {
     saved_games:allLive().length,
     old_game_records:oldGames.length,
     player_rows:players.length,
+    published_live_player_rows:livePlayerFeed?.rows?.length??0,
+    published_odds_outcomes:liveMarketFeed?.rows?.length??0,
+    odds_captured_at_utc:liveMarketFeed?.odds_captured_at_utc??null,
     prop_snapshots:props.length,
     paper_parlays:parlays.length,
     feed_errors:errors.slice(0,8),
@@ -629,9 +750,11 @@ for(const id of ['prop-search','prop-view']) {
   $(id).addEventListener('input',renderProps);
 }
 $('parlay-view').addEventListener('change',renderParlays);
+for(const id of ['market-search','market-stat','market-view']) $(id).addEventListener('input',renderMarket);
+$('market-export').onclick=()=>csv('gill-nba-sportsbook-observations.csv',marketRows(),['game_date','matchup','player_name','stat','side','line','model_projection','american_price','bookmaker_title','market_last_update','no_vig_market_probability','model_probability','validated_edge']);
 $('parlay-size').addEventListener('change',renderParlays);
 
-async function loadAll() {
+async function loadAll(tabName=null) {
   const b=$('refresh');
   b.disabled=true;
   b.textContent='Loading...';
@@ -644,8 +767,11 @@ async function loadAll() {
       ['data/parlays.json','parlays'],
       ['data/parlay_generation_status.json','parlayStatus'],
       ['data/calibration/nba_prop_backtest_readiness_latest.json','parlayBacktest'],
-      ['data/calibration/nba_prop_probability_calibration_latest.json','parlayCalibration']
-    ];
+      ['data/calibration/nba_prop_probability_calibration_latest.json','parlayCalibration'],
+      ['data/player_live.json','livePlayers'],
+      ['data/nba_market_comparison.json','markets'],
+      ['data/injury_watch.json','injury']
+    ].filter(([,key])=>!tabName||REFRESH_CONFIG[tabName]?.feeds.includes(key));
 
     const results=await Promise.allSettled(entries.map(([path])=>fetchJSON(path)));
 
@@ -673,6 +799,9 @@ async function loadAll() {
       if(key==='parlayStatus') parlayRunStatus=d||null;
       if(key==='parlayBacktest') parlayBacktest=d||null;
       if(key==='parlayCalibration') parlayCalibration=d||null;
+      if(key==='livePlayers') livePlayerFeed=d||null;
+      if(key==='markets') liveMarketFeed=d||null;
+      if(key==='injury') injuryFeed=d||null;
     });
 
     props=buildProps();
@@ -681,7 +810,13 @@ async function loadAll() {
     renderPlayers();
     renderProps();
     renderParlays();
+    renderMarket();
+    renderLivePlayerStatus();
     renderSystem();
+    if(tabName==='players') {
+      const iframe=document.querySelector('#tab-players iframe');
+      if(iframe)iframe.src='gill-sports-live-players.html?updated='+Date.now();
+    }
 
     if(!fileStatus['data/live.json'].ok) {
       $('overview-notice').textContent =
@@ -696,7 +831,7 @@ async function loadAll() {
   }
 }
 
-$('refresh').addEventListener('click',loadAll);
+$('refresh').addEventListener('click',()=>loadAll());
 loadAll();
 
 setInterval(async()=>{
