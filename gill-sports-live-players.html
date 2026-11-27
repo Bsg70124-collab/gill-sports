@@ -43,6 +43,31 @@
 <main>
 <div class="notice" id="notice">Loading published data…</div>
 <div class="metrics"><div class="metric"><div class="small">Archived forecasts</div><b id="total">—</b></div><div class="metric"><div class="small">Settled player-games</div><b id="settled">—</b></div><div class="metric"><div class="small">Pending player-games</div><b id="pending">—</b></div><div class="metric"><div class="small">Mean absolute error</div><b id="mae">—</b><div class="small">Selected stat, settled only</div></div><div class="metric"><div class="small">Injury-feed warnings</div><b id="injury-count">—</b></div></div>
+<section class="panel" id="featured-player-panel">
+ <div class="rowhead"><h2>★ Featured &amp; Favorite NBA Players</h2><span class="gs-pill gs-gray">Research watchlist · Not betting recommendations</span></div>
+ <p class="small">Follow players without searching through every projection. Favorites are stored in this browser. Featured names are a curated watchlist, not a claim about live popularity. The model-gap view excludes expired odds and does not claim a betting edge.</p>
+ <div class="toolbar">
+  <select id="featured-mode" aria-label="Featured player display">
+   <option value="featured">My favorites + featured players</option>
+   <option value="favorites">My favorites only</option>
+   <option value="gaps">Largest recent model-vs-market gaps</option>
+  </select>
+  <select id="featured-player-picker" aria-label="Pick a player to favorite"><option value="">Choose a player to favorite</option></select>
+  <button type="button" id="featured-player-add">★ Add favorite</button>
+  <button type="button" id="featured-refresh">↻ Refresh featured</button>
+ </div>
+ <p id="featured-summary" class="small" aria-live="polite">Loading featured players...</p>
+ <div id="featured-cards" class="gs-featured-grid"></div>
+</section>
+<style>
+.gs-featured-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px;margin-top:12px}
+.gs-featured-card{border:1px solid #355071;background:#172b45;border-radius:11px;padding:15px;min-height:128px}
+.gs-featured-card .gs-favorite-star{float:right;padding:3px 8px;color:#f6d184;background:#263c5c;border:1px solid #536b8b;font-size:20px;cursor:pointer}
+.gs-featured-card .gs-favorite-star[aria-pressed="true"]{background:#645024;color:#ffe49b}
+.gs-featured-card .small{margin:7px 0;line-height:1.4}
+.gs-featured-proj{margin:12px 0 6px;font-size:15px}
+.gs-featured-proj b{font-size:17px}
+</style>
 <section class="panel"><h2>Player projections vs. actual results</h2><div class="gs-key" aria-label="Color legend"><b>Color guide:</b><span class="gs-pill gs-green">Settled / small error</span><span class="gs-pill gs-amber">Pending / injury / medium error</span><span class="gs-pill gs-red">Data problem / large error</span><span class="gs-pill gs-gray">Unverified</span></div>
 <div class="toolbar"><input id="search" aria-label="Search players" placeholder="Search player or matchup"><select id="stat" aria-label="Statistic"><option value="points">Points</option><option value="rebounds">Rebounds</option><option value="assists">Assists</option><option value="pra">PRA</option><option value="minutes">Minutes</option></select><select id="view" aria-label="Result filter"><option value="all">All results</option><option value="SETTLED">Settled</option><option value="PENDING">Pending</option><option value="DNP_OR_UNMATCHED">DNP / Unmatched</option><option value="DATA_ERROR">Data errors</option></select><select id="day" aria-label="Date filter"><option value="all">All dates</option></select><select id="injury-filter" aria-label="Injury filter"><option value="all">All injury statuses</option><option value="flagged">Reported injuries only</option><option value="unverified">Not listed / unverified</option></select><button id="csv">Export CSV</button></div>
 <p class="small" id="summary"></p><p class="small" id="injury-note"></p>
@@ -272,4 +297,5 @@ el('refresh')?.addEventListener('click',refresh);
 refresh();
 })();
 </script>
+<script src="featured-players.js" defer></script>
 </body></html>
