@@ -1,0 +1,210 @@
+name: Gill Sports - NBA Prop Backtest Readiness V1
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'data/calibration/nba_prop_outcome_history.json'
+  schedule:
+    - cron: '19 11 * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gill-sports-nba-prop-backtest-readiness
+  cancel-in-progress: false
+
+jobs:
+  assess:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Evaluate independent historical observations and readiness
+        shell: bash
+        run: |
+          python - <<'PYCODE'
+          import json, math
+          from collections import defaultdict
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          SRC = Path('data/calibration/nba_prop_outcome_history.json')
+          OUT = Path('data/calibration/nba_prop_backtest_readiness_latest.json')
+          MARKETS = ('points', 'rebounds', 'assists', 'pra')
+          MIN_TRAIN_DATES = 20
+          MIN_HOLDOUT_DATES = 7
+          MIN_TRAIN_GAMES = 75
+          MIN_HOLDOUT_GAMES = 25
+          MIN_TRAIN_UNIQUE_OBSERVATIONS = 300
+          MIN_HOLDOUT_UNIQUE_OBSERVATIONS = 100
+
+          def finite(v):
+              return isinstance(v, (int, float)) and not isinstance(v, bool) and math.isfinite(v)
+
+          def load(path):
+              if not path.is_file():
+                  raise SystemExit(f'MISSING_SOURCE: {path}')
+              obj = json.loads(path.read_text(encoding='utf-8'))
+              if not isinstance(obj, dict) or not isinstance(obj.get('rows'), list):
+                  raise SystemExit(f'INVALID_SOURCE: {path}')
+              return obj['rows']
+
+          def implied(price):
+              if not finite(price) or price == 0:
+                  return None
+              return 100 / (price + 100) if price > 0 else -price / (-price + 100)
+
+          raw = load(SRC)
+          clean = []
+          excluded = defaultdict(int)
+          unique_quote_ids = set()
+          for r in raw:
+              if not isinstance(r, dict):
+                  excluded['invalid_record'] += 1
+                  continue
+              qid = str(r.get('quote_id') or '')
+              if not qid or qid in unique_quote_ids:
+                  excluded['missing_or_duplicate_quote_id'] += 1
+                  continue
+              unique_quote_ids.add(qid)
+              if r.get('captured_before_tipoff') is not True:
+                  excluded['not_verified_pretip'] += 1
+                  continue
+              stat, side = r.get('stat'), r.get('side')
+              if stat not in MARKETS or side not in ('Over', 'Under'):
+                  excluded['invalid_market'] += 1
+                  continue
+              game, player, day = str(r.get('game_id') or ''), str(r.get('player_id') or ''), str(r.get('game_date') or '')
+              if not game or not player or len(day) != 10:
+                  excluded['missing_game_player_or_date'] += 1
+                  continue
+              if not (finite(r.get('line')) and finite(r.get('actual_stat')) and finite(r.get('model_projection'))):
+                  excluded['missing_model_line_or_actual'] += 1
+                  continue
+              if r.get('result') not in ('WIN', 'LOSS', 'PUSH'):
+                  excluded['invalid_grade'] += 1
+                  continue
+              price = r.get('american_price')
+              clean.append({
+                  'game': game, 'player': player, 'date': day, 'stat': stat,
+                  'side': side, 'line': float(r['line']), 'actual': float(r['actual_stat']),
+                  'projection': float(r['model_projection']), 'result': r['result'],
+                  'bookmaker': str(r.get('bookmaker_key') or ''), 'market_implied': implied(price),
+                  'availability_verified': r.get('verified_pregame_availability') is True,
+              })
+
+          # Multiple books, timestamps, and opposing sides are correlated. One
+          # independent observation is a player/game/stat/line, not one quote.
+          # For a unique line, evaluate one direction based on the pregame mean.
+          permarket = {}
+          for stat in MARKETS:
+              subset = [x for x in clean if x['stat'] == stat]
+              independent = defaultdict(list)
+              for x in subset:
+                  independent[(x['game'], x['player'], x['stat'], x['line'])].append(x)
+              observations = []
+              for key, quotes in independent.items():
+                  projections = [x['projection'] for x in quotes]
+                  actuals = [x['actual'] for x in quotes]
+                  dates = {x['date'] for x in quotes}
+                  # Inconsistent settled data or projection versions cannot be
+                  # interpreted as one stable historical forecast observation.
+                  if len(dates) != 1 or max(actuals) != min(actuals) or max(projections)-min(projections)>0.001:
+                      excluded['conflicting_group'] += 1
+                      continue
+                  x = quotes[0]
+                  direction = 'Over' if x['projection'] > x['line'] else ('Under' if x['projection'] < x['line'] else 'Tie')
+                  actual_side = 'Over' if x['actual'] > x['line'] else ('Under' if x['actual'] < x['line'] else 'Push')
+                  hit = None if direction == 'Tie' or actual_side == 'Push' else direction == actual_side
+                  observations.append({'date': x['date'], 'game': x['game'], 'player': x['player'], 'hit': hit,
+                                       'mean_absolute_error': abs(x['projection']-x['actual'])})
+              days = sorted({x['date'] for x in observations})
+              train_days = days[:-MIN_HOLDOUT_DATES] if len(days) >= MIN_TRAIN_DATES + MIN_HOLDOUT_DATES else []
+              holdout_days = days[-MIN_HOLDOUT_DATES:] if train_days else []
+              train = [x for x in observations if x['date'] in train_days]
+              holdout = [x for x in observations if x['date'] in holdout_days]
+              train_games = {x['game'] for x in train}
+              holdout_games = {x['game'] for x in holdout}
+              ready = (len(train_days) >= MIN_TRAIN_DATES and len(holdout_days) >= MIN_HOLDOUT_DATES
+                       and len(train_games) >= MIN_TRAIN_GAMES and len(holdout_games) >= MIN_HOLDOUT_GAMES
+                       and len(train) >= MIN_TRAIN_UNIQUE_OBSERVATIONS
+                       and len(holdout) >= MIN_HOLDOUT_UNIQUE_OBSERVATIONS)
+              evaluable = [x['hit'] for x in observations if x['hit'] is not None]
+              permarket[stat] = {
+                  'source_quote_rows': len(subset),
+                  'independent_player_game_stat_line_observations': len(observations),
+                  'independent_games': len({x['game'] for x in observations}),
+                  'independent_dates': len(days),
+                  'directional_nonpush_observations': len(evaluable),
+                  'descriptive_directional_hit_rate': round(sum(evaluable)/len(evaluable), 4) if evaluable else None,
+                  'descriptive_mean_absolute_error': round(sum(x['mean_absolute_error'] for x in observations)/len(observations), 4) if observations else None,
+                  'train_dates': len(train_days), 'train_games': len(train_games), 'train_observations': len(train),
+                  'holdout_dates': len(holdout_days), 'holdout_games': len(holdout_games), 'holdout_observations': len(holdout),
+                  'ready_for_independent_probability_calibration': ready,
+              }
+
+          report = {
+              'schema_version': 1,
+              'generated_at_utc': datetime.now(timezone.utc).isoformat(),
+              'purpose': 'descriptive_backtesting_and_out_of_sample_calibration_readiness',
+              'source': str(SRC),
+              'source_graded_quotes': len(raw),
+              'usable_quote_rows': len(clean),
+              'source_independent_games': len({x['game'] for x in clean}),
+              'source_independent_dates': len({x['date'] for x in clean}),
+              'unverified_availability_quote_rows': sum(not x['availability_verified'] for x in clean),
+              'exclusions': dict(sorted(excluded.items())),
+              'readiness_requirements': {
+                  'minimum_training_dates': MIN_TRAIN_DATES, 'minimum_holdout_dates': MIN_HOLDOUT_DATES,
+                  'minimum_training_games': MIN_TRAIN_GAMES, 'minimum_holdout_games': MIN_HOLDOUT_GAMES,
+                  'minimum_training_unique_observations': MIN_TRAIN_UNIQUE_OBSERVATIONS,
+                  'minimum_holdout_unique_observations': MIN_HOLDOUT_UNIQUE_OBSERVATIONS,
+              },
+              'markets': permarket,
+              'all_markets_ready': all(v['ready_for_independent_probability_calibration'] for v in permarket.values()),
+              'calibrated_model_probabilities_published': False,
+              'betting_edges_validated': False,
+              'notes': [
+                  'One game with hundreds of bookmaker quotes is not hundreds of independent games.',
+                  'Directional hit rate describes a mean-versus-line rule, not a calibrated probability or profitable edge.',
+                  'Repeated markets on the same player and game are correlated.',
+                  'Readiness thresholds are minimum gates, not proof of model quality or profitability.',
+                  'Verified player availability is still required for actionable recommendations.',
+              ],
+          }
+          OUT.parent.mkdir(parents=True, exist_ok=True)
+          OUT.write_text(json.dumps(report, indent=2, ensure_ascii=False)+'\n', encoding='utf-8')
+          print('=== GILL SPORTS NBA PROP BACKTEST READINESS ===')
+          print('SOURCE_GRADED_QUOTES:', report['source_graded_quotes'])
+          print('INDEPENDENT_GAMES:', report['source_independent_games'])
+          print('INDEPENDENT_DATES:', report['source_independent_dates'])
+          for stat, item in permarket.items():
+              print(f'{stat.upper()} UNIQUE_OBSERVATIONS: {item["independent_player_game_stat_line_observations"]} '
+                    f'TRAIN_DATES: {item["train_dates"]} HOLDOUT_DATES: {item["holdout_dates"]} '
+                    f'READY: {item["ready_for_independent_probability_calibration"]}')
+          print('ALL_MARKETS_READY:', report['all_markets_ready'])
+          print('NO_MODEL_PROBABILITIES_PUBLISHED; NO_EDGES_CLAIMED; API_CREDITS_SPENT: 0')
+          print('REPORT_SAVED:', OUT)
+          PYCODE
+      - name: Save readiness report
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/calibration/nba_prop_backtest_readiness_latest.json
+          if git diff --cached --quiet; then echo 'No changes'; exit 0; fi
+          git commit -m 'Refresh NBA prop out-of-sample backtest readiness'
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then exit 0; fi
+            git fetch origin main
+            git rebase origin/main
+            sleep 2
+          done
+          exit 1
