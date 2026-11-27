@@ -230,6 +230,7 @@ a{color:#95bcff}
  <h2>Parlay tracking and individual legs</h2>
  <p id="parlay-summary"></p>
  <p id="parlay-run-status" class="muted" aria-live="polite">Checking latest generation run...</p>
+ <p id="parlay-calibration-status" class="muted" aria-live="polite">Checking historical calibration coverage...</p>
  <div class="toolbar">
   <select id="parlay-size"><option value="all">All sizes</option><option value="2">2 legs · Conservative</option><option value="3">3 legs · Balanced</option><option value="4">4 legs · Aggressive</option></select>
   <select id="parlay-view">
@@ -308,6 +309,8 @@ let oldGames = [];
 let players = [];
 let parlays = [];
 let parlayRunStatus = null;
+let parlayCalibration = null;
+let parlayBacktest = null;
 let props = [];
 let fileStatus = {};
 
@@ -531,6 +534,11 @@ function renderParlays() {
     `${parlays.filter(x=>status(x.result)==='win').length} recorded wins · ` +
     `${parlays.filter(x=>status(x.result)==='pending').length} pending`;
 
+  const latest=parlayCalibration;
+  const readiness=parlayBacktest;
+  const coverage=readiness ? `${readiness.source_independent_games??0} independent games across ${readiness.source_independent_dates??0} dates` : "Historical coverage unavailable";
+  const readyMarkets=latest && latest.markets ? Object.values(latest.markets).filter(x=>x.ready===true).length : 0;
+  $('parlay-calibration-status').textContent=`Probability calibration: ${readyMarkets}/4 markets passed holdout checks · ${coverage}. ${latest ? "Last checked "+date(latest.generated_at_utc)+". " : ""}No verified betting edges are being published.`;
   const st=parlayRunStatus;
   const reasons=st?.reasons||{};
   const why=Object.entries(reasons).filter(([,count])=>count>0).map(([reason,count])=>`${reason.replace(/_/g,' ')} (${count})`).slice(0,5).join('; ');
@@ -634,7 +642,9 @@ async function loadAll() {
       ['data/forecasts.json','history'],
       ['data/players.json','players'],
       ['data/parlays.json','parlays'],
-      ['data/parlay_generation_status.json','parlayStatus']
+      ['data/parlay_generation_status.json','parlayStatus'],
+      ['data/calibration/nba_prop_backtest_readiness_latest.json','parlayBacktest'],
+      ['data/calibration/nba_prop_probability_calibration_latest.json','parlayCalibration']
     ];
 
     const results=await Promise.allSettled(entries.map(([path])=>fetchJSON(path)));
@@ -661,6 +671,8 @@ async function loadAll() {
         parlays=Array.isArray(d.rows)?d.rows:[];
       }
       if(key==='parlayStatus') parlayRunStatus=d||null;
+      if(key==='parlayBacktest') parlayBacktest=d||null;
+      if(key==='parlayCalibration') parlayCalibration=d||null;
     });
 
     props=buildProps();
