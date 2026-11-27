@@ -6,6 +6,7 @@ on:
     paths:
       - 'index.html'
       - 'gill-sports-live-players.html'
+      - 'featured-players.js'
       - '.github/workflows/gill-sports-dashboard-smoke-test.yml'
 permissions:
   contents: read
@@ -43,4 +44,5 @@ jobs:
           print('DASHBOARD_MARKUP_AND_FEEDS_OK',len(ids),'elements',len(jsrefs),'references')
           PYCODE
           node --check /tmp/gill-dashboard-check.js
+          node --check featured-players.js
           echo DASHBOARD_JAVASCRIPT_SYNTAX_OK
