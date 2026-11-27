@@ -1,10 +1,11 @@
 {
   "schema_version": 2,
-  "checked_at_utc": "2026-11-27T23:23:58.254856+00:00",
+  "checked_at_utc": "2026-11-27T23:38:16.445614+00:00",
   "date_pacific": "2026-11-27",
   "odds_captured_at_utc": "2026-11-27T03:14:00.324326+00:00",
-  "odds_age_minutes": 1210.0,
+  "odds_age_minutes": 1224.3,
   "market_outcomes": 802,
+  "validated_edge_gate_candidates": 0,
   "distinct_games_in_fresh_feed": 0,
   "eligible_player_candidates": 0,
   "verified_distinct_games": 0,
