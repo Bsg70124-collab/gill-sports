@@ -7,6 +7,10 @@ on:
       - 'data/nba_market_comparison.json'
       - 'data/calibration/nba_prop_probability_calibration_latest.json'
       - '.github/workflows/gill-sports-validated-prop-edge-gate.yml'
+  workflow_run:
+    workflows:
+      - Gill Sports - Walk Forward Prop Probability Calibration V1
+    types: [completed]
   schedule:
     - cron: '7 21 * * *'
     - cron: '7 0 * * *'
@@ -17,6 +21,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   audit:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 7
     steps:
