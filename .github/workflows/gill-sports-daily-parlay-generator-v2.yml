@@ -6,6 +6,7 @@ name: Gill Sports - Daily Parlay Generator V2
     branches: [main]
     paths:
       - "data/nba_market_comparison.json"
+      - "data/validated_player_edges.json"
   schedule:
     - cron: '11 15 * * *'
     - cron: '11 18 * * *'
@@ -41,6 +42,7 @@ jobs:
           from zoneinfo import ZoneInfo
           
           FEED = Path('data/nba_market_comparison.json')
+          VALIDATED = Path('data/validated_player_edges.json')
           PARLAYS = Path('data/parlays.json')
           STATUS = Path('data/parlay_generation_status.json')
           NOW = datetime.now(timezone.utc)
@@ -93,13 +95,23 @@ jobs:
               history = read(PARLAYS, {'rows': []})
               if not isinstance(history.get('rows'), list):
                   raise SystemExit('PARLAY_HISTORY_INVALID: refusing to overwrite saved results')
-              rows = feed.get('rows', [])
-              if not isinstance(rows, list): rows = []
+              market_rows = feed.get('rows', [])
+              if not isinstance(market_rows, list): market_rows = []
+              edge_report = read(VALIDATED, {})
+              validated_rows = edge_report.get('rows', []) if isinstance(edge_report, dict) else []
+              if not isinstance(validated_rows, list): validated_rows = []
+              report_checked = dt(edge_report.get('generated_at_utc')) if isinstance(edge_report, dict) else None
+              same_capture = edge_report.get('market_snapshot_captured_at_utc') == feed.get('odds_captured_at_utc') if isinstance(edge_report, dict) else False
+              report_fresh = bool(report_checked and 0 <= (NOW-report_checked).total_seconds() <= MAX_QUOTE_MINUTES*60)
+              # Only trust independently gated candidates from this matching, recent feed.
+              rows = validated_rows if report_fresh and same_capture else []
               reasons = Counter()
               eligible = []
               games_available = set()
               captured = dt(feed.get('odds_captured_at_utc'))
               age = ((NOW - captured).total_seconds()/60) if captured else None
+              if not report_fresh or not same_capture:
+                  reasons['edge_gate_missing_stale_or_different_snapshot'] += 1
               if age is None or age < 0 or age > MAX_QUOTE_MINUTES:
                   reasons['snapshot_missing_or_expired'] += 1
               else:
@@ -204,7 +216,8 @@ jobs:
                   'schema_version':2, 'checked_at_utc':NOW.isoformat(), 'date_pacific':DAY,
                   'odds_captured_at_utc':feed.get('odds_captured_at_utc'),
                   'odds_age_minutes':round(age,1) if age is not None else None,
-                  'market_outcomes':len(rows), 'distinct_games_in_fresh_feed':len(games_available),
+                  'market_outcomes':len(market_rows), 'validated_edge_gate_candidates':len(validated_rows),
+                  'distinct_games_in_fresh_feed':len(games_available),
                   'eligible_player_candidates':len(eligible),
                   'verified_distinct_games':len(used_games),
                   'generated_slips':slips_added, 'supported_leg_counts':[2,3,4], 'reasons':dict(reasons),
@@ -212,7 +225,8 @@ jobs:
                   'disclaimer':'Paper-tracking only. Does not infer win probabilities or EV from projection-minus-line. No slip is generated without live quotes, confirmed player availability, validated edge, and calibrated model probabilities.'}
               save(STATUS,status)
               print('PARLAY_GENERATION_STATE:',status['state'])
-              print('MARKET_OUTCOMES:',len(rows))
+              print('MARKET_OUTCOMES:',len(market_rows))
+              print('VALIDATED_GATE_CANDIDATES:',len(validated_rows))
               print('DISTINCT_GAMES_IN_FRESH_FEED:',len(games_available))
               print('ELIGIBLE_CANDIDATES:',len(eligible))
               print('GENERATED_SLIPS:',slips_added)
