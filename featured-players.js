@@ -39,7 +39,8 @@ function render(){
   const mode=$("featured-mode").value,all=latestPlayers();
   const current=new Date().toLocaleDateString("en-CA",{timeZone:"America/Los_Angeles"});
   const pending=all.filter(r=>r.status==="PENDING"&&r.game_date>=current);
-  const pool=pending.length?pending:all;
+  // Always retain saved favorites even when their latest forecast is archived.
+  const pool=[...new Map([...all.filter(isFav),...(pending.length?pending:all)].map(r=>[String(r.player_id),r])).values()];
   const gaps=latestMarketGaps();
   let chosen;
   if(mode==="favorites")chosen=pool.filter(isFav).sort((a,b)=>String(b.game_date).localeCompare(String(a.game_date)));
