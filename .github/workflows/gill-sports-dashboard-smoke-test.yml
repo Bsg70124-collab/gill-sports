@@ -1,0 +1,46 @@
+name: Gill Sports - Dashboard Smoke Test
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'gill-sports-live-players.html'
+      - '.github/workflows/gill-sports-dashboard-smoke-test.yml'
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify dashboard JavaScript syntax and required feed integrations
+        shell: bash
+        run: |
+          python - <<'PYCODE'
+          import json,re
+          from pathlib import Path
+          html=Path('index.html').read_text(encoding='utf8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>([\s\S]*?)</script>',html,re.I)
+          if not scripts:raise SystemExit('DASHBOARD_SCRIPT_MISSING')
+          Path('/tmp/gill-dashboard-check.js').write_text('\n'.join(scripts),encoding='utf8')
+          ids=set(re.findall(r'\bid=["\']([^"\']+)["\']',html))
+          jsrefs=set(re.findall(r"\$\(['\"]([^'\"]+)['\"]\)",'\n'.join(scripts)))
+          missing=sorted(jsrefs-ids)
+          if missing:raise SystemExit('MISSING_DOM_ELEMENTS: '+','.join(missing))
+          required=['data/player_live.json','data/nba_market_comparison.json',
+            'data/parlay_generation_status.json','parlay-size','market-table','market-feed-state',
+            'setupTabRefresh','renderMarket','Refresh reloads saved data']
+          absent=[x for x in required if x not in html]
+          if absent:raise SystemExit('MISSING_DASHBOARD_INTEGRATIONS: '+','.join(absent))
+          for name in ('data/player_live.json','data/nba_market_comparison.json',
+                       'data/parlay_generation_status.json','data/parlays.json'):
+            json.loads(Path(name).read_text(encoding='utf8'))
+          print('DASHBOARD_MARKUP_AND_FEEDS_OK',len(ids),'elements',len(jsrefs),'references')
+          PYCODE
+          node --check /tmp/gill-dashboard-check.js
+          echo DASHBOARD_JAVASCRIPT_SYNTAX_OK
