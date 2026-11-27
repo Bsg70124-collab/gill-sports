@@ -71,7 +71,13 @@ async function dispatch(key){
    body:JSON.stringify({ref:"main"})
   });
   if(!response.ok){
-   state.textContent="GitHub rejected the request (HTTP "+response.status+"). Check Actions: write access for "+config[0]+".";
+   let message="GitHub did not supply an error description.";
+   try {
+    const payload=await response.json();
+    message=String(payload.message||payload.errors?.map(x=>x.message||x.code||x.field).join("; ")||message).slice(0,400);
+   } catch(e) {}
+   // A 422 is a workflow validation/configuration error, not proof the token lacks permission.
+   state.textContent="GitHub HTTP "+response.status+": "+message+". Workflow: "+config[1]+" on main. "+(response.status===422?"Check workflow registration and its manual trigger.":"Check repository permissions and access.");
    if(response.status===401){credential=null;verified=false;authState();}
   }else{
    verified=true;authState();
