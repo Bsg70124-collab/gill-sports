@@ -149,3 +149,45 @@ This stage adds **working, automated research analytics** rather than unverified
 **Current limitations:** The available sample is concentrated in four distinct settled game dates, player availability has not been independently verified, and the latest sportsbook snapshot has expired. Consequently, **zero validated joint probabilities** and **zero approved positive-EV new slips** are published. Source data and scheduled workflows can fail or be stale. A real injury-integrated pricing model, out-of-sample joint calibration, and validated outcome correlation estimates remain future scientific/modeling work; the current release is a research and accountability system, not a wagering recommendation engine.
 
 Phase 3 remains separate from the existing strict, fail-closed `gill-sports-daily-parlay-generator-v2.yml` and historical `gill-sports-parlay-settlement.yml`; neither is overwritten or granted false confidence by the experimental Monte Carlo output.
+
+
+## Phase 4 — Data health, injury research, baseline tests and iPhone monitoring
+
+- `phase4_control.py` creates `data/phase4_control_center.json`, reporting independent
+  freshness checks for game forecasts, player results, market odds, injuries,
+  accuracy and parlay intelligence. Published timestamps, **not successful Actions
+  badges**, determine freshness. Expired odds are never silently treated as live.
+- The injury overlay joins upcoming player-game candidate rows with the **unofficial**
+  ESPN injury watch by both game ID and normalized player name. Ambiguous, stale or
+  missing status is **UNVERIFIED**, not active. Out / doubtful are **BLOCK_RESEARCH**;
+  questionable or game-time decisions receive a **CAUTION_RESEARCH** flag. Hypothetical
+  25%-lower-minutes examples illustrate sensitivity, but **locked forecasts are never
+  overwritten, nor are player availability or new bets represented as verified**.
+- The historical diagnostic benchmark scores model absolute errors against averages
+  computed from **strictly earlier game dates**. Same-date results never enter the
+  benchmark for that date; no betting probability, calibration or retraining decision
+  is implied by a simple MAE comparison.
+- `.github/workflows/gill-sports-phase4-monitor.yml` runs every two hours, when
+  feed files change directly, and after selected upstream workflows complete.
+  It runs six unit tests, publishes the status report, and manages a *single*
+  deduplicated GitHub issue for warnings/failures. This provides GitHub issue
+  notifications only to subscribers; it **does not configure iOS push notifications**.
+- `phase4-control-panel.js` displays freshness, alert status, injury caution rows
+  and chronological baseline results under the mobile-friendly **Model & feeds**
+  and **Player projections** tabs.
+- `gill-sports-injury-watch-v1.yml` now refreshes when new public player data
+  publishes and retries transient network failures before exiting with the last
+  trusted report preserved. The private engine's
+  `engine_health.py`/`gill-sports-private-reliability-v1.yml` checks model artifacts,
+  forecast and final settlement archive recency, and the configured daily paid
+  odds quota without mutating predictions or publishing private artifacts.
+  The private odds collector prioritizes events within six hours of tipoff while
+  maintaining its existing conservative 16-credit daily spending cap.
+
+**Known limits:** Source availability and lineups are not independently verified;
+the ESPN injury feed can differ from official NBA injury reports. The automated
+market feed has sometimes exhausted its free quota or remained stale. The current
+player quality sample covers only four independent settled dates; baseline
+comparisons and research Monte Carlo outcomes remain experimental. A completed
+workflow is not proof of a newly published live betting edge. Use the dashboard's
+freshness statuses before evaluating any preview.
