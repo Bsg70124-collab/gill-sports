@@ -95,16 +95,37 @@ jobs:
               best=max(items,key=lambda x:(x['quote_is_fresh_now'],x['relative_gap'],x['odds_captured_at_utc']))
               selected.append(best)
           selected.sort(key=lambda x:(not x['quote_is_fresh_now'],-x['relative_gap'],str(x['game_id']),str(x['player_id'])))
-          bygame={}
+          # Keep multiple alternatives per game so selected legs can diversify stats.
+          bygame=defaultdict(list)
           for row in selected:
-              if row['game_id'] not in bygame:bygame[row['game_id']]=row
-          distinct=sorted(bygame.values(),key=lambda r:(not r['quote_is_fresh_now'],-r['relative_gap']))
+              bygame[row['game_id']].append(row)
+          ordered_games=sorted(bygame,key=lambda gid:(
+              not any(x['quote_is_fresh_now'] for x in bygame[gid]),
+              -max(x['relative_gap'] for x in bygame[gid]),gid))
+          distinct=[]
+          used_stats=set()
+          for gid in ordered_games:
+              choices=bygame[gid]
+              choice=min(choices,key=lambda x:(
+                  not x['quote_is_fresh_now'],
+                  x['stat'] in used_stats,
+                  -x['relative_gap'],
+                  x['player_id']))
+              distinct.append(choice)
+              used_stats.add(choice['stat'])
           previews=[]
           for size in (2,3,4):
               if len(distinct)<size:continue
               legs=distinct[:size]
               # Never label these as actionable. Unknown lineup, price drift and model
               # calibration disqualify them even if capture happened recently.
+              unique_stats=len({l['stat'] for l in legs})
+              risks=[]
+              if any(not l['quote_is_fresh_now'] for l in legs):risks.append('EXPIRED_OR_UNEXECUTABLE_PRICES')
+              if any(not l['availability_verified'] for l in legs):risks.append('PLAYER_AVAILABILITY_UNVERIFIED')
+              if unique_stats<size:risks.append('MULTIPLE_LEGS_SHARE_STAT_FAMILY')
+              if any(l['stat']=='pra' for l in legs):risks.append('PRA_COMPOSITE_STAT_EXPOSURE')
+              risks.append('JOINT_WIN_PROBABILITY_NOT_CALIBRATED')
               previews.append({
                   'id':f'{DAY}-{size}-research',
                   'size':size,'day':DAY,'strategy':'Exploratory model-vs-line discrepancy ranking; distinct games; no joint probability',
@@ -112,6 +133,10 @@ jobs:
                   'created_at_utc':NOW.isoformat(),
                   'any_expired_quote':any(not l['quote_is_fresh_now'] for l in legs),
                   'all_availability_verified':all(l['availability_verified'] for l in legs),
+                  'diversification':{'different_games':len({l['game_id'] for l in legs}),
+                      'different_players':len({l['player_id'] for l in legs}),
+                      'different_stat_families':unique_stats},
+                  'risk_flags':risks,
                   'validated_win_probability':None,'validated_ev':None,
                   'legs':legs})
           report={'schema_version':1,'generated_at_utc':NOW.isoformat(),
