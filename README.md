@@ -134,3 +134,18 @@ Expired quotes and unverified availability are still marked **NOT BETTABLE**.
 
 The dashboard smoke test validates new JavaScript, web manifest, JSON schemas, and
 that no research preview repeats a game/player or asserts a joint win probability.
+
+
+## Phase 3 — Parlay Intelligence (implemented November 2026)
+
+This stage adds **working, automated research analytics** rather than unverified picks:
+
+- `parlay_intelligence.py`: collects only uniquely keyed, settled player-game forecasts; calculates empirical stat-error correlations; performs reproducible 10,000-draw residual-bootstrap Monte Carlo experiments per 2-, 3-, and 4-leg research preview. Different games are sampled separately. The simulation output never claims calibrated joint betting probabilities or expected value. Residual samples are strictly from dates preceding each preview.
+- `data/parlay_intelligence.json`: independent historical sample counts, modeling readiness criteria, correlation coefficients, per-preview simulation run statuses, odds staleness, and explicit blockers. Training/holdout readiness requires 15/5 independent game dates and 250/100 graded player-games; meeting these preliminary thresholds still does **not** validate a probability without forward holdout calibration.
+- `data/parlay_research_history.json`: append-only forward research record. A research preview is archived only if the published quote was **still fresh at creation**, the workflow processes it within 10 minutes, all games are still at least 20 minutes before tipoff, and each leg uses a different player and game. Old snapshots are **never** backfilled as pregame picks. Each archived leg is graded only against the exact final player ID/game ID/date record; ambiguous DNP/unmatched player rows remain unresolved, never counted as a win or assumed zero.
+- `.github/workflows/gill-sports-parlay-intelligence.yml`: schedule, published preview completion, and relevant feed changes trigger the Monte Carlo/grade pipeline; the workflow runs `test_parlay_intelligence.py` and asserts no betting probabilities or EV leak into published results.
+- `parlay-intelligence-panel.js`: adds the Parlay Intelligence section in the dashboard's **Parlays** tab with historical correlation readings, sample size, simulation status, and a separate forward-tracking W/L/P/V record.
+
+**Current limitations:** The available sample is concentrated in four distinct settled game dates, player availability has not been independently verified, and the latest sportsbook snapshot has expired. Consequently, **zero validated joint probabilities** and **zero approved positive-EV new slips** are published. Source data and scheduled workflows can fail or be stale. A real injury-integrated pricing model, out-of-sample joint calibration, and validated outcome correlation estimates remain future scientific/modeling work; the current release is a research and accountability system, not a wagering recommendation engine.
+
+Phase 3 remains separate from the existing strict, fail-closed `gill-sports-daily-parlay-generator-v2.yml` and historical `gill-sports-parlay-settlement.yml`; neither is overwritten or granted false confidence by the experimental Monte Carlo output.
