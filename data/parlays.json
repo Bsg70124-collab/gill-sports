@@ -390,7 +390,7 @@
     "pending": 0,
     "void": 0
   },
-  "settlement_checked_at_utc": "2026-11-28T00:33:14.718362+00:00",
+  "settlement_checked_at_utc": "2026-11-28T16:11:14.360257+00:00",
   "settlement_unresolved_reasons": {},
   "settlement_notice": "Historical paper-tracking only; previously settled legs not re-audited. Unavailable player stats are never treated as zero. Model probabilities uncalibrated."
 }
