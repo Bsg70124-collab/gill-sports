@@ -1,0 +1,40 @@
+name: Gill Sports - Pregame Paper Ledger
+on:
+  push:
+    branches: [main]
+    paths:
+      - data/nba_market_comparison.json
+      - data/player_live.json
+      - phase6-paper-ledger.js
+  schedule:
+    - cron: '17,47 0-8,19-23 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: nba-paper-ledger
+  cancel-in-progress: false
+jobs:
+  paper:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - run: node --test test_phase6_paper_ledger.js
+      - name: Lock fresh quotes and settle previous picks
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard FETCH_HEAD
+            node phase6-paper-ledger.js
+            git add data/calibration/nba_prop_paper_ledger.json
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m 'Update prospective NBA paper ledger'
+            if git push origin HEAD:main; then exit 0; fi
+          done
+          exit 1
