@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at_utc": "2026-11-28T00:39:54.091903+00:00",
+  "generated_at_utc": "2026-11-28T08:01:42.011674+00:00",
   "source_capture_utc": "2026-11-27T03:14:00.324326+00:00",
   "independent_games_covered": 4,
   "candidate_player_games": 43,
@@ -8,12 +8,12 @@
   "excluded": {},
   "previews": [
     {
-      "id": "2026-11-27-2-research",
+      "id": "2026-11-28-2-research",
       "size": 2,
-      "day": "2026-11-27",
+      "day": "2026-11-28",
       "strategy": "Exploratory model-vs-line discrepancy ranking; distinct games; no joint probability",
       "classification": "RESEARCH_ONLY_NOT_BETTABLE",
-      "created_at_utc": "2026-11-28T00:39:54.091903+00:00",
+      "created_at_utc": "2026-11-28T08:01:42.011674+00:00",
       "any_expired_quote": true,
       "all_availability_verified": false,
       "diversification": {
@@ -78,12 +78,12 @@
       ]
     },
     {
-      "id": "2026-11-27-3-research",
+      "id": "2026-11-28-3-research",
       "size": 3,
-      "day": "2026-11-27",
+      "day": "2026-11-28",
       "strategy": "Exploratory model-vs-line discrepancy ranking; distinct games; no joint probability",
       "classification": "RESEARCH_ONLY_NOT_BETTABLE",
-      "created_at_utc": "2026-11-28T00:39:54.091903+00:00",
+      "created_at_utc": "2026-11-28T08:01:42.011674+00:00",
       "any_expired_quote": true,
       "all_availability_verified": false,
       "diversification": {
@@ -172,12 +172,12 @@
       ]
     },
     {
-      "id": "2026-11-27-4-research",
+      "id": "2026-11-28-4-research",
       "size": 4,
-      "day": "2026-11-27",
+      "day": "2026-11-28",
       "strategy": "Exploratory model-vs-line discrepancy ranking; distinct games; no joint probability",
       "classification": "RESEARCH_ONLY_NOT_BETTABLE",
-      "created_at_utc": "2026-11-28T00:39:54.091903+00:00",
+      "created_at_utc": "2026-11-28T08:01:42.011674+00:00",
       "any_expired_quote": true,
       "all_availability_verified": false,
       "diversification": {
