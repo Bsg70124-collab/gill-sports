@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "rows": [],
+  "generated_at_utc": "2026-11-28T01:25:26.429150+00:00",
+  "summary": {
+    "total_forward_eligible": 0,
+    "wins": 0,
+    "losses": 0,
+    "voids": 0,
+    "pending": 0,
+    "excluded_current_previews": {
+      "capture_expired_at_generation": 3
+    },
+    "grading_blockers": {}
+  },
+  "policy": "Append only forward-valid live research snapshots. Stale quotes are excluded. Unverified DNP never graded void. No paid slips/ROI claims. Research outcomes are separate from betting picks."
+}

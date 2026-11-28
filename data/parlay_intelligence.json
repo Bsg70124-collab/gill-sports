@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-11-28T01:25:26.429150+00:00",
+  "status": "EXPERIMENTAL_NO_VERIFIED_JOINT_PROBABILITIES",
+  "readiness": {
+    "independent_settled_dates": 4,
+    "graded_player_games": 630,
+    "training_dates": 0,
+    "holdout_dates": 0,
+    "training_samples": 0,
+    "holdout_samples": 0,
+    "sample_size_gate_passed": false,
+    "minimum_training_dates": 15,
+    "minimum_holdout_dates": 5,
+    "minimum_training_samples": 250,
+    "minimum_holdout_samples": 100,
+    "verified_joint_calibration": false,
+    "verified_player_availability": false,
+    "fresh_odds_snapshot": false
+  },
+  "odds_quote_age_minutes": 1331.4,
+  "residual_correlations": {
+    "points_vs_rebounds": {
+      "paired_player_games": 630,
+      "pearson": 0.2795
+    },
+    "points_vs_assists": {
+      "paired_player_games": 630,
+      "pearson": 0.2181
+    },
+    "rebounds_vs_assists": {
+      "paired_player_games": 630,
+      "pearson": 0.2796
+    },
+    "points_vs_pra": {
+      "paired_player_games": 630,
+      "pearson": 0.9046
+    },
+    "rebounds_vs_pra": {
+      "paired_player_games": 630,
+      "pearson": 0.5977
+    },
+    "assists_vs_pra": {
+      "paired_player_games": 630,
+      "pearson": 0.4969
+    }
+  },
+  "simulation_count_per_preview": 10000,
+  "preview_simulations": [
+    {
+      "preview_id": "2026-11-27-2-research",
+      "size": 2,
+      "classification": "RESEARCH_ONLY_NOT_BETTABLE",
+      "forward_tracking_eligible": false,
+      "tracking_blocker": "capture_expired_at_generation",
+      "monte_carlo": {
+        "runs": 10000,
+        "published_joint_win_probability": null,
+        "published_ev": null,
+        "method": "empirical historical residual bootstrap",
+        "model_limitations": "Exploratory residual bootstrap. Different-game errors sampled independently, not proven independent. No injury or live-line calibration.",
+        "internal_study_completed": true
+      },
+      "correlation_note": "Pooled same-player residual stat correlations estimated; distinct games use independent bootstrap draws. Same-game joints are not modeled.",
+      "validation": "NOT_CALIBRATED"
+    },
+    {
+      "preview_id": "2026-11-27-3-research",
+      "size": 3,
+      "classification": "RESEARCH_ONLY_NOT_BETTABLE",
+      "forward_tracking_eligible": false,
+      "tracking_blocker": "capture_expired_at_generation",
+      "monte_carlo": {
+        "runs": 10000,
+        "published_joint_win_probability": null,
+        "published_ev": null,
+        "method": "empirical historical residual bootstrap",
+        "model_limitations": "Exploratory residual bootstrap. Different-game errors sampled independently, not proven independent. No injury or live-line calibration.",
+        "internal_study_completed": true
+      },
+      "correlation_note": "Pooled same-player residual stat correlations estimated; distinct games use independent bootstrap draws. Same-game joints are not modeled.",
+      "validation": "NOT_CALIBRATED"
+    },
+    {
+      "preview_id": "2026-11-27-4-research",
+      "size": 4,
+      "classification": "RESEARCH_ONLY_NOT_BETTABLE",
+      "forward_tracking_eligible": false,
+      "tracking_blocker": "capture_expired_at_generation",
+      "monte_carlo": {
+        "runs": 10000,
+        "published_joint_win_probability": null,
+        "published_ev": null,
+        "method": "empirical historical residual bootstrap",
+        "model_limitations": "Exploratory residual bootstrap. Different-game errors sampled independently, not proven independent. No injury or live-line calibration.",
+        "internal_study_completed": true
+      },
+      "correlation_note": "Pooled same-player residual stat correlations estimated; distinct games use independent bootstrap draws. Same-game joints are not modeled.",
+      "validation": "NOT_CALIBRATED"
+    }
+  ],
+  "research_tracking_summary": {
+    "total_forward_eligible": 0,
+    "wins": 0,
+    "losses": 0,
+    "voids": 0,
+    "pending": 0,
+    "excluded_current_previews": {
+      "capture_expired_at_generation": 3
+    },
+    "grading_blockers": {}
+  },
+  "notice": "Monte Carlo uses historical residuals, not a validated joint-probability or betting edge model. Joint probabilities, EV and confidence intervals are intentionally suppressed pending forward holdout calibration, confirmed availability and fresh odds."
+}
