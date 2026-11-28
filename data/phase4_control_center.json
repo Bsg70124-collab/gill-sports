@@ -1,48 +1,48 @@
 {
   "schema_version": 1,
-  "generated_at_utc": "2026-11-28T07:53:18.305934+00:00",
+  "generated_at_utc": "2026-11-28T08:01:53.677250+00:00",
   "overall_state": "ACTION_REQUIRED",
   "feed_checks": {
     "games": {
       "state": "FRESH",
       "source_path": "data/live.json",
       "observed_at_utc": "2026-11-28T07:52:44.194876+00:00",
-      "age_minutes": 0.6,
+      "age_minutes": 9.2,
       "max_age_minutes": 120
     },
     "player_projections": {
       "state": "STALE",
       "source_path": "data/player_live.json",
       "observed_at_utc": "2026-11-28T00:33:57.729076+00:00",
-      "age_minutes": 439.3,
+      "age_minutes": 447.9,
       "max_age_minutes": 180
     },
     "odds": {
       "state": "STALE",
       "source_path": "data/nba_market_comparison.json",
       "observed_at_utc": "2026-11-27T03:14:00.324326+00:00",
-      "age_minutes": 1719.3,
+      "age_minutes": 1727.9,
       "max_age_minutes": 30
     },
     "injuries": {
       "state": "STALE",
       "source_path": "data/injury_watch.json",
       "observed_at_utc": "2026-11-28T01:40:42.441297+00:00",
-      "age_minutes": 372.6,
+      "age_minutes": 381.2,
       "max_age_minutes": 240
     },
     "model_accuracy": {
       "state": "FRESH",
       "source_path": "data/model_quality_report.json",
       "observed_at_utc": "2026-11-28T00:41:17.630134+00:00",
-      "age_minutes": 432.0,
+      "age_minutes": 440.6,
       "max_age_minutes": 1440
     },
     "parlay_intelligence": {
       "state": "STALE",
       "source_path": "data/parlay_intelligence.json",
       "observed_at_utc": "2026-11-28T01:26:20.833376+00:00",
-      "age_minutes": 387.0,
+      "age_minutes": 395.5,
       "max_age_minutes": 240
     }
   },
