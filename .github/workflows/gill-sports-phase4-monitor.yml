@@ -96,6 +96,7 @@ jobs:
             // Stable body is intentional: no notification spam every scheduled run.
             const body=[
               'Automated Gill Sports research-feed health alert.',
+              'Repository owner: @Bsg70124-collab',
               '',
               '**Critical:** '+(critical.join(', ')||'none'),
               '**Warnings:** '+(warning.join(', ')||'none'),
