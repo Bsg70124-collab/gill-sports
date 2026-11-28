@@ -1,0 +1,53 @@
+name: Gill Sports - Forecast Quality Audit
+"on":
+  workflow_dispatch: {}
+  push:
+    branches: [main]
+    paths:
+      - data/player_live.json
+      - data/nba_market_comparison.json
+      - quality_audit.py
+      - .github/workflows/gill-sports-forecast-quality.yml
+  schedule:
+    - cron: '37 12 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: gill-sports-forecast-quality
+  cancel-in-progress: false
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Build independent model error and data quality report
+        run: python quality_audit.py
+      - name: Validate output invariants
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('data/model_quality_report.json').read_text())
+          assert d['counts']['settled'] >= 0
+          assert d['counts']['forecast_rows'] >= d['counts']['settled']
+          assert d['metrics']['all']['points']['count'] <= d['counts']['settled']
+          assert 'SPORTSBOOK_SNAPSHOT_NOT_LIVE' in d['quality_flags'] or d['market_quote_age_minutes'] <= 30
+          print('QUALITY_AUDIT_PASS')
+          PY
+      - name: Publish quality report
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/model_quality_report.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Refresh Gill Sports model quality and data drift report"
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
