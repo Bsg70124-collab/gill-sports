@@ -1,0 +1,68 @@
+name: Gill Sports - Phase 3 Parlay Intelligence
+"on":
+  workflow_dispatch: {}
+  push:
+    branches: [main]
+    paths:
+      - 'parlay_intelligence.py'
+      - 'data/parlay_research_previews.json'
+      - 'data/player_live.json'
+      - '.github/workflows/gill-sports-parlay-intelligence.yml'
+  workflow_run:
+    workflows:
+      - Gill Sports - NBA Research Parlay Previews
+    types: [completed]
+  schedule:
+    - cron: '43 7 * * *'
+    - cron: '43 18 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: gill-sports-parlay-intelligence
+  cancel-in-progress: false
+jobs:
+  intelligence:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Generate correlation-aware Monte Carlo research and grade forward snapshots
+        run: python parlay_intelligence.py
+      - name: Check fail-closed research and tracking invariants
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=json.loads(Path('data/parlay_intelligence.json').read_text())
+          a=json.loads(Path('data/parlay_research_history.json').read_text())
+          assert p['status']=='EXPERIMENTAL_NO_VERIFIED_JOINT_PROBABILITIES'
+          assert p['readiness']['verified_joint_calibration'] is False
+          assert all(x['monte_carlo']['published_joint_win_probability'] is None and
+                     x['monte_carlo']['published_ev'] is None for x in p['preview_simulations'])
+          assert len({x['audit_id'] for x in a['rows']})==len(a['rows'])
+          assert all(x['classification']=='RESEARCH_ONLY_NOT_BETTABLE' and
+                     x['joint_probability'] is None and x['estimated_ev'] is None for x in a['rows'])
+          assert all(len(set(l['game_id'] for l in x['legs']))==len(x['legs']) for x in a['rows'])
+          print('PHASE3_FAIL_CLOSED_VALIDATION_OK')
+          PY
+      - name: Publish research-only diagnostic feed and forward-tracking history
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/parlay_intelligence.json data/parlay_research_history.json
+          if git diff --cached --quiet; then echo 'NO_NEW_RESEARCH_HISTORY'; exit 0; fi
+          git commit -m "Publish Phase 3 research-only simulation and forward-tracking audit"
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then exit 0; fi
+            git fetch origin main
+            git rebase origin/main
+            sleep 2
+          done
+          exit 1
