@@ -1,0 +1,107 @@
+name: Gill Sports - Phase 4 Reliability Monitor
+"on":
+  workflow_dispatch: {}
+  push:
+    branches: [main]
+    paths:
+      - phase4_control.py
+      - test_phase4_control.py
+      - data/live.json
+      - data/player_live.json
+      - data/injury_watch.json
+      - data/nba_market_comparison.json
+      - data/model_quality_report.json
+      - data/parlay_intelligence.json
+      - data/validated_player_edges.json
+      - data/parlay_generation_status.json
+      - .github/workflows/gill-sports-phase4-monitor.yml
+  schedule:
+    - cron: '13 */2 * * *'
+permissions:
+  contents: write
+  issues: write
+concurrency:
+  group: gill-sports-phase4-health
+  cancel-in-progress: false
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Test chronological scoring and conservative injury handling
+        run: python -m unittest -v test_phase4_control.py
+      - name: Audit data freshness and publish research safety overlays
+        run: python phase4_control.py
+      - name: Verify no invented injury clearance or betting edge
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('data/phase4_control_center.json'))
+          assert d['betting_gate']['verified_availability'] is False
+          assert d['injury_research_overlay']['availability_verified'] is False
+          assert all(x['availability_verified'] is False for x in d['injury_research_overlay']['player_rows'])
+          assert all(v['validated_for_betting'] is False for v in d['historical_backtest']['markets'].values())
+          print('PHASE4_FAIL_CLOSED_PASS')
+          PY
+      - name: Publish latest control-center feed
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/phase4_control_center.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Publish Phase 4 health status, injury flags and chronological baselines"
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then exit 0; fi
+            git fetch origin main
+            git rebase origin/main
+            sleep 2
+          done
+          exit 1
+      - name: Notify through a single GitHub issue when feeds need attention
+        if: always()
+        continue-on-error: true
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const title = '[Gill Sports] Phase 4 automated data health alert';
+            let data;
+            try { data = JSON.parse(fs.readFileSync('data/phase4_control_center.json','utf8')); }
+            catch (e) { core.warning('Monitor output missing; inspect this workflow run'); return; }
+            const critical=(data.alerts?.critical||[]).map(x=>x.key+': '+x.reason);
+            const warning=(data.alerts?.warning||[]).map(x=>x.key+': '+x.reason);
+            const unhealthy=critical.length>0||warning.length>0;
+            const issueList=await github.paginate(github.rest.issues.listForRepo,{
+              ...context.repo,state:'open',per_page:100
+            });
+            const old=issueList.find(x=>!x.pull_request&&x.title===title);
+            if(!unhealthy){
+              if(old)await github.rest.issues.update({...context.repo,issue_number:old.number,state:'closed'});
+              core.info('Health conditions clear; no alert issue needed');
+              return;
+            }
+            // Stable body is intentional: no notification spam every scheduled run.
+            const body=[
+              'Automated Gill Sports research-feed health alert.',
+              '',
+              '**Critical:** '+(critical.join(', ')||'none'),
+              '**Warnings:** '+(warning.join(', ')||'none'),
+              '',
+              'Live odds may be expired. No verified betting edges should be assumed.',
+              '[System dashboard](https://bsg70124-collab.github.io/gill-sports/#system)',
+              '[Workflow history](https://github.com/Bsg70124-collab/gill-sports/actions)'
+            ].join('\n');
+            if(old){
+              if(old.body!==body)await github.rest.issues.update({...context.repo,issue_number:old.number,body});
+              core.info('Existing alert issue retained');
+            }else{
+              await github.rest.issues.create({...context.repo,title,body});
+              core.info('Created one issue for the unhealthy feed state');
+            }
