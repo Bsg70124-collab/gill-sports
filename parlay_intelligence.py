@@ -147,6 +147,15 @@ def archive_new(previews,archive,now):
         if not isinstance(preview,dict):continue
         when=utc(preview.get("created_at_utc"))
         good,reason=qualifies_for_forward_tracking(preview,when)
+        if good and (now-when).total_seconds()>600:
+            good,reason=False,"historical_preview_not_forward_archivable"
+        if good and (now-when).total_seconds()<0:
+            good,reason=False,"future_preview_generation"
+        if good:
+            for leg in preview["legs"]:
+                if utc(leg.get("tipoff_utc"))-now<timedelta(minutes=20):
+                    good,reason=False,"late_archival_after_lock"
+                    break
         if not good:
             skipped[reason]+=1
             continue
@@ -256,7 +265,9 @@ def main(base):
                and num(l.get("line")) is not None and num(l.get("model_projection")) is not None
                and l.get("side") in ("Over","Under")]
         seed=int(key_for(p),16)
-        simulated=simulation(clean,residuals,seed) if len(clean)==len(legs) and clean else {"runs":0,"outcome_rate":None}
+        # Historical model error data must predate the preview, preventing future-game leakage.
+        past_residuals=[r for r in residuals if generated and r["day"]<generated.date().isoformat()]
+        simulated=simulation(clean,past_residuals,seed) if len(clean)==len(legs) and clean else {"runs":0,"outcome_rate":None}
         # Simulation is run for research only; never publish the raw estimated rate
         # when holdout data are insufficient or when calibration was not verified.
         previews_out.append({
