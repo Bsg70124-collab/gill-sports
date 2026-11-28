@@ -2,6 +2,7 @@
 (()=>{
 "use strict";
 const owner="Bsg70124-collab";
+const mobileMode=()=>window.matchMedia("(max-width: 700px)").matches;
 const actions={
   overview:["gill-sports","daily.yml","Update game predictions"],
   games:["gill-sports","daily.yml","Update game predictions"],
@@ -90,15 +91,30 @@ function addButton(tab,key){
  const page=$("tab-"+tab);if(!page)return;
  const bar=document.createElement("div");bar.className="toolbar";
  const button=document.createElement("button");button.type="button";button.id="gill-run-"+key;
- button.textContent="▶ "+actions[key][2];button.onclick=()=>dispatch(key);
+ const workflowURL="https://github.com/"+owner+"/"+actions[key][0]+"/actions/workflows/"+encodeURIComponent(actions[key][1]);
+ button.textContent=mobileMode()?"Open in GitHub: "+actions[key][2]:"▶ "+actions[key][2];
+ button.onclick=()=>{
+   if(mobileMode()){
+     // GitHub login handles access; this merely opens the workflow page.
+     window.open(workflowURL,"_blank","noopener,noreferrer");
+     message.textContent="Opened GitHub workflow. Choose Run workflow there. No job has been started by this button.";
+   }else dispatch(key);
+ };
  const message=document.createElement("span");message.id="gill-state-"+key;message.className="gill-job-message";
  const nativeLink=document.createElement("a");
  nativeLink.className="small";
- nativeLink.href="https://github.com/"+owner+"/"+actions[key][0]+"/actions/workflows/"+encodeURIComponent(actions[key][1]);
+ nativeLink.href=workflowURL;
+ nativeLink.classList.add("gs-github-alt-link");
+ nativeLink.style.display=mobileMode()?"none":"";
  nativeLink.target="_blank";
  nativeLink.rel="noopener noreferrer";
  nativeLink.textContent="Run in GitHub (no token) ↗";
  nativeLink.title="Open GitHub's authenticated workflow screen. Choose Run workflow there.";
+ window.addEventListener("resize",()=>{
+    const isMobile=mobileMode();
+    button.textContent=isMobile?"Open in GitHub: "+actions[key][2]:"▶ "+actions[key][2];
+    nativeLink.style.display=isMobile?"none":"";
+ });
  bar.append(button,nativeLink,message);
  const anchor=page.querySelector(".toolbar");
  if(anchor)anchor.after(bar);else page.prepend(bar);
