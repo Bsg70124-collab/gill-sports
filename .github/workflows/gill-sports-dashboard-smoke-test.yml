@@ -55,6 +55,8 @@ jobs:
           node --check /tmp/gill-dashboard-check.js
           node --check featured-players.js
           node --check github-actions-control.js
+          grep -q 'mobileMode' github-actions-control.js
+          grep -q 'No job has been started by this button' github-actions-control.js
           node --check model-quality-panel.js
           node --check mobile-app.js
           grep -q 'gs-mobile-tabs' mobile-app.js
