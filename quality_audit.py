@@ -56,11 +56,17 @@ def main():
             reasons.append("RECENT_MAE_DEGRADATION_"+k.upper())
     counts=Counter(str(r.get("status","UNKNOWN")) for r in rows)
     problems=[]
+    identifiers=Counter((str(r.get("game_id")),str(r.get("player_id")),str(r.get("game_date"))) for r in rows)
+    for count in identifiers.values():
+        if count>1:problems.append("DUPLICATE_PLAYER_GAME_FORECAST")
     for r in rows:
         if not r.get("game_id") or not r.get("player_id") or not r.get("game_date"):
             problems.append("MISSING_FORECAST_ID")
         if r.get("status")=="SETTLED" and not any(number(r.get(x[1])) for x in STATS.values()):
             problems.append("SETTLED_WITHOUT_ACTUAL")
+        if all(number(r.get(key)) for key in ("pred_points","pred_rebounds","pred_assists","pred_pra")):
+            if abs(r["pred_pra"]-(r["pred_points"]+r["pred_rebounds"]+r["pred_assists"]))>0.2:
+                problems.append("PRA_SUM_INCONSISTENCY")
     warnings=dict(Counter(problems))
     quote_time=market.get("odds_captured_at_utc")
     try:
