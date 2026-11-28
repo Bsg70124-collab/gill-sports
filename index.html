@@ -283,6 +283,11 @@ a{color:#95bcff}
  </div>
 </div>
 <div class="panel">
+ <h2>Install Gill Sports on your iPhone</h2>
+ <p>In Safari, open this website, tap <strong>Share</strong>, then <strong>Add to Home Screen</strong>. The app icon opens Gill Sports directly. This does not grant access to private workflows or store a GitHub token. Use <strong>Run in GitHub (no token)</strong> while signed in to GitHub for manual jobs.</p>
+ <p class="small">A network connection is required for current predictions, sportsbook prices and workflow actions. Saved shell pages do not make stale data live.</p>
+</div>
+<div class="panel">
  <div class="rowhead"><h2>Automated feed health</h2><span class="badge">Based on published timestamps</span></div>
  <p class="small">A successful GitHub workflow does not guarantee fresh prices, verified availability, or new predictions. Check each feed timestamp before using its data.</p>
  <div id="feed-health" class="info">Loading feed status...</div>
@@ -683,6 +688,7 @@ function renderParlayResearch() {
     return `<article class="parlay">
       <div class="rowhead"><h3>${esc(slip.size)}-leg model-versus-market research preview</h3><span class="badge">${esc(condition)}</span></div>
       <p class="small">No calibrated win probability, verified player availability, or validated EV · Independent games selected to limit overlapping matchups, not to prove independence</p>
+      <p class="small">Diversification: ${esc(slip.diversification?.different_games??'—')} games · ${esc(slip.diversification?.different_players??'—')} players · ${esc(slip.diversification?.different_stat_families??'—')} stat families. Risk flags: ${esc((slip.risk_flags||['Not yet audited']).join(' · ').replaceAll('_',' '))}</p>
       ${(slip.legs||[]).map(l=>`<div class="leg"><strong>${esc(l.player_name)} · ${esc(l.matchup)}</strong>
         <div class="small">Model ${fmt(l.model_projection,2)} ${esc(l.stat)} · Observed sportsbook line ${fmt(l.line,1)} · Direction ${esc(l.side)} · Difference ${fmt(l.projection_minus_line,2)} · ${esc(l.bookmaker)}</div>
         <div class="small">Quote: ${esc(date(l.quote_updated_at_utc))} · Game: ${esc(date(l.tipoff_utc))} · Availability unverified</div></div>`).join('')}
@@ -835,7 +841,7 @@ $('parlay-research-export').addEventListener('click',()=>{
   const sizes=$('parlay-research-size').value;
   const slips=(parlayResearch?.previews||[]).filter(x=>sizes==='all'||String(x.size)===sizes);
   const rows=slips.flatMap(slip=>(slip.legs||[]).map(leg=>({
-    preview_id:slip.id,legs:slip.size,classification:slip.classification,
+    preview_id:slip.id,legs:slip.size,classification:slip.classification,risk_flags:(slip.risk_flags||[]).join(';'),different_stat_families:slip.diversification?.different_stat_families,
     day:slip.day,player:leg.player_name,matchup:leg.matchup,stat:leg.stat,
     side:leg.side,line:leg.line,model_projection:leg.model_projection,
     projection_minus_line:leg.projection_minus_line,bookmaker:leg.bookmaker,
@@ -844,7 +850,7 @@ $('parlay-research-export').addEventListener('click',()=>{
     model_probability:leg.model_probability,validated_edge:leg.validated_edge
   })));
   csv('gill-parlay-research-not-verified.csv',rows,
-    ['preview_id','legs','classification','day','player','matchup','stat','side','line',
+    ['preview_id','legs','classification','risk_flags','different_stat_families','day','player','matchup','stat','side','line',
      'model_projection','projection_minus_line','bookmaker','quote_updated_at_utc',
      'tipoff_utc','availability_verified','model_probability','validated_edge']);
 });
