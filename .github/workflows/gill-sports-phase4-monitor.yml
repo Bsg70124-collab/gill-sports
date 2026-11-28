@@ -15,6 +15,12 @@ name: Gill Sports - Phase 4 Reliability Monitor
       - data/validated_player_edges.json
       - data/parlay_generation_status.json
       - .github/workflows/gill-sports-phase4-monitor.yml
+  workflow_run:
+    workflows:
+      - Gill Sports - NBA Injury Watch V1
+      - Gill Sports Daily Automation
+      - Gill Sports - NBA Research Parlay Previews
+    types: [completed]
   schedule:
     - cron: '13 */2 * * *'
 permissions:
