@@ -1,0 +1,709 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-11-28T00:39:20.937448+00:00",
+  "player_source_updated_at_utc": "2026-11-28T00:33:57.729076+00:00",
+  "market_quote_captured_at_utc": "2026-11-27T03:14:00.324326+00:00",
+  "market_quote_age_minutes": 1285.3,
+  "counts": {
+    "forecast_rows": 1586,
+    "settled": 630,
+    "pending": 564,
+    "dnp_or_unmatched": 392,
+    "data_error": 0,
+    "independent_settled_dates": 4
+  },
+  "metrics": {
+    "all": {
+      "points": {
+        "count": 630,
+        "mae": 4.501,
+        "bias": -0.654,
+        "rmse": 5.948
+      },
+      "rebounds": {
+        "count": 630,
+        "mae": 1.855,
+        "bias": -0.319,
+        "rmse": 2.475
+      },
+      "assists": {
+        "count": 630,
+        "mae": 1.324,
+        "bias": -0.239,
+        "rmse": 1.889
+      },
+      "pra": {
+        "count": 630,
+        "mae": 5.943,
+        "bias": -1.212,
+        "rmse": 7.84
+      },
+      "minutes": {
+        "count": 630,
+        "mae": 4.524,
+        "bias": -0.087,
+        "rmse": 5.739
+      }
+    },
+    "last_7_game_dates": {
+      "points": {
+        "count": 630,
+        "mae": 4.501,
+        "bias": -0.654,
+        "rmse": 5.948
+      },
+      "rebounds": {
+        "count": 630,
+        "mae": 1.855,
+        "bias": -0.319,
+        "rmse": 2.475
+      },
+      "assists": {
+        "count": 630,
+        "mae": 1.324,
+        "bias": -0.239,
+        "rmse": 1.889
+      },
+      "pra": {
+        "count": 630,
+        "mae": 5.943,
+        "bias": -1.212,
+        "rmse": 7.84
+      },
+      "minutes": {
+        "count": 630,
+        "mae": 4.524,
+        "bias": -0.087,
+        "rmse": 5.739
+      }
+    },
+    "previous_7_game_dates": {
+      "points": {
+        "count": 0,
+        "mae": null,
+        "bias": null,
+        "rmse": null
+      },
+      "rebounds": {
+        "count": 0,
+        "mae": null,
+        "bias": null,
+        "rmse": null
+      },
+      "assists": {
+        "count": 0,
+        "mae": null,
+        "bias": null,
+        "rmse": null
+      },
+      "pra": {
+        "count": 0,
+        "mae": null,
+        "bias": null,
+        "rmse": null
+      },
+      "minutes": {
+        "count": 0,
+        "mae": null,
+        "bias": null,
+        "rmse": null
+      }
+    },
+    "last_30_game_dates": {
+      "points": {
+        "count": 630,
+        "mae": 4.501,
+        "bias": -0.654,
+        "rmse": 5.948
+      },
+      "rebounds": {
+        "count": 630,
+        "mae": 1.855,
+        "bias": -0.319,
+        "rmse": 2.475
+      },
+      "assists": {
+        "count": 630,
+        "mae": 1.324,
+        "bias": -0.239,
+        "rmse": 1.889
+      },
+      "pra": {
+        "count": 630,
+        "mae": 5.943,
+        "bias": -1.212,
+        "rmse": 7.84
+      },
+      "minutes": {
+        "count": 630,
+        "mae": 4.524,
+        "bias": -0.087,
+        "rmse": 5.739
+      }
+    }
+  },
+  "player_sample_size_minimum": 3,
+  "players": [
+    {
+      "player_id": "1642349",
+      "player_name": "Ajay Mitchell",
+      "settled_games": 3,
+      "last_10_games": {
+        "points": {
+          "count": 3,
+          "mae": 5.79,
+          "bias": -4.997,
+          "rmse": 7.508
+        },
+        "rebounds": {
+          "count": 3,
+          "mae": 0.347,
+          "bias": -0.2,
+          "rmse": 0.448
+        },
+        "assists": {
+          "count": 3,
+          "mae": 0.14,
+          "bias": 0.14,
+          "rmse": 0.148
+        },
+        "pra": {
+          "count": 3,
+          "mae": 5.45,
+          "bias": -5.05,
+          "rmse": 7.416
+        },
+        "minutes": {
+          "count": 3,
+          "mae": 5.923,
+          "bias": -1.497,
+          "rmse": 6.005
+        }
+      }
+    },
+    {
+      "player_id": "1642892",
+      "player_name": "Bennett Stirtz",
+      "settled_games": 3,
+      "last_10_games": {
+        "points": {
+          "count": 3,
+          "mae": 6.747,
+          "bias": -1.46,
+          "rmse": 7.813
+        },
+        "rebounds": {
+          "count": 3,
+          "mae": 3.127,
+          "bias": -2.32,
+          "rmse": 4.18
+        },
+        "assists": {
+          "count": 3,
+          "mae": 1.653,
+          "bias": -1.653,
+          "rmse": 2.145
+        },
+        "pra": {
+          "count": 3,
+          "mae": 9.017,
+          "bias": -5.437,
+          "rmse": 10.588
+        },
+        "minutes": {
+          "count": 3,
+          "mae": 4.257,
+          "bias": -3.323,
+          "rmse": 6.568
+        }
+      }
+    },
+    {
+      "player_id": "1627741",
+      "player_name": "Buddy Hield",
+      "settled_games": 3,
+      "last_10_games": {
+        "points": {
+          "count": 3,
+          "mae": 11.31,
+          "bias": -7.637,
+          "rmse": 13.764
+        },
+        "rebounds": {
+          "count": 3,
+          "mae": 1.72,
+          "bias": -1.72,
+          "rmse": 2.227
+        },
+        "assists": {
+          "count": 3,
+          "mae": 2.4,
+          "bias": -1.113,
+          "rmse": 2.684
+        },
+        "pra": {
+          "count": 3,
+          "mae": 13.293,
+          "bias": -10.467,
+          "rmse": 17.77
+        },
+        "minutes": {
+          "count": 3,
+          "mae": 8.883,
+          "bias": -8.83,
+          "rmse": 12.046
+        }
+      }
+    },
+    {
+      "player_id": "1630171",
+      "player_name": "Isaac Okoro",
+      "settled_games": 3,
+      "last_10_games": {
+        "points": {
+          "count": 3,
+          "mae": 1.613,
+          "bias": -1.613,
+          "rmse": 1.693
+        },
+        "rebounds": {
+          "count": 3,
+          "mae": 1.123,
+          "bias": 0.843,
+          "rmse": 1.549
+        },
+        "assists": {
+          "count": 3,
+          "mae": 0.937,
+          "bias": 0.41,
+          "rmse": 1.175
+        },
+        "pra": {
+          "count": 3,
+          "mae": 1.99,
+          "bias": -0.363,
+          "rmse": 2.272
+        },
+        "minutes": {
+          "count": 3,
+          "mae": 5.053,
+          "bias": -4.273,
+          "rmse": 8.037
+        }
+      }
+    },
+    {
+      "player_id": "1628392",
+      "player_name": "Isaiah Hartenstein",
+      "settled_games": 3,
+      "last_10_games": {
+        "points": {
+          "count": 3,
+          "mae": 5.313,
+          "bias": -0.707,
+          "rmse": 6.534
+        },
+        "rebounds": {
+          "count": 3,
+          "mae": 2.703,
+          "bias": -2.297,
+          "rmse": 4.34
+        },
+        "assists": {
+          "count": 3,
+          "mae": 1.347,
+          "bias": -1.12,
+          "rmse": 1.677
+        },
+        "pra": {
+          "count": 3,
+          "mae": 8.333,
+          "bias": -4.12,
+          "rmse": 8.478
+        },
+        "minutes": {
+          "count": 3,
+          "mae": 4.717,
+          "bias": -3.99,
+          "rmse": 5.381
+        }
+      }
+    },
+    {
+      "player_id": "1642272",
+      "player_name": "Jared McCain",
+      "settled_games": 3,
+      "last_10_games": {
+        "points": {
+          "count": 3,
+          "mae": 4.043,
+          "bias": -0.497,
+          "rmse": 4.934
+        },
+        "rebounds": {
+          "count": 3,
+          "mae": 1.697,
+          "bias": 0.583,
+          "rmse": 1.731
+        },
+        "assists": {
+          "count": 3,
+          "mae": 1.22,
+          "bias": 0.367,
+          "rmse": 1.282
+        },
+        "pra": {
+          "count": 3,
+          "mae": 4.99,
+          "bias": 0.45,
+          "rmse": 6.066
+        },
+        "minutes": {
+          "count": 3,
+          "mae": 2.623,
+          "bias": -2.21,
+          "rmse": 4.167
+        }
+      }
+    },
+    {
+      "player_id": "1641722",
+      "player_name": "Jordan Hawkins",
+      "settled_games": 3,
+      "last_10_games": {
+        "points": {
+          "count": 3,
+          "mae": 7.95,
+          "bias": -7.95,
+          "rmse": 9.723
+        },
+        "rebounds": {
+          "count": 3,
+          "mae": 0.713,
+          "bias": -0.713,
+          "rmse": 0.928
+        },
+        "assists": {
+          "count": 3,
+          "mae": 1.253,
+          "bias": -1.253,
+          "rmse": 1.311
+        },
+        "pra": {
+          "count": 3,
+          "mae": 9.92,
+          "bias": -9.92,
+          "rmse": 11.45
+        },
+        "minutes": {
+          "count": 3,
+          "mae": 5.08,
+          "bias": -5.08,
+          "rmse": 5.514
+        }
+      }
+    },
+    {
+      "player_id": "1630581",
+      "player_name": "Josh Giddey",
+      "settled_games": 3,
+      "last_10_games": {
+        "points": {
+          "count": 3,
+          "mae": 6.657,
+          "bias": -0.45,
+          "rmse": 7.794
+        },
+        "rebounds": {
+          "count": 3,
+          "mae": 5.407,
+          "bias": -2.28,
+          "rmse": 5.596
+        },
+        "assists": {
+          "count": 3,
+          "mae": 6.933,
+          "bias": -6.933,
+          "rmse": 9.304
+        },
+        "pra": {
+          "count": 3,
+          "mae": 15.66,
+          "bias": -9.66,
+          "rmse": 20.265
+        },
+        "minutes": {
+          "count": 3,
+          "mae": 7.463,
+          "bias": -4.27,
+          "rmse": 8.848
+        }
+      }
+    },
+    {
+      "player_id": "1629026",
+      "player_name": "Kenrich Williams",
+      "settled_games": 3,
+      "last_10_games": {
+        "points": {
+          "count": 3,
+          "mae": 7.133,
+          "bias": -7.133,
+          "rmse": 7.97
+        },
+        "rebounds": {
+          "count": 3,
+          "mae": 1.937,
+          "bias": -1.823,
+          "rmse": 2.815
+        },
+        "assists": {
+          "count": 3,
+          "mae": 0.463,
+          "bias": 0.463,
+          "rmse": 0.682
+        },
+        "pra": {
+          "count": 3,
+          "mae": 8.493,
+          "bias": -8.493,
+          "rmse": 10.347
+        },
+        "minutes": {
+          "count": 3,
+          "mae": 1.717,
+          "bias": -1.717,
+          "rmse": 1.791
+        }
+      }
+    },
+    {
+      "player_id": "1641824",
+      "player_name": "Matas Buzelis",
+      "settled_games": 3,
+      "last_10_games": {
+        "points": {
+          "count": 3,
+          "mae": 5.457,
+          "bias": -5.457,
+          "rmse": 6.504
+        },
+        "rebounds": {
+          "count": 3,
+          "mae": 0.627,
+          "bias": -0.627,
+          "rmse": 0.824
+        },
+        "assists": {
+          "count": 3,
+          "mae": 1.69,
+          "bias": 0.977,
+          "rmse": 1.748
+        },
+        "pra": {
+          "count": 3,
+          "mae": 5.11,
+          "bias": -5.11,
+          "rmse": 6.246
+        },
+        "minutes": {
+          "count": 3,
+          "mae": 4.883,
+          "bias": -4.883,
+          "rmse": 6.702
+        }
+      }
+    },
+    {
+      "player_id": "1642877",
+      "player_name": "Micah Peavy",
+      "settled_games": 3,
+      "last_10_games": {
+        "points": {
+          "count": 3,
+          "mae": 4.323,
+          "bias": -1.837,
+          "rmse": 4.421
+        },
+        "rebounds": {
+          "count": 3,
+          "mae": 3.133,
+          "bias": -3.133,
+          "rmse": 3.437
+        },
+        "assists": {
+          "count": 3,
+          "mae": 0.953,
+          "bias": -0.433,
+          "rmse": 1.048
+        },
+        "pra": {
+          "count": 3,
+          "mae": 5.727,
+          "bias": -5.4,
+          "rmse": 7.019
+        },
+        "minutes": {
+          "count": 3,
+          "mae": 9.893,
+          "bias": -9.893,
+          "rmse": 10.895
+        }
+      }
+    },
+    {
+      "player_id": "1642363",
+      "player_name": "Nique Clifford",
+      "settled_games": 3,
+      "last_10_games": {
+        "points": {
+          "count": 3,
+          "mae": 5.703,
+          "bias": 1.37,
+          "rmse": 5.768
+        },
+        "rebounds": {
+          "count": 3,
+          "mae": 1.223,
+          "bias": 0.617,
+          "rmse": 1.389
+        },
+        "assists": {
+          "count": 3,
+          "mae": 1.153,
+          "bias": 1.153,
+          "rmse": 1.154
+        },
+        "pra": {
+          "count": 3,
+          "mae": 7.327,
+          "bias": 3.14,
+          "rmse": 7.364
+        },
+        "minutes": {
+          "count": 3,
+          "mae": 8.787,
+          "bias": 1.787,
+          "rmse": 8.943
+        }
+      }
+    },
+    {
+      "player_id": "1642855",
+      "player_name": "Noa Essengue",
+      "settled_games": 3,
+      "last_10_games": {
+        "points": {
+          "count": 3,
+          "mae": 2.033,
+          "bias": -2.033,
+          "rmse": 2.652
+        },
+        "rebounds": {
+          "count": 3,
+          "mae": 1.453,
+          "bias": 0.393,
+          "rmse": 1.684
+        },
+        "assists": {
+          "count": 3,
+          "mae": 0.957,
+          "bias": 0.01,
+          "rmse": 1.011
+        },
+        "pra": {
+          "count": 3,
+          "mae": 2.057,
+          "bias": -1.63,
+          "rmse": 3.047
+        },
+        "minutes": {
+          "count": 3,
+          "mae": 4.77,
+          "bias": 4.77,
+          "rmse": 5.881
+        }
+      }
+    },
+    {
+      "player_id": "1630172",
+      "player_name": "Patrick Williams",
+      "settled_games": 3,
+      "last_10_games": {
+        "points": {
+          "count": 3,
+          "mae": 3.48,
+          "bias": -0.02,
+          "rmse": 4.23
+        },
+        "rebounds": {
+          "count": 3,
+          "mae": 1.687,
+          "bias": 0.46,
+          "rmse": 1.72
+        },
+        "assists": {
+          "count": 3,
+          "mae": 1.007,
+          "bias": 0.513,
+          "rmse": 1.029
+        },
+        "pra": {
+          "count": 3,
+          "mae": 4.16,
+          "bias": 0.953,
+          "rmse": 4.849
+        },
+        "minutes": {
+          "count": 3,
+          "mae": 2.783,
+          "bias": 2.783,
+          "rmse": 3.102
+        }
+      }
+    },
+    {
+      "player_id": "1630200",
+      "player_name": "Tre Jones",
+      "settled_games": 3,
+      "last_10_games": {
+        "points": {
+          "count": 3,
+          "mae": 2.297,
+          "bias": -0.77,
+          "rmse": 2.896
+        },
+        "rebounds": {
+          "count": 3,
+          "mae": 1.4,
+          "bias": -1.227,
+          "rmse": 1.624
+        },
+        "assists": {
+          "count": 3,
+          "mae": 2.87,
+          "bias": -2.297,
+          "rmse": 3.211
+        },
+        "pra": {
+          "count": 3,
+          "mae": 6.567,
+          "bias": -4.293,
+          "rmse": 7.172
+        },
+        "minutes": {
+          "count": 3,
+          "mae": 5.913,
+          "bias": -0.213,
+          "rmse": 6.402
+        }
+      }
+    }
+  ],
+  "integrity_warnings": {},
+  "quality_flags": [
+    "SPORTSBOOK_SNAPSHOT_NOT_LIVE",
+    "NO_INDEPENDENT_PLAYER_AVAILABILITY"
+  ],
+  "notice": "Descriptive forecast MAE, bias and RMSE, not wagering win probability, expected value or validated betting edge."
+}
