@@ -1,6 +1,11 @@
 name: Gill Sports - NBA Injury Watch V1
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'data/player_live.json'
+      - '.github/workflows/gill-sports-injury-watch-v1.yml'
   schedule:
     - cron: '43 */3 * * *'
 permissions:
@@ -37,8 +42,19 @@ jobs:
               raise SystemExit('No player rows in public feed; refusing to publish empty watch')
 
           req = urllib.request.Request(SOURCE, headers={'User-Agent':'Mozilla/5.0 (Gill Sports research; injury availability watch)','Accept':'application/json'})
-          with urllib.request.urlopen(req, timeout=35) as resp:
-              injury_json = json.load(resp)
+          import time
+          injury_json = None
+          for attempt in range(3):
+              try:
+                  with urllib.request.urlopen(req, timeout=35) as resp:
+                      injury_json = json.load(resp)
+                  break
+              except (TimeoutError, OSError) as exc:
+                  if attempt == 2:
+                      raise SystemExit('INJURY_FEED_UNAVAILABLE: retained prior published report') from exc
+                  time.sleep(2 ** attempt)
+          if not isinstance(injury_json,(dict,list)):
+              raise SystemExit('INJURY_FEED_INVALID: retaining old published report')
 
           def norm(value):
               value = unicodedata.normalize('NFKD', str(value or ''))
