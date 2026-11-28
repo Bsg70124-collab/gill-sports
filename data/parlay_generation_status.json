@@ -1,9 +1,9 @@
 {
   "schema_version": 2,
-  "checked_at_utc": "2026-11-27T23:38:16.445614+00:00",
+  "checked_at_utc": "2026-11-28T01:26:08.610485+00:00",
   "date_pacific": "2026-11-27",
   "odds_captured_at_utc": "2026-11-27T03:14:00.324326+00:00",
-  "odds_age_minutes": 1224.3,
+  "odds_age_minutes": 1332.1,
   "market_outcomes": 802,
   "validated_edge_gate_candidates": 0,
   "distinct_games_in_fresh_feed": 0,
@@ -16,6 +16,7 @@
     4
   ],
   "reasons": {
+    "edge_gate_missing_stale_or_different_snapshot": 1,
     "snapshot_missing_or_expired": 1,
     "insufficient_distinct_verified_games_for_2_legs": 1,
     "insufficient_distinct_verified_games_for_3_legs": 1,
