@@ -28,7 +28,7 @@ modal.innerHTML='<div class="gill-login-panel"><h3>Authorize GitHub workflow run
 document.body.append(modal);
 const header=document.querySelector("header .head")||document.querySelector("header");
 const bar=document.createElement("div");bar.className="toolbar";
-bar.innerHTML='<button id="gill-authorize" type="button" class="secondary">Connect GitHub for one-click runs</button><button id="gill-disconnect" type="button" class="secondary" hidden>Disconnect</button><span id="gill-connection-status" class="small" aria-live="polite">Not connected</span>';
+bar.innerHTML='<button id="gill-authorize" type="button" class="secondary">Connect GitHub for one-click runs</button><button id="gill-disconnect" type="button" class="secondary" hidden>Disconnect</button><span id="gill-connection-status" class="small" aria-live="polite">Not connected · use the Run in GitHub links to avoid copying a token</span>';
 header.append(bar);
 function authState(){
  $("gill-authorize").textContent=credential?(verified?"GitHub request accepted":"Token entered (not yet verified)"):"Connect GitHub for one-click runs";
@@ -92,7 +92,14 @@ function addButton(tab,key){
  const button=document.createElement("button");button.type="button";button.id="gill-run-"+key;
  button.textContent="▶ "+actions[key][2];button.onclick=()=>dispatch(key);
  const message=document.createElement("span");message.id="gill-state-"+key;message.className="gill-job-message";
- bar.append(button,message);
+ const nativeLink=document.createElement("a");
+ nativeLink.className="small";
+ nativeLink.href="https://github.com/"+owner+"/"+actions[key][0]+"/actions/workflows/"+encodeURIComponent(actions[key][1]);
+ nativeLink.target="_blank";
+ nativeLink.rel="noopener noreferrer";
+ nativeLink.textContent="Run in GitHub (no token) ↗";
+ nativeLink.title="Open GitHub's authenticated workflow screen. Choose Run workflow there.";
+ bar.append(button,nativeLink,message);
  const anchor=page.querySelector(".toolbar");
  if(anchor)anchor.after(bar);else page.prepend(bar);
 }
