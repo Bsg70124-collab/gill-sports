@@ -5,6 +5,7 @@ name: Gill Sports - Phase 3 Parlay Intelligence
     branches: [main]
     paths:
       - 'parlay_intelligence.py'
+      - 'test_parlay_intelligence.py'
       - 'data/parlay_research_previews.json'
       - 'data/player_live.json'
       - '.github/workflows/gill-sports-parlay-intelligence.yml'
@@ -32,6 +33,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+      - name: Verify forward-only scoring, stale quote exclusions, and Monte Carlo behavior
+        run: python -m unittest -v test_parlay_intelligence.py
       - name: Generate correlation-aware Monte Carlo research and grade forward snapshots
         run: python parlay_intelligence.py
       - name: Check fail-closed research and tracking invariants
