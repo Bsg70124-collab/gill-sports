@@ -4,6 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#0b1220">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Gill Sports">
+<link rel="manifest" href="app.webmanifest">
+<link rel="icon" href="gill-icon.svg" type="image/svg+xml">
 <title>Gill Sports | Prediction Lab</title>
 <style>
 :root{color-scheme:dark;font-family:Inter,system-ui,sans-serif;background:#08111f;color:#eff4ff}
@@ -70,6 +75,8 @@ a{color:#95bcff}
 .metric{padding:14px}
 .metric b{font-size:24px}
 }
+@media (max-width:700px){main{padding:12px 10px 30px}.wrap{padding:12px}.metric,.panel{padding:13px;border-radius:12px}.grid{display:block}.nav{position:relative;scrollbar-width:thin}.nav button{min-height:44px;flex:0 0 auto}.toolbar button,.toolbar a,.toolbar select{min-height:42px}.head{align-items:flex-start}.stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}th,td{padding:9px 7px}.logo{font-size:21px}.rowhead{align-items:flex-start}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation:none!important}}
 </style>
 </head>
 <body>
@@ -960,5 +967,7 @@ setInterval(async()=>{
 
 </script>
 <script src="github-actions-control.js?v=20261127-mobile-no-token" defer></script>
+<script src="model-quality-panel.js" defer></script>
+<script src="mobile-app.js" defer></script>
 </body>
 </html>
