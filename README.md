@@ -97,3 +97,40 @@ a data/validation limitation rather than a failed automation. Research parlay
 previews stay separate and may use expired quotes, labeled as non-bettable.
 
 The workflows collecting paid sportsbook quotes retain a daily API budget cap.
+
+
+## November 2026 upgrade stages: prediction intelligence, mobile, parlays
+
+### Stage 1 — Prediction intelligence and data quality
+
+`quality_audit.py` reads published player forecasts and final actual statistics and writes
+`data/model_quality_report.json` with per-market MAE, RMSE, signed bias, recent game-date
+trends, per-player error samples, duplicate/missing-data warnings, and stale-odds warnings.
+The `gill-sports-forecast-quality.yml` workflow runs on relevant data updates and on a
+daily schedule. The **Model & Feeds** tab displays measured stats and limitations.
+This audit measures descriptive forecast errors; it is **not** a fitted betting model,
+calibrated win probability, or injury-adjusted projection.
+
+### Stage 2 — iPhone and mobile
+
+`app.webmanifest`, `gill-icon.svg`, `mobile-app.js`, and `service-worker.js`
+provide an installable home-screen web-app shell, responsive mobile navigation and an
+offline warning. On iPhone, in Safari use **Share → Add to Home Screen**.
+Current sportsbook data, player forecasts, and private GitHub jobs all require a network.
+The service worker caches the static shell, **never** market or projection JSON feeds.
+This does not replace the separately planned secure GitHub OAuth/App backend;
+manual workflows can be opened directly through **Run in GitHub (no token)**.
+
+### Stage 3 — Advanced parlay research
+
+The `gill-sports-parlay-research-previews.yml` workflow selects no repeated players
+or games, spreads legs across market/stat categories when feasible, and publishes
+explicit `risk_flags` and `diversification` metadata for every 2-, 3-, and 4-leg
+research preview. The dashboard and CSV export display these warnings.
+Diversification across distinct games reduces some obvious shared-event exposures,
+but it **does not establish statistical independence, validated correlation
+coefficients, parlay win probability, or expected value**.
+Expired quotes and unverified availability are still marked **NOT BETTABLE**.
+
+The dashboard smoke test validates new JavaScript, web manifest, JSON schemas, and
+that no research preview repeats a game/player or asserts a joint win probability.
