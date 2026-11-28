@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "generated_at_utc": "2026-11-28T16:24:22.703112+00:00",
+  "generated_at_utc": "2026-11-28T17:08:29.114523+00:00",
   "status": "EXPERIMENTAL_NO_VERIFIED_JOINT_PROBABILITIES",
   "readiness": {
-    "independent_settled_dates": 4,
-    "graded_player_games": 630,
+    "independent_settled_dates": 5,
+    "graded_player_games": 859,
     "training_dates": 0,
     "holdout_dates": 0,
     "training_samples": 0,
@@ -18,31 +18,31 @@
     "verified_player_availability": false,
     "fresh_odds_snapshot": false
   },
-  "odds_quote_age_minutes": 2230.4,
+  "odds_quote_age_minutes": 2274.5,
   "residual_correlations": {
     "points_vs_rebounds": {
-      "paired_player_games": 630,
-      "pearson": 0.2795
+      "paired_player_games": 859,
+      "pearson": 0.2609
     },
     "points_vs_assists": {
-      "paired_player_games": 630,
-      "pearson": 0.2181
+      "paired_player_games": 859,
+      "pearson": 0.1945
     },
     "rebounds_vs_assists": {
-      "paired_player_games": 630,
-      "pearson": 0.2796
+      "paired_player_games": 859,
+      "pearson": 0.256
     },
     "points_vs_pra": {
-      "paired_player_games": 630,
-      "pearson": 0.9046
+      "paired_player_games": 859,
+      "pearson": 0.8949
     },
     "rebounds_vs_pra": {
-      "paired_player_games": 630,
-      "pearson": 0.5977
+      "paired_player_games": 859,
+      "pearson": 0.595
     },
     "assists_vs_pra": {
-      "paired_player_games": 630,
-      "pearson": 0.4969
+      "paired_player_games": 859,
+      "pearson": 0.4861
     }
   },
   "simulation_count_per_preview": 10000,
