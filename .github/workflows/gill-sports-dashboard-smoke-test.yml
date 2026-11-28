@@ -13,6 +13,7 @@ on:
       - 'service-worker.js'
       - 'app.webmanifest'
       - 'gill-icon.svg'
+      - 'apple-touch-icon.png'
       - 'data/model_quality_report.json'
       - 'data/parlay_research_previews.json'
       - '.github/workflows/gill-sports-dashboard-smoke-test.yml'
@@ -56,6 +57,21 @@ jobs:
           node --check github-actions-control.js
           node --check model-quality-panel.js
           node --check mobile-app.js
+          grep -q 'gs-mobile-tabs' mobile-app.js
+          grep -q 'gill-sports-last-tab-v2' mobile-app.js
+          grep -q 'Open full-screen player projections' mobile-app.js
+          grep -q 'apple-touch-icon.png' index.html
+          test -s apple-touch-icon.png
+          python - <<'PY'
+          from pathlib import Path
+          png=Path('apple-touch-icon.png').read_bytes()
+          assert png[:8] == bytes([137,80,78,71,13,10,26,10]), 'Invalid PNG signature'
+          assert 'player_live.json' not in Path('service-worker.js').read_text(), 'Do not cache player feeds'
+          sw=Path('service-worker.js').read_text()
+          assert 'uri.pathname.endsWith(".json")' in sw
+          assert 'data/' in sw
+          print('MOBILE_INSTALL_AND_NO_FEED_CACHE_OK')
+          PY
           node --check service-worker.js
           python -m py_compile quality_audit.py
           python - <<'PY'
