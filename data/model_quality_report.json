@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "generated_at_utc": "2026-11-28T00:39:20.937448+00:00",
+  "generated_at_utc": "2026-11-28T00:41:17.630134+00:00",
   "player_source_updated_at_utc": "2026-11-28T00:33:57.729076+00:00",
   "market_quote_captured_at_utc": "2026-11-27T03:14:00.324326+00:00",
-  "market_quote_age_minutes": 1285.3,
+  "market_quote_age_minutes": 1287.3,
   "counts": {
     "forecast_rows": 1586,
     "settled": 630,
