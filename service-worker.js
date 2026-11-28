@@ -1,7 +1,7 @@
 /* Gill Sports Stage 2: offline shell; never cache player, odds, or other JSON feeds. */
 const CACHE="gill-shell-v2";
 const SHELL=["./","./index.html","./gill-icon.svg","./app.webmanifest",
- "./mobile-app.js","./model-quality-panel.js","./github-actions-control.js",
+ "./apple-touch-icon.png","./mobile-app.js","./model-quality-panel.js","./github-actions-control.js",
  "./featured-players.js","./gill-sports-live-players.html"];
 self.addEventListener("install",event=>{
  event.waitUntil(caches.open(CACHE).then(c=>c.addAll(SHELL)));
