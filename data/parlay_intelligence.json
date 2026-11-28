@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at_utc": "2026-11-28T01:26:20.833376+00:00",
+  "generated_at_utc": "2026-11-28T08:01:54.205186+00:00",
   "status": "EXPERIMENTAL_NO_VERIFIED_JOINT_PROBABILITIES",
   "readiness": {
     "independent_settled_dates": 4,
@@ -18,7 +18,7 @@
     "verified_player_availability": false,
     "fresh_odds_snapshot": false
   },
-  "odds_quote_age_minutes": 1332.3,
+  "odds_quote_age_minutes": 1727.9,
   "residual_correlations": {
     "points_vs_rebounds": {
       "paired_player_games": 630,
@@ -48,7 +48,7 @@
   "simulation_count_per_preview": 10000,
   "preview_simulations": [
     {
-      "preview_id": "2026-11-27-2-research",
+      "preview_id": "2026-11-28-2-research",
       "size": 2,
       "classification": "RESEARCH_ONLY_NOT_BETTABLE",
       "forward_tracking_eligible": false,
@@ -65,7 +65,7 @@
       "validation": "NOT_CALIBRATED"
     },
     {
-      "preview_id": "2026-11-27-3-research",
+      "preview_id": "2026-11-28-3-research",
       "size": 3,
       "classification": "RESEARCH_ONLY_NOT_BETTABLE",
       "forward_tracking_eligible": false,
@@ -82,7 +82,7 @@
       "validation": "NOT_CALIBRATED"
     },
     {
-      "preview_id": "2026-11-27-4-research",
+      "preview_id": "2026-11-28-4-research",
       "size": 4,
       "classification": "RESEARCH_ONLY_NOT_BETTABLE",
       "forward_tracking_eligible": false,
