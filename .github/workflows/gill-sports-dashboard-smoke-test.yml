@@ -8,6 +8,13 @@ on:
       - 'gill-sports-live-players.html'
       - 'featured-players.js'
       - 'github-actions-control.js'
+      - 'model-quality-panel.js'
+      - 'mobile-app.js'
+      - 'service-worker.js'
+      - 'app.webmanifest'
+      - 'gill-icon.svg'
+      - 'data/model_quality_report.json'
+      - 'data/parlay_research_previews.json'
       - '.github/workflows/gill-sports-dashboard-smoke-test.yml'
 permissions:
   contents: read
@@ -36,17 +43,36 @@ jobs:
           if missing:raise SystemExit('MISSING_DOM_ELEMENTS: '+','.join(missing))
           required=['data/player_live.json','data/nba_market_comparison.json',
             'data/parlay_generation_status.json','parlay-size','market-table','market-feed-state',
-            'setupTabRefresh','renderMarket','renderParlayResearch','parlay-research-list','renderFeedHealth','gs-auto-refresh','parlay-research-export','validated-edge-status','data/validated_player_edges.json','github-actions-control.js','Refresh reloads saved data']
+            'setupTabRefresh','renderMarket','renderParlayResearch','parlay-research-list','renderFeedHealth','gs-auto-refresh','parlay-research-export','validated-edge-status','data/validated_player_edges.json','github-actions-control.js','model-quality-panel.js','mobile-app.js','app.webmanifest','Refresh reloads saved data']
           absent=[x for x in required if x not in html]
           if absent:raise SystemExit('MISSING_DASHBOARD_INTEGRATIONS: '+','.join(absent))
           for name in ('data/player_live.json','data/nba_market_comparison.json',
-                       'data/parlay_generation_status.json','data/parlay_research_previews.json','data/validated_player_edges.json','data/parlays.json'):
+                       'data/parlay_generation_status.json','data/parlay_research_previews.json','data/validated_player_edges.json','data/model_quality_report.json','data/parlays.json'):
             json.loads(Path(name).read_text(encoding='utf8'))
           print('DASHBOARD_MARKUP_AND_FEEDS_OK',len(ids),'elements',len(jsrefs),'references')
           PYCODE
           node --check /tmp/gill-dashboard-check.js
           node --check featured-players.js
           node --check github-actions-control.js
+          node --check model-quality-panel.js
+          node --check mobile-app.js
+          node --check service-worker.js
+          python -m py_compile quality_audit.py
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          app=json.loads(Path('app.webmanifest').read_text())
+          assert app['display']=='standalone'
+          report=json.loads(Path('data/model_quality_report.json').read_text())
+          assert report['counts']['settled']>=0
+          slips=json.loads(Path('data/parlay_research_previews.json').read_text())
+          for preview in slips.get('previews',[]):
+            assert len({leg['game_id'] for leg in preview['legs']}) == preview['size']
+            assert len({leg['player_id'] for leg in preview['legs']}) == preview['size']
+            assert preview['validated_win_probability'] is None
+            assert 'risk_flags' in preview
+          print('MOBILE_QUALITY_AND_PARLAY_INVARIANTS_OK')
+          PY
           grep -q 'github-actions-control.js' index.html
           grep -q 'workflow' github-actions-control.js
           echo DASHBOARD_JAVASCRIPT_SYNTAX_OK
