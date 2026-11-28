@@ -9,6 +9,11 @@ on:
       - 'featured-players.js'
       - 'github-actions-control.js'
       - 'model-quality-panel.js'
+      - 'parlay-intelligence-panel.js'
+      - 'parlay_intelligence.py'
+      - 'test_parlay_intelligence.py'
+      - 'data/parlay_intelligence.json'
+      - 'data/parlay_research_history.json'
       - 'mobile-app.js'
       - 'service-worker.js'
       - 'app.webmanifest'
@@ -44,11 +49,11 @@ jobs:
           if missing:raise SystemExit('MISSING_DOM_ELEMENTS: '+','.join(missing))
           required=['data/player_live.json','data/nba_market_comparison.json',
             'data/parlay_generation_status.json','parlay-size','market-table','market-feed-state',
-            'setupTabRefresh','renderMarket','renderParlayResearch','parlay-research-list','renderFeedHealth','gs-auto-refresh','parlay-research-export','validated-edge-status','data/validated_player_edges.json','github-actions-control.js','model-quality-panel.js','mobile-app.js','app.webmanifest','Refresh reloads saved data']
+            'setupTabRefresh','renderMarket','renderParlayResearch','parlay-research-list','renderFeedHealth','gs-auto-refresh','parlay-research-export','validated-edge-status','data/validated_player_edges.json','github-actions-control.js','model-quality-panel.js','mobile-app.js','parlay-intelligence-panel.js','app.webmanifest','Refresh reloads saved data']
           absent=[x for x in required if x not in html]
           if absent:raise SystemExit('MISSING_DASHBOARD_INTEGRATIONS: '+','.join(absent))
           for name in ('data/player_live.json','data/nba_market_comparison.json',
-                       'data/parlay_generation_status.json','data/parlay_research_previews.json','data/validated_player_edges.json','data/model_quality_report.json','data/parlays.json'):
+                       'data/parlay_generation_status.json','data/parlay_research_previews.json','data/validated_player_edges.json','data/model_quality_report.json','data/parlay_intelligence.json','data/parlay_research_history.json','data/parlays.json'):
             json.loads(Path(name).read_text(encoding='utf8'))
           print('DASHBOARD_MARKUP_AND_FEEDS_OK',len(ids),'elements',len(jsrefs),'references')
           PYCODE
@@ -58,6 +63,8 @@ jobs:
           grep -q 'mobileMode' github-actions-control.js
           grep -q 'No job has been started by this button' github-actions-control.js
           node --check model-quality-panel.js
+          node --check parlay-intelligence-panel.js
+          python -m unittest -q test_parlay_intelligence.py
           node --check mobile-app.js
           grep -q 'gs-mobile-tabs' mobile-app.js
           grep -q 'gill-sports-last-tab-v2' mobile-app.js
@@ -89,6 +96,11 @@ jobs:
             assert len({leg['player_id'] for leg in preview['legs']}) == preview['size']
             assert preview['validated_win_probability'] is None
             assert 'risk_flags' in preview
+          intelligence=json.loads(Path('data/parlay_intelligence.json').read_text())
+          history=json.loads(Path('data/parlay_research_history.json').read_text())
+          assert intelligence['readiness']['verified_joint_calibration'] is False
+          assert all(x['monte_carlo']['published_joint_win_probability'] is None for x in intelligence['preview_simulations'])
+          assert all(x['classification']=='RESEARCH_ONLY_NOT_BETTABLE' for x in history['rows'])
           print('MOBILE_QUALITY_AND_PARLAY_INVARIANTS_OK')
           PY
           grep -q 'github-actions-control.js' index.html
