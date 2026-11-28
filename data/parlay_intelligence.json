@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at_utc": "2026-11-28T01:25:26.429150+00:00",
+  "generated_at_utc": "2026-11-28T01:26:20.833376+00:00",
   "status": "EXPERIMENTAL_NO_VERIFIED_JOINT_PROBABILITIES",
   "readiness": {
     "independent_settled_dates": 4,
@@ -18,7 +18,7 @@
     "verified_player_availability": false,
     "fresh_odds_snapshot": false
   },
-  "odds_quote_age_minutes": 1331.4,
+  "odds_quote_age_minutes": 1332.3,
   "residual_correlations": {
     "points_vs_rebounds": {
       "paired_player_games": 630,
